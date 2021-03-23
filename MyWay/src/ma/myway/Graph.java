@@ -7,11 +7,11 @@ import java.util.Set;
 
 public class Graph {
 
-	List<Stop> sommet = new LinkedList<>();// en cas de mauvaises performances modifier
+	List<Node> sommet = new LinkedList<>();// en cas de mauvaises performances modifier
 	private Set<Edge> edges;
 
 	
-	public Graph(List<Stop> sommet, Set<Edge> edges) {
+	public Graph(List<Node> sommet, Set<Edge> edges) {
 		super();
 		this.sommet = sommet;
 		this.edges = edges;
@@ -21,16 +21,20 @@ public class Graph {
 		edges.add(edge);
 	}
 
-	public Set<Stop> getNeighbors(Stop src) {
-		Set<Stop> neighbor = new HashSet<Stop>();
+	public Set<Node> getNeighbors(Node src) {
+		Set<Node> neighbors = new HashSet<Node>();
 		for (Edge edge : edges) {
-			if(edge.getSource().getStop_id().equals(src.getStop_id()))
-				neighbor.add(edge.getDest());
+			if(edge.getSource().getStop().getStop_id().equals(src.getStop().getStop_id()))
+				neighbors.add(edge.getDest());
 		}
-		return neighbor;
+		return neighbors;
 	}
 
 	public Set<Edge> getEdges() {
 		return new HashSet<Edge>(this.edges);
+	}
+
+	public static Graph djikstra(Graph graph, Node source) {
+		return null; 
 	}
 }
