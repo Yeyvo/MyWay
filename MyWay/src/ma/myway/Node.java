@@ -26,4 +26,9 @@ public class Node {
 	public Stop getStop() {
 		return stop;
 	}
+
+	public Map<Node, Integer> getAdjacentNodes() {
+		//change to return only active nodes
+		return adjacentNodes;
+	}
 }
