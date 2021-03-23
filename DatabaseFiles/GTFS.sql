@@ -11,7 +11,7 @@ create table agency (
 	agency_phone varchar(255)
 	);
 
-LOAD DATA INFILE "agency.txt" INTO TABLE agency FIELDS TERMINATED BY "," IGNORE 1 LINES;
+LOAD DATA LOCAL INFILE "agency.txt" INTO TABLE agency FIELDS TERMINATED BY "," IGNORE 1 LINES;
 
 
 create table calendar (
@@ -27,7 +27,7 @@ create table calendar (
 	end_date varchar(255)
 );
 
-LOAD DATA INFILE "calendar.txt" INTO TABLE calendar FIELDS TERMINATED BY "," IGNORE 1 LINES;
+LOAD DATA LOCAL INFILE "calendar.txt" INTO TABLE calendar FIELDS TERMINATED BY "," IGNORE 1 LINES;
 
 create table calendar_dates (
 	service_id varchar(255) NOT NULL,
@@ -36,7 +36,7 @@ create table calendar_dates (
 	PRIMARY KEY(service_id,date)
 );
 
-LOAD DATA INFILE "calendar_dates.txt" INTO TABLE calendar_dates FIELDS TERMINATED BY "," IGNORE 1 LINES;
+LOAD DATA LOCAL INFILE "calendar_dates.txt" INTO TABLE calendar_dates FIELDS TERMINATED BY "," IGNORE 1 LINES;
 
 create table routes(
 	route_id varchar(255) NOT NULL PRIMARY KEY,
@@ -50,7 +50,7 @@ create table routes(
 	route_text_color varchar(255)
 );
 
-LOAD DATA INFILE "routes.txt" INTO TABLE routes FIELDS TERMINATED BY "," IGNORE 1 LINES;
+LOAD DATA LOCAL INFILE "routes.txt" INTO TABLE routes FIELDS TERMINATED BY "," IGNORE 1 LINES;
 
 CREATE TABLE stop_times (
 	trip_id varchar(255), 
@@ -62,7 +62,7 @@ CREATE TABLE stop_times (
 	shape_dist_traveled varchar(255) 
 );
 
-LOAD DATA INFILE "stop_times.txt" INTO TABLE stop_times FIELDS TERMINATED BY "," IGNORE 1 LINES;
+LOAD DATA LOCAL INFILE "stop_times.txt" INTO TABLE stop_times FIELDS TERMINATED BY "," IGNORE 1 LINES;
 
 
 CREATE TABLE stops (
@@ -76,7 +76,7 @@ CREATE TABLE stops (
 	parent_station varchar(255) 
 );
 
-LOAD DATA INFILE "stops.txt" INTO TABLE stops FIELDS TERMINATED BY "," IGNORE 1 LINES;
+LOAD DATA LOCAL INFILE "stops.txt" INTO TABLE stops FIELDS TERMINATED BY "," IGNORE 1 LINES;
 
 CREATE TABLE transfers (
 	from_stop_id varchar(255),
@@ -86,7 +86,7 @@ CREATE TABLE transfers (
 	min_transfer_time varchar(255) 
 );
 
-LOAD DATA INFILE "transfers.txt" INTO TABLE transfers FIELDS TERMINATED BY "," IGNORE 1 LINES;
+LOAD DATA LOCAL INFILE "transfers.txt" INTO TABLE transfers FIELDS TERMINATED BY "," IGNORE 1 LINES;
 
 CREATE TABLE trips (
 	route_id varchar(255),
@@ -98,7 +98,7 @@ CREATE TABLE trips (
 	shape_id varchar(255) 
 );
 
-LOAD DATA INFILE "trips.txt" INTO TABLE trips FIELDS TERMINATED BY "," IGNORE 1 LINES;
+LOAD DATA LOCAL INFILE "trips.txt" INTO TABLE trips FIELDS TERMINATED BY "," IGNORE 1 LINES;
 /*
 ALTER TABLE routes add column MT varchar(255) AFTER route_type;
 
