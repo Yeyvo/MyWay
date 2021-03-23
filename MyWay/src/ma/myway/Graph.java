@@ -11,8 +11,8 @@ public class Graph {
 	private Set<Edge> edges;
 
 	
-	public Graph(List<Node> sommet, Set<Edge> edges) {
-		super();
+
+	public Graph(List<Stop> sommet, Set<Edge> edges) {
 		this.sommet = sommet;
 		this.edges = edges;
 	}
@@ -34,7 +34,9 @@ public class Graph {
 		return new HashSet<Edge>(this.edges);
 	}
 
+
 	public static Graph djikstra(Graph graph, Node source) {
 		return null; 
 	}
 }
+
