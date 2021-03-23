@@ -1,5 +1,7 @@
 Create DATABASE gtfs Default character set utf8 default collate utf8_general_ci;
 
+USE gtfs;
+
 create table agency (
 	agency_id varchar(255) NOT NULL PRIMARY KEY,
 	agency_name varchar(255),
