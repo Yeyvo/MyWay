@@ -12,7 +12,6 @@ public class Graph {
 
 	
 	public Graph(List<Stop> sommet, Set<Edge> edges) {
-		super();
 		this.sommet = sommet;
 		this.edges = edges;
 	}
