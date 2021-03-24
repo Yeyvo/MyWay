@@ -31,6 +31,11 @@ public class Node {
 	private Integer distance = Integer.MAX_VALUE;
 	Map<Node, Integer> adjacentNodes = new HashMap<>();
 
+	/**
+	 * for testing purposes only
+	 * 
+	 * @param stop
+	 */
 	public Node(Stop stop) {
 		this.stop = stop;
 	}
