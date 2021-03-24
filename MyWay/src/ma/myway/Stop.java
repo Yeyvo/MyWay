@@ -25,6 +25,15 @@ public class Stop {
 	private float lon;
 	private int location_type;
 
+	/**
+	 * for testing purposes only
+	 * 
+	 * @param stop_id
+	 */
+	public Stop(String stop_id){
+		this.stop_id = stop_id;
+	}
+
 	public Stop(String stop_id, String name, String desc, float lat, float lon, int location_type) {
 		super();
 		this.stop_id = stop_id;

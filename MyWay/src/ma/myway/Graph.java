@@ -36,7 +36,11 @@ public class Graph {
 	private Set<Edge> edges;
 	private Set<Node> settledNodes;
 	private Set<Node> unSettledNodes;
-	private Map<Node, Edge> predecessors; // destination - origine (the edge leading to Node destination)
+
+	/**
+	 * Map<Node destination - Edge origine> (origin = the edge leading to Node destination)
+	 */
+	private Map<Node, Edge> predecessors; 
 	private Map<Node, Double> distance;
 
 	public Graph(List<Node> nodes) {
@@ -201,5 +205,16 @@ public class Graph {
 		// Put it into the correct order
 		Collections.reverse(path);
 		return path;
+	}
+	/**
+	 * wrapper function for dijkstra
+	 * 
+	 * @param src
+	 * @param dest
+	 * @return le plus court chemin du noeud src au noeud dest
+	 */
+	public LinkedList<Edge> getShortestPath(Node src, Node dest){
+		dijkstra(src);
+		return getPath(dest);
 	}
 }
