@@ -92,8 +92,7 @@ DROP TABLE IF EXISTS transfers;
 
 CREATE TABLE transfers (
 	from_stop_id varchar(255),
-	to_stop varchar(255),
-	stop_id varchar(255),
+	to_stop_id varchar(255),
 	transfer_type varchar(255),
 	min_transfer_time varchar(255) 
 );
