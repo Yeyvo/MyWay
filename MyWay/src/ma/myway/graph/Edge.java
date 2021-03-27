@@ -1,4 +1,4 @@
-package ma.myway;
+package ma.myway.graph;
 
 /**
  * <p>

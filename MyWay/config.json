@@ -1,0 +1,8 @@
+{
+  "BDD": "mysql",
+  "IP": "10.72.176.87",
+  "PRT": "3306",
+  "BDDNAME": "gtfs",
+  "USR": "test",
+  "PSWD": "test"
+}

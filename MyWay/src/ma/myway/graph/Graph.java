@@ -1,4 +1,4 @@
-package ma.myway;
+package ma.myway.graph;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,8 +27,6 @@ import java.util.Set;
  * 
  * @see Node
  * @see Edge
- * @author Yeyvo
- * @author hamza-boudouche
  */
 public class Graph {
 
@@ -54,8 +52,6 @@ public class Graph {
 	}
 
 	/**
-	 * getter
-	 * 
 	 * @return les aretes du graphe
 	 */
 	public Set<Edge> getEdges() { 
@@ -63,7 +59,7 @@ public class Graph {
 	}
 
 	/**
-	 * ajouter une arête (liaison) au graphe
+	 * ajouter une arrete (liaison) au graphe
 	 * 
 	 * @param egde
 	 */
@@ -110,8 +106,6 @@ public class Graph {
 	}
 
 	/**
-	 * 
-	 * 
 	 * @param destination
 	 * @return le cout d'atteinte du noeud destination
 	 */
@@ -125,8 +119,6 @@ public class Graph {
 	}
 
 	/**
-	 * 
-	 * 
 	 * @param le noeud source
 	 * @return la liste des voisins du noeud passé en argument
 	 */
@@ -151,8 +143,6 @@ public class Graph {
 	*/
 
 	/**
-	 * 
-	 * 
 	 * @return boolean
 	 * @param node
 	 * @see Graph#dijsktra(Node)
@@ -162,8 +152,6 @@ public class Graph {
 	}
 
 	/**
-	 * 
-	 * 
 	 * @param graph
 	 * @param source
 	 */
@@ -184,8 +172,6 @@ public class Graph {
 	}
 
 	/**
-	 * 
-	 * 
 	 * @param Node
 	 * @return LinkedList<Edge>
 	 */

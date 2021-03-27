@@ -1,9 +1,12 @@
-package ma.myway;
+package ma.myway.graph;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import ma.myway.graph.data.Stop;
 
 /**
  * <p>
@@ -23,7 +26,6 @@ import java.util.Map;
  * </p>
  * 
  * @see Stop
- * @author hamza-boudouche
  */
 public class Node {
 	private Stop stop;
@@ -76,5 +78,17 @@ public class Node {
 	public Map<Node, Integer> getAdjacentNodes() {
 		// change to return only active nodes
 		return adjacentNodes;
+	}
+	
+	public static Node getNodeByID(List<Node> nodes, String stop_id) {
+
+		for(Node n : nodes) {
+			if(n.getStop().getStop_id().equals(stop_id)) {
+				return n;
+			}
+		}
+		
+		return null;
+		
 	}
 }
