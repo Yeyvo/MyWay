@@ -6,7 +6,6 @@ import ma.myway.graph.data.Agency;
 import ma.myway.graph.data.Route_Service;
 import ma.myway.graph.data.Service;
 import ma.myway.graph.data.Stop;
-import ma.myway.graph.data.Stop_Trip;
 import ma.myway.graph.data.Transfert;
 
 public class DAOFactory {
@@ -28,7 +27,7 @@ public class DAOFactory {
 		return new RoutesDAO(conn);
 	}
 
-	public static DAO<Stop_Trip> getStopTripDAO() {
+	public static StopTripDAO getStopTripDAO() { //MODIFIED
 		return new StopTripDAO(conn);
 	}
 
