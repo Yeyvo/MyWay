@@ -1,5 +1,6 @@
 package ma.myway;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -8,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.time.temporal.ChronoUnit;
 
 /**
  * <p>
@@ -28,7 +30,6 @@ import java.util.Set;
  * @see Node
  * @see Edge
  * @author Yeyvo
- * @author hamza-boudouche
  */
 public class Graph {
 
@@ -139,16 +140,15 @@ public class Graph {
 		return neighbors;
 	}
 
-	/*
-	private double getCost(Edge edge) { //cost of an edge
-	 		if(current_transfer_type != edge.getTransferType || current_trip_id !=edge.getTripId )
-			{ 
-				return edge.getWeight() + edge.getSource.getNextStopTime -current_time; 
-			} else { 
-				return edge.getWeight(); 
-			} 
+	private double getCost(Edge edge, Edge previous){
+		double toAdd = 0;
+		if(previous != null){
+			if(previous.getTransferType() != edge.getTransferType() || !previous.getTrip_id().equals(edge.getTrip_id())){
+				toAdd = ChronoUnit.SECONDS.between(edge.getNextStopTime(), LocalDate.now());
+			}
 		}
-	*/
+		return toAdd + edge.getWeight();
+	}
 
 	/**
 	 * 

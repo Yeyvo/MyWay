@@ -23,7 +23,6 @@ import java.util.Map;
  * </p>
  * 
  * @see Stop
- * @author hamza-boudouche
  */
 public class Node {
 	private Stop stop;

@@ -1,5 +1,6 @@
 package ma.myway;
 
+import java.time.LocalDate;
 /**
  * <p>
  * C'est la classe represantant chaque <b>arête</b> du graph
@@ -19,7 +20,6 @@ package ma.myway;
  * </p>
  * 
  * @see Node
- * @author hamza-boudouche
  */
 public class Edge {
 	private Node src, dest;
@@ -88,4 +88,11 @@ public class Edge {
 		return true;
 	}
 
+	public int getTransferType(){
+		throw new UnsupportedOperationException();
+	}
+
+	public LocalDate getNextStopTime(){
+		throw new UnsupportedOperationException();
+	}
 }

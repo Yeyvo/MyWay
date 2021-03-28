@@ -14,7 +14,6 @@ package ma.myway;
  * </p>
  * 
  * @see Node
- * @author Yeyvo
  */
 public class Stop {
 
