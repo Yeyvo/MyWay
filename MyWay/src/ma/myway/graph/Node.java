@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
 import ma.myway.graph.data.Stop;
 
 /**
@@ -80,6 +78,7 @@ public class Node {
 		return adjacentNodes;
 	}
 	
+	@Deprecated
 	public static Node getNodeByID(List<Node> nodes, String stop_id) {
 
 		for(Node n : nodes) {

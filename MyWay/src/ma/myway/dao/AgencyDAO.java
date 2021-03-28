@@ -38,8 +38,10 @@ public class AgencyDAO extends DAO<Agency> {
 			ResultSet result = this.connect
 					.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)
 					.executeQuery("SELECT * FROM agency");
-			while(result.next())
+			while(result.next()) {
 				set_agency.add(new Agency(result.getString("agency_id"), result.getString("agency_name")));
+			}
+			result.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

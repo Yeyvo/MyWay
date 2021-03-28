@@ -32,7 +32,7 @@ import java.time.temporal.ChronoUnit;
  */
 public class Graph {
 
-	private List<Node> nodes = new LinkedList<>();// en cas de mauvaises performances modifier
+	private HashMap<String, Node> nodes = new HashMap<>();// en cas de mauvaises performances modifier
 	private Set<Edge> edges;
 	private Set<Node> settledNodes;
 	private Set<Node> unSettledNodes;
@@ -44,13 +44,13 @@ public class Graph {
 	private Map<Node, Edge> predecessors; 
 	private Map<Node, Double> distance;
 
-	public Graph(List<Node> nodes) {
+	public Graph(HashMap<String, Node> nodes) {
 		this.nodes = nodes;
 		this.edges = new HashSet<Edge>();
 	}
 	
-	public Graph(List<Node> nodes, Set<Edge> edges) {
-		this.nodes = nodes;
+	public Graph(HashMap<String, Node> node, Set<Edge> edges) {
+		this.nodes = node;
 		this.edges = edges;
 	}
 
@@ -128,7 +128,7 @@ public class Graph {
 	public List<Edge> getNeighbors(Node src) { // done // must return list of edge with origine = src //needs optimization 
 		List<Edge> neighbors = new ArrayList<Edge>();
 		for (Edge edge : edges) {
-			if (edge.getSource().getStop().getStop_id().equals(src.getStop().getStop_id()) && !this.isSettled(edge.getDest()) && edge.isActive())
+			if (edge.getSrc().getStop().getStop_id().equals(src.getStop().getStop_id()) && !this.isSettled(edge.getDest()) && edge.isActive())
 				neighbors.add(edge);
 		}
 		return neighbors;
@@ -187,7 +187,7 @@ public class Graph {
 		}
 		while (predecessors.get(step) != null) {
 			next = predecessors.get(step);
-			step = next.getSource();
+			step = next.getSrc();
 			path.add(next);
 		}
 		// Put it into the correct order

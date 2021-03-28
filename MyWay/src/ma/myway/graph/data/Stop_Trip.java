@@ -1,18 +1,18 @@
 package ma.myway.graph.data;
 
 import java.sql.Time;
+import java.util.List;
 import java.util.Set;
 
-public class Stop_Trip {
+public class Stop_Trip implements java.lang.Comparable<Stop_Trip> {
 
-	
 	String trip_id;
 	String stop_id;
 	Time arrival_time;
 	Time departure_time;
 	int stop_sequence;
 
-	public Stop_Trip(String trip_id,String stop_id, Time arrival_time, Time departure_time, int stop_sequence) {
+	public Stop_Trip(String trip_id, String stop_id, Time arrival_time, Time departure_time, int stop_sequence) {
 		this.trip_id = trip_id;
 		this.stop_id = stop_id;
 		this.arrival_time = arrival_time;
@@ -39,17 +39,45 @@ public class Stop_Trip {
 	public int getStop_sequence() {
 		return stop_sequence;
 	}
-	
-	public static Stop_Trip getNextStop_sequence(Set<Stop_Trip> st, String trip_id , Time arrival_time, int stop_sequence ) {
-		
-		for( Stop_Trip stopTrip : st) {
-			if( (stopTrip.trip_id == trip_id)  && (stopTrip.getStop_sequence() == 1 + stop_sequence)  && arrival_time.compareTo(stopTrip.getDeparture_time())>=0) {
+
+	public static Stop_Trip getNextStop_sequence(Set<Stop_Trip> st, String trip_id, int stop_sequence) {
+
+		for (Stop_Trip stopTrip : st) {
+			if ((stopTrip.trip_id.equals(trip_id)) && (stopTrip.getStop_sequence() == 1 + stop_sequence)) {
 				return stopTrip;
 			}
 		}
-		
+
 		return null;
 	}
-	
+
+	public static Stop_Trip getNextStop_sequence(List<Stop_Trip> st, String trip_id, int stop_sequence, int j) {
+		if (j+1 < st.size()) {
+			Stop_Trip nxt = st.get(j + 1);
+			if (nxt.getTrip_id().equals(trip_id) && nxt.getStop_sequence() == stop_sequence + 1)
+				return nxt;
+		}
+		return null;
+
+	}
+
+	@Override
+	public int compareTo(Stop_Trip o) {
+
+		if (Long.parseLong(o.getTrip_id()) - Long.parseLong(this.getTrip_id()) > 0) {
+			return -1;
+		} else if (Long.parseLong(o.getTrip_id()) - Long.parseLong(this.getTrip_id()) < 0) {
+			return 1;
+		} else if (Long.parseLong(o.getTrip_id()) - Long.parseLong(this.getTrip_id()) == 0) {
+			if (o.getStop_sequence() - this.getStop_sequence() > 0) {
+				return -1;
+			} else if (o.getStop_sequence() - this.getStop_sequence() < 0) {
+				return 1;
+			} else if (o.getStop_sequence() - this.getStop_sequence() == 0) {
+				return 0;
+			}
+		}
+		return 0;
+	}
 
 }

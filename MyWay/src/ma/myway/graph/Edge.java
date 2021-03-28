@@ -25,12 +25,48 @@ public class Edge {
 	private Node src, dest;
 	private double weight;// type a discuter
 	private String trip_id;
+	private int transfer_type;
+	private boolean isTransfert ;
 
 	public Edge(Node src, Node dest, double weight, String trip_id) {
 		this.src = src;
 		this.dest = dest;
 		this.weight = weight;
 		this.trip_id = trip_id;
+		this.isTransfert = false;
+	}
+	public Edge(Node src, Node dest, double weight, String trip_id, int transfer_type) {
+		this.src = src;
+		this.dest = dest;
+		this.weight = weight;
+		this.trip_id = trip_id;
+		this.transfer_type = transfer_type;
+		this.isTransfert = true;
+	}
+	
+	/**
+	 * getter
+	 * 
+	 * @return boolean
+	 */
+	public boolean isTransfert() {
+		return isTransfert;
+	}
+	/**
+	 * getter
+	 * 
+	 * @return int
+	 */
+	public int getTransfer_type() {
+		return transfer_type;
+	}
+	/**
+	 * getter
+	 * 
+	 * @return Node
+	 */
+	public Node getSrc() {
+		return src;
 	}
 
 	/**
@@ -38,16 +74,7 @@ public class Edge {
 	 * 
 	 * @return Node
 	 */
-	Node getSource() {
-		return this.src;
-	}
-
-	/**
-	 * getter
-	 * 
-	 * @return Node
-	 */
-	Node getDest() {
+	public Node getDest() {
 		return this.dest;
 	}
 
@@ -56,7 +83,7 @@ public class Edge {
 	 * 
 	 * @return double
 	 */
-	double getWeight() {
+	public double getWeight() {
 		return this.weight;
 	}
 
