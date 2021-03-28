@@ -36,6 +36,7 @@ public class Graph {
 	private Set<Edge> edges;
 	private Set<Node> settledNodes;
 	private Set<Node> unSettledNodes;
+	private FibHeap priorityQueue;
 
 	/**
 	 * Map<Node destination - Edge origine> (origin = the edge leading to Node destination)
@@ -93,7 +94,7 @@ public class Graph {
 	 * @param nodes
 	 * @return le noeud avec le cout minimum
 	 */
-	private Node getMinimum(Set<Node> nodes) { // ok
+	private Node getMinimum(Set<Node> nodes) { // ok //needs optimization
 		Node minimum = null;
 		for (Node node : nodes) {
 			if (minimum == null) {
@@ -124,7 +125,7 @@ public class Graph {
 	 * @param le noeud source
 	 * @return la liste des voisins du noeud passé en argument
 	 */
-	public List<Edge> getNeighbors(Node src) { // done // must return list of edge with origine = src
+	public List<Edge> getNeighbors(Node src) { // done // must return list of edge with origine = src //needs optimization 
 		List<Edge> neighbors = new ArrayList<Edge>();
 		for (Edge edge : edges) {
 			if (edge.getSource().getStop().getStop_id().equals(src.getStop().getStop_id()) && !this.isSettled(edge.getDest()) && edge.isActive())
