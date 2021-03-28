@@ -1,6 +1,8 @@
-Create DATABASE gtfs Default character set utf8 default collate utf8_general_ci;
+Create DATABASE IF NOT EXISTS gtfs Default character set utf8 default collate utf8_general_ci;
 
 USE gtfs;
+
+DROP TABLE IF EXISTS agency;
 
 create table agency (
 	agency_id varchar(255) NOT NULL PRIMARY KEY,
@@ -13,6 +15,7 @@ create table agency (
 
 LOAD DATA LOCAL INFILE "agency.txt" INTO TABLE agency FIELDS TERMINATED BY "," IGNORE 1 LINES;
 
+DROP TABLE IF EXISTS calendar;
 
 create table calendar (
 	service_id varchar(255) NOT NULL PRIMARY KEY,
@@ -29,6 +32,8 @@ create table calendar (
 
 LOAD DATA LOCAL INFILE "calendar.txt" INTO TABLE calendar FIELDS TERMINATED BY "," IGNORE 1 LINES;
 
+DROP TABLE IF EXISTS calendar_dates;
+
 create table calendar_dates (
 	service_id varchar(255) NOT NULL,
 	date varchar(255),
@@ -37,6 +42,8 @@ create table calendar_dates (
 );
 
 LOAD DATA LOCAL INFILE "calendar_dates.txt" INTO TABLE calendar_dates FIELDS TERMINATED BY "," IGNORE 1 LINES;
+
+DROP TABLE IF EXISTS routes;
 
 create table routes(
 	route_id varchar(255) NOT NULL PRIMARY KEY,
@@ -52,6 +59,8 @@ create table routes(
 
 LOAD DATA LOCAL INFILE "routes.txt" INTO TABLE routes FIELDS TERMINATED BY "," IGNORE 1 LINES;
 
+DROP TABLE IF EXISTS stop_times;
+
 CREATE TABLE stop_times (
 	trip_id varchar(255), 
 	arrival_time varchar(255), 
@@ -64,6 +73,7 @@ CREATE TABLE stop_times (
 
 LOAD DATA LOCAL INFILE "stop_times.txt" INTO TABLE stop_times FIELDS TERMINATED BY "," IGNORE 1 LINES;
 
+DROP TABLE IF EXISTS stops;
 
 CREATE TABLE stops (
 	stop_id varchar(255),
@@ -78,15 +88,18 @@ CREATE TABLE stops (
 
 LOAD DATA LOCAL INFILE "stops.txt" INTO TABLE stops FIELDS TERMINATED BY "," IGNORE 1 LINES;
 
+DROP TABLE IF EXISTS transfers;
+
 CREATE TABLE transfers (
 	from_stop_id varchar(255),
-	to_stop varchar(255),
-	stop_id varchar(255),
+	to_stop_id varchar(255),
 	transfer_type varchar(255),
 	min_transfer_time varchar(255) 
 );
 
 LOAD DATA LOCAL INFILE "transfers.txt" INTO TABLE transfers FIELDS TERMINATED BY "," IGNORE 1 LINES;
+
+DROP TABLE IF EXISTS trips;
 
 CREATE TABLE trips (
 	route_id varchar(255),

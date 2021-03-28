@@ -1,4 +1,4 @@
-package ma.myway;
+package ma.myway.graph;
 
 import java.time.LocalDate;
 /**
