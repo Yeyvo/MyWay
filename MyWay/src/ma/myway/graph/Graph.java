@@ -9,11 +9,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import java.time.temporal.ChronoUnit;
 
 /**
  * <p>
- * C'est la classe represantant le <b>graphe</b> qui modelise le reseau de transport
+ * C'est la classe represantant le <b>graphe</b> qui modelise le reseau de
+ * transport
  * </p>
  * <p>
  * <ul>
@@ -39,25 +41,30 @@ public class Graph {
 	private FibHeap priorityQueue;
 
 	/**
-	 * Map<Node destination - Edge origine> (origin = the edge leading to Node destination)
+	 * Map<Node destination - Edge origine> (origin = the edge leading to Node
+	 * destination)
 	 */
-	private Map<Node, Edge> predecessors; 
+	private Map<Node, Edge> predecessors;
 	private Map<Node, Double> distance;
 
 	public Graph(HashMap<String, Node> nodes) {
 		this.nodes = nodes;
 		this.edges = new HashSet<Edge>();
 	}
-	
-	public Graph(HashMap<String, Node> node, Set<Edge> edges) {
-		this.nodes = node;
+
+	public Graph(HashMap<String, Node> nodes, Set<Edge> edges) {
+		this.nodes = nodes;
 		this.edges = edges;
+		this.priorityQueue = new FibHeap();
+		for (Node n : nodes.values()) {
+			priorityQueue.insert(n);
+		}
 	}
 
 	/**
 	 * @return les aretes du graphe
 	 */
-	public Set<Edge> getEdges() { 
+	public Set<Edge> getEdges() {
 		return new HashSet<Edge>(this.edges);
 	}
 
@@ -79,7 +86,8 @@ public class Graph {
 	private void findMinimalDistances(Node node) { // done
 		List<Edge> adjacentEdges = getNeighbors(node);
 		for (Edge target : adjacentEdges) {
-			if (getShortestDistance(target.getDest()) > getShortestDistance(node) + target.getWeight()) { // calcul a changer
+			if (getShortestDistance(target.getDest()) > getShortestDistance(node) + target.getWeight()) { // calcul a
+																											// changer
 				distance.put(target.getDest(), getShortestDistance(node) + target.getWeight());
 				predecessors.put(target.getDest(), target);
 				unSettledNodes.add(target.getDest());
@@ -125,19 +133,22 @@ public class Graph {
 	 * @param le noeud source
 	 * @return la liste des voisins du noeud passé en argument
 	 */
-	public List<Edge> getNeighbors(Node src) { // done // must return list of edge with origine = src //needs optimization 
+	public List<Edge> getNeighbors(Node src) { // done // must return list of edge with origine = src //needs
+												// optimization
 		List<Edge> neighbors = new ArrayList<Edge>();
 		for (Edge edge : edges) {
-			if (edge.getSrc().getStop().getStop_id().equals(src.getStop().getStop_id()) && !this.isSettled(edge.getDest()) && edge.isActive())
+			if (edge.getSrc().getStop().getStop_id().equals(src.getStop().getStop_id())
+					&& !this.isSettled(edge.getDest()) && edge.isActive())
 				neighbors.add(edge);
 		}
 		return neighbors;
 	}
 
-	private double getCost(Edge edge, Edge previous){
+	private double getCost(Edge edge, Edge previous) {
 		double toAdd = 0;
-		if(previous != null){
-			if(previous.getTransferType() != edge.getTransferType() || !previous.getTrip_id().equals(edge.getTrip_id())){
+		if (previous != null) {
+			if (previous.getTransferType() != edge.getTransferType()
+					|| !previous.getTrip_id().equals(edge.getTrip_id())) {
 				toAdd = ChronoUnit.SECONDS.between(edge.getNextStopTime(), LocalDate.now());
 			}
 		}
@@ -149,6 +160,12 @@ public class Graph {
 	 * @param node
 	 * @see Graph#dijsktra(Node)
 	 */
+	/*
+	private boolean isSettled(Node node) { // done
+		return settledNodes.contains(node);
+	}
+	*/
+
 	private boolean isSettled(Node node) { // done
 		return settledNodes.contains(node);
 	}
@@ -194,6 +211,7 @@ public class Graph {
 		Collections.reverse(path);
 		return path;
 	}
+
 	/**
 	 * wrapper function for dijkstra
 	 * 
@@ -201,8 +219,30 @@ public class Graph {
 	 * @param dest
 	 * @return le plus court chemin du noeud src au noeud dest
 	 */
-	public LinkedList<Edge> getShortestPath(Node src, Node dest){
-		dijkstra(src);
+	public LinkedList<Edge> getShortestPath(Node src, Node dest) {
+		dijkstraOp(src);
 		return getPath(dest);
+	}
+
+	public void dijkstraOp(Node source) { // done
+		settledNodes = new HashSet<Node>();
+		distance = new HashMap<Node, Double>();
+		predecessors = new HashMap<Node, Edge>();
+
+		distance.put(source, 0.0);
+
+		while (priorityQueue.n > 0) {
+			Node min = priorityQueue.extract_min();
+			for (Edge edge : this.getNeighbors(min)) {
+				double weight = edge.getWeight();
+				double newLen = getShortestDistance(edge.getSrc()) + weight;
+				if(newLen < getShortestDistance(edge.getDest())){
+					priorityQueue.decrease_key(edge.getDest(), newLen);
+					distance.put(edge.getDest(), newLen);
+					predecessors.put(edge.getDest(), edge);
+				}
+			}
+			settledNodes.add(min);
+		}
 	}
 }

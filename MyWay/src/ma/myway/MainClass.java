@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.FileHandler;
@@ -21,10 +22,11 @@ import ma.myway.graph.Node;
 import ma.myway.graph.data.Stop;
 import ma.myway.graph.data.Stop_Trip;
 import ma.myway.graph.data.Transfert;
-
+import ma.myway.graph.FibHeap;
 public class MainClass {
 
 	public static void main(String[] args) {
+		/*
 		long StartTime = System.currentTimeMillis();
 
 		loggerInit();
@@ -32,11 +34,12 @@ public class MainClass {
 
 	    long endTime = System.currentTimeMillis();
 		double timeElapsed = endTime - StartTime;
-		Logger.getLogger("MyLog").info("Execution time in seconds  :  List : " + timeElapsed/1000 +  " seconde "); 
-
-		
+		Logger.getLogger("MyLog").info("Execution time in seconds  :  List : " + timeElapsed/1000 +  " seconde ");
+		 */
+		//testDijkstra();
+		testFibHeap();
 	}
-	
+
 	public static Graph graphGeneration() {
 		Config.load("config.json");
 		BddConnection.getInstance();
@@ -118,4 +121,76 @@ public class MainClass {
 	    } 
 	}
 
+	public static void testDijkstra(){
+		Stop sa, sb, sc;
+		sa = new Stop("a");
+		sb = new Stop("b");
+		sc = new Stop("c");
+
+		Node a, b, c;
+		a = new Node(sa);
+		b = new Node(sb);
+		c = new Node(sc);
+
+		Edge ab1, ab2, ab3,  ac, bc1, bc2;
+		ab1 = new Edge(a, b, 5, "ab1");
+		ab2 = new Edge(a, b, 1, "ab2");
+		ac  = new Edge(a, c, 4, "ac");
+		bc1 = new Edge(b, c, 1, "bc1");
+		bc2 = new Edge(b, c, 3, "bc2");
+		ab3 = new Edge(a, b, 0.5, "ab3");
+
+		HashMap<String, Node> nodes = new HashMap<String, Node>();
+		Set<Edge> edges = new HashSet<Edge>();
+
+		nodes.put("a", a);
+		nodes.put("b", b);
+		nodes.put("c", c);
+
+		edges.add(ab1);
+		edges.add(ab2);
+		edges.add(ac);
+		edges.add(bc1);
+		edges.add(bc2);
+		edges.add(ab3);
+
+		Graph g = new Graph(nodes, edges);
+
+		LinkedList<Edge> path = g.getShortestPath(a, c);
+
+		System.out.println("Shortest path from " + a.getStop().getStop_id() + " to " + c.getStop().getStop_id() + ": ");
+
+		for (Edge edge : path) {
+			System.out.println(edge.getTrip_id());
+		}
+	}
+	
+	public static void testFibHeap() {
+		FibHeap obj = new FibHeap();
+		Node n7, n26, n30, n39, n10;
+		n7 = new Node(new Stop("7"));
+		n26 = new Node(new Stop("26"));
+		n30 = new Node(new Stop("30"));
+		n39 = new Node(new Stop("39"));
+		n10 = new Node(new Stop("10"));
+
+		n7.set_key(7);
+		n26.set_key(26);
+		n30.set_key(30);
+		n39.set_key(39);
+		n10.set_key(10);
+
+		obj.insert(n7);
+		obj.insert(n26);
+		obj.insert(n30);
+		obj.insert(n39);
+		obj.insert(n10);
+
+		System.out.println(obj.extract_min().getStop().getStop_id());
+		System.out.println(obj.extract_min().getStop().getStop_id());
+		obj.decrease_key(n30, 11);
+		System.out.println(obj.extract_min().getStop().getStop_id());
+		System.out.println(obj.extract_min().getStop().getStop_id());
+		System.out.println(obj.extract_min().getStop().getStop_id());
+	}
 }
