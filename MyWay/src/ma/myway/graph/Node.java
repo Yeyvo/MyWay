@@ -1,5 +1,6 @@
 package ma.myway.graph;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,11 +26,17 @@ import ma.myway.graph.data.Stop;
  * 
  * @see Stop
  */
-public class Node {
+public class Node implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4549578642953851985L;
 	private Stop stop;
 	private List<Node> shortestPath = new LinkedList<>();
 	private Integer distance = Integer.MAX_VALUE;
 	Map<Node, Integer> adjacentNodes = new HashMap<>();
+	
+	//private static Stop NULL_STOP = new Stop("N/A");
 
 	/**
 	 * for testing purposes only
@@ -65,7 +72,7 @@ public class Node {
 	 * @return Stop
 	 */
 	public Stop getStop() {
-		return stop;
+		return stop /*== null ? NULL_STOP : stop */;
 	}
 
 	/**

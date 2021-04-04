@@ -1,5 +1,9 @@
 package ma.myway.graph.data;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
 import ma.myway.graph.Node;
 
 /**
@@ -17,7 +21,7 @@ import ma.myway.graph.Node;
  * 
  * @see Node
  */
-public class Stop {
+public class Stop implements Serializable{
 
 	private String stop_id;
 	private String name;
@@ -68,4 +72,10 @@ public class Stop {
 		return location_type;
 	}
 
+	private void writeObject(ObjectOutputStream oos) throws IOException {
+		oos.defaultWriteObject();
+		oos.writeObject(this);
+
+	}
+	
 }

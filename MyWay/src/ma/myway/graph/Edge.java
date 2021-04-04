@@ -1,5 +1,7 @@
 package ma.myway.graph;
 
+import java.io.Serializable;
+
 /**
  * <p>
  * C'est la classe represantant chaque <b>arête</b> du graph
@@ -20,7 +22,11 @@ package ma.myway.graph;
  * 
  * @see Node
  */
-public class Edge {
+public class Edge implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 160843439856388648L;
 	private Node src, dest;
 	private double weight;// type a discuter
 	private String trip_id;
@@ -112,6 +118,11 @@ public class Edge {
 	public boolean isActive() {
 		//a implementer (service_id ?)
 		return true;
+	}
+	@Override
+	public String toString() {
+		return "Edge [src=" + src + ", dest=" + dest.getStop().getStop_id() + ", weight=" + weight + ", trip_id=" + trip_id
+				+ ", transfer_type=" + transfer_type + ", isTransfert=" + isTransfert + "]";
 	}
 
 }

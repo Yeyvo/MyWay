@@ -1,6 +1,9 @@
 package ma.myway.graph;
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -8,10 +11,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
 /**
  * <p>
- * C'est la classe represantant le <b>graphe</b> qui modelise le reseau de transport
+ * C'est la classe represantant le <b>graphe</b> qui modelise le reseau de
+ * transport
  * </p>
  * <p>
  * <ul>
@@ -28,34 +33,70 @@ import java.util.Set;
  * @see Node
  * @see Edge
  */
-public class Graph {
+public class Graph implements Serializable {
 
+	private static final long serialVersionUID = 3220075418287104362L;
 	private HashMap<String, Node> nodes = new HashMap<>();// en cas de mauvaises performances modifier
-	private Set<Edge> edges;
+	private HashMap<String, List<Edge>> edges;
 	private Set<Node> settledNodes;
 	private Set<Node> unSettledNodes;
 
 	/**
-	 * Map<Node destination - Edge origine> (origin = the edge leading to Node destination)
+	 * Map<Node destination - Edge origine> (origin = the edge leading to Node
+	 * destination)
 	 */
-	private Map<Node, Edge> predecessors; 
+	private Map<Node, Edge> predecessors;
 	private Map<Node, Double> distance;
+
 
 	public Graph(HashMap<String, Node> nodes) {
 		this.nodes = nodes;
-		this.edges = new HashSet<Edge>();
+		this.edges = new HashMap<String, List<Edge>>();
 	}
-	
-	public Graph(HashMap<String, Node> node, Set<Edge> edges) {
+
+	public Graph(HashMap<String, Node> node, HashMap<String, List<Edge>> edges) {
 		this.nodes = node;
 		this.edges = edges;
+	}
+
+/*	private void writeObject(ObjectOutputStream oos) throws IOException {
+		oos.defaultWriteObject();
+		oos.writeObject(this.edges);
+		oos.writeObject(this.nodes);
+	}
+
+	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+		ois.defaultReadObject();
+		HashMap<String, List<Edge>> edgesSer = (HashMap<String, List<Edge>>) ois.readObject();
+		HashMap<String, Node> nodesSer = (HashMap<String, Node>) ois.readObject();
+		
+		//Graph g = new Graph(nodesSer,edgesSer);
+		this.setEdges(edgesSer);
+		this.setNodes(nodesSer);
+
+	}*/
+
+	public long getEdgeSize() {
+		return edges.size();
+	}
+	
+	public long getEdgeNumber() { // do not use this method !!
+		long l =0L;
+		for(String key : this.edges.keySet()) {
+			l+=edges.get(key).size();
+		}
+		return l;
+	}
+
+	public long getNodeSize() {
+		return nodes.size();
 	}
 
 	/**
 	 * @return les aretes du graphe
 	 */
-	public Set<Edge> getEdges() { 
-		return new HashSet<Edge>(this.edges);
+	public HashMap<String, List<Edge>> getEdges() {
+		return new HashMap<String, List<Edge>>(this.edges);
 	}
 
 	/**
@@ -64,7 +105,25 @@ public class Graph {
 	 * @param egde
 	 */
 	public void addEdge(Edge edge) {
-		edges.add(edge);
+		if (edge.getSrc() == null || edge.getDest() == null) {
+			Logger.getLogger("MyLog").info("NULL source or destination Node");
+		}
+		if (edges.containsKey(edge.getSrc().getStop().getStop_id())) {
+			edges.get(edge.getSrc().getStop().getStop_id()).add(edge);
+			return;
+		}
+		List<Edge> lst = new LinkedList<Edge>();
+		lst.add(edge);
+		edges.put(edge.getSrc().getStop().getStop_id(), lst);
+	}
+
+	/**
+	 * ajouter un noeud au graphe
+	 * 
+	 * @param egde
+	 */
+	public void addNode(Node node) {
+		nodes.put(node.getStop().getStop_id(), node);
 	}
 
 	/**
@@ -76,7 +135,8 @@ public class Graph {
 	private void findMinimalDistances(Node node) { // done
 		List<Edge> adjacentEdges = getNeighbors(node);
 		for (Edge target : adjacentEdges) {
-			if (getShortestDistance(target.getDest()) > getShortestDistance(node) + target.getWeight()) { // calcul a changer
+			if (getShortestDistance(target.getDest()) > getShortestDistance(node) + target.getWeight()) { // calcul a
+																											// changer
 				distance.put(target.getDest(), getShortestDistance(node) + target.getWeight());
 				predecessors.put(target.getDest(), target);
 				unSettledNodes.add(target.getDest());
@@ -105,6 +165,18 @@ public class Graph {
 		return minimum;
 	}
 
+	public Node getNodebyID(String stop_id) {
+		return /* nodes. */ null;
+	}
+
+	private void setNodes(HashMap<String, Node> nodes) {
+		this.nodes = nodes;
+	}
+
+	private void setEdges(HashMap<String, List<Edge>> edges) {
+		this.edges = edges;
+	}
+	
 	/**
 	 * @param destination
 	 * @return le cout d'atteinte du noeud destination
@@ -122,25 +194,16 @@ public class Graph {
 	 * @param le noeud source
 	 * @return la liste des voisins du noeud passé en argument
 	 */
-	public List<Edge> getNeighbors(Node src) { // done // must return list of edge with origine = src
-		List<Edge> neighbors = new ArrayList<Edge>();
-		for (Edge edge : edges) {
-			if (edge.getSrc().getStop().getStop_id().equals(src.getStop().getStop_id()) && !this.isSettled(edge.getDest()) && edge.isActive())
-				neighbors.add(edge);
-		}
-		return neighbors;
+	public List<Edge> getNeighbors(Node src) {
+		return this.edges.get(src.getStop().getStop_id());
 	}
 
 	/*
-	private double getCost(Edge edge) { //cost of an edge
-	 		if(current_transfer_type != edge.getTransferType || current_trip_id !=edge.getTripId )
-			{ 
-				return edge.getWeight() + edge.getSource.getNextStopTime -current_time; 
-			} else { 
-				return edge.getWeight(); 
-			} 
-		}
-	*/
+	 * private double getCost(Edge edge) { //cost of an edge
+	 * if(current_transfer_type != edge.getTransferType || current_trip_id
+	 * !=edge.getTripId ) { return edge.getWeight() + edge.getSource.getNextStopTime
+	 * -current_time; } else { return edge.getWeight(); } }
+	 */
 
 	/**
 	 * @return boolean
@@ -192,6 +255,7 @@ public class Graph {
 		Collections.reverse(path);
 		return path;
 	}
+
 	/**
 	 * wrapper function for dijkstra
 	 * 
@@ -199,7 +263,7 @@ public class Graph {
 	 * @param dest
 	 * @return le plus court chemin du noeud src au noeud dest
 	 */
-	public LinkedList<Edge> getShortestPath(Node src, Node dest){
+	public LinkedList<Edge> getShortestPath(Node src, Node dest) {
 		dijkstra(src);
 		return getPath(dest);
 	}

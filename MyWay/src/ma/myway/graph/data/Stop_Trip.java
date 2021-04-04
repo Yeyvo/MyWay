@@ -1,11 +1,16 @@
 package ma.myway.graph.data;
 
+import java.io.Serializable;
 import java.sql.Time;
 import java.util.List;
 import java.util.Set;
 
-public class Stop_Trip implements java.lang.Comparable<Stop_Trip> {
+public class Stop_Trip implements Comparable<Stop_Trip>, Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3892778082575559141L;
 	String trip_id;
 	String stop_id;
 	Time arrival_time;

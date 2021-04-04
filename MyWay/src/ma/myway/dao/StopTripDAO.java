@@ -61,7 +61,6 @@ public class StopTripDAO extends DAO<Stop_Trip> {
 	public List<Stop_Trip> allList() {
 		List<Stop_Trip> set_stop_trip = new ArrayList<>();
 		long count = 0;
-		
 		try {
 			
 			Statement stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
@@ -86,5 +85,7 @@ public class StopTripDAO extends DAO<Stop_Trip> {
 		Collections.sort( set_stop_trip);
 		return set_stop_trip;
 	}
+
+
 
 }
