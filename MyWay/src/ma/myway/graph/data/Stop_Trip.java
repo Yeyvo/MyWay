@@ -57,7 +57,7 @@ public class Stop_Trip implements Comparable<Stop_Trip>, Serializable {
 	}
 
 	public static Stop_Trip getNextStop_sequence(List<Stop_Trip> st, String trip_id, int stop_sequence, int j) {
-		if (j+1 < st.size()) {
+		if (j + 1 < st.size()) {
 			Stop_Trip nxt = st.get(j + 1);
 			if (nxt.getTrip_id().equals(trip_id) && nxt.getStop_sequence() == stop_sequence + 1)
 				return nxt;
@@ -83,6 +83,11 @@ public class Stop_Trip implements Comparable<Stop_Trip>, Serializable {
 			}
 		}
 		return 0;
+	}
+
+	@Override
+	public String toString() {
+		return trip_id + "," + arrival_time + "," + departure_time + "," + stop_id + "," + stop_sequence + ",null,null";
 	}
 
 }

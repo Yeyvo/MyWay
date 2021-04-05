@@ -30,6 +30,12 @@ public class Agency {
 	public void setAgency_name(String agency_name) {
 		this.agency_name = agency_name;
 	}
+
+
+	@Override
+	public String toString() {
+		return agency_id + "," + agency_name + ",null,null,null,";
+	}
 	
 	
 

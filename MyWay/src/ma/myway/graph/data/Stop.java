@@ -77,5 +77,13 @@ public class Stop implements Serializable{
 		oos.writeObject(this);
 
 	}
+
+	@Override
+	public String toString() {
+		return  stop_id + ",null," + name + "," + desc + "," + lat + "," + lon
+				+ "," + location_type +",null";
+	}
+	
+	
 	
 }

@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import ma.myway.graph.data.Stop;
 import ma.myway.graph.data.Stop_Trip;
 
 public class StopTripDAO extends DAO<Stop_Trip> {
@@ -84,6 +85,19 @@ public class StopTripDAO extends DAO<Stop_Trip> {
 
 		Collections.sort( set_stop_trip);
 		return set_stop_trip;
+	}
+	
+	@Override
+	public boolean create(Stop_Trip obj) {
+		try {
+			int result = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)
+					.executeUpdate("INSERT INTO stop_times VALUES("+obj.toString()+")");
+			System.out.println(result +" Row affected ! ");
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 

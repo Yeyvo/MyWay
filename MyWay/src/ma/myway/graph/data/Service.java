@@ -1,5 +1,6 @@
 package ma.myway.graph.data;
 
+import java.util.Arrays;
 import java.util.Date;
 
 public class Service {
@@ -31,6 +32,17 @@ public class Service {
 	public Date getEnd_date() {
 		return end_date;
 	}
+
+	@Override
+	public String toString() {
+		String str = new String();
+		str.concat(service_id + ",");
+		for(int jr : dates) {
+			str.concat(jr + ",");
+		}
+		return str + start_date + "," + end_date ;
+	}
+	
 	
 	
 
