@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
-
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 /**
@@ -35,6 +36,7 @@ import java.time.temporal.ChronoUnit;
  * @see Node
  * @see Edge
  */
+
 public class Graph implements Serializable {
 
 	private static final long serialVersionUID = 3220075418287104362L;
@@ -43,12 +45,7 @@ public class Graph implements Serializable {
 	private Set<Node> settledNodes;
 	private Set<Node> unSettledNodes;
 	private FibHeap priorityQueue;
-
-	/**
-	 * Map<Node destination - Edge origine> (origin = the edge leading to Node
-	 * destination)
-	 */
-	private Map<Node, Edge> predecessors;
+	private Map<Node, Edge> predecessors; // Map<Node destination - Edge origine> (origin = the edge leading to Node destination)
 	private Map<Node, Double> distance;
 
 
@@ -61,12 +58,10 @@ public class Graph implements Serializable {
 		this.nodes = node;
 		this.edges = edges;
 		this.priorityQueue = new FibHeap();
-		for (Node n : nodes.values()) {
-			priorityQueue.insert(n);
-		}
 	}
 
-/*	private void writeObject(ObjectOutputStream oos) throws IOException {
+	/*	
+	private void writeObject(ObjectOutputStream oos) throws IOException {
 		oos.defaultWriteObject();
 		oos.writeObject(this.edges);
 		oos.writeObject(this.nodes);
@@ -140,10 +135,9 @@ public class Graph implements Serializable {
 	 * @param node
 	 */
 	private void findMinimalDistances(Node node) { // done
-		List<Edge> adjacentEdges = getNeighbors(node);
+		List<Edge> adjacentEdges = edges.get(node.getStop().getStop_id());
 		for (Edge target : adjacentEdges) {
-			if (getShortestDistance(target.getDest()) > getShortestDistance(node) + target.getWeight()) { // calcul a
-																											// changer
+			if (getShortestDistance(target.getDest()) > getShortestDistance(node) + target.getWeight()) { // calcul a changer
 				distance.put(target.getDest(), getShortestDistance(node) + target.getWeight());
 				predecessors.put(target.getDest(), target);
 				unSettledNodes.add(target.getDest());
@@ -201,8 +195,8 @@ public class Graph implements Serializable {
 	 * @param le noeud source
 	 * @return la liste des voisins du noeud passé en argument
 	 */
-	public List<Edge> getNeighbors(Node src) { // done // must return list of edge with origine = src //needs
-												// optimization
+	/*
+	public List<Edge> getNeighbors(Node src) { // done // must return list of edge with origine = src ---needs optimization
 		List<Edge> neighbors = new ArrayList<Edge>();
 		for (Edge edge : edges) {
 			if (edge.getSrc().getStop().getStop_id().equals(src.getStop().getStop_id())
@@ -211,6 +205,7 @@ public class Graph implements Serializable {
 		}
 		return neighbors;
 	}
+	*/
 
 	private double getCost(Edge edge, Edge previous) {
 		double toAdd = 0;
@@ -293,24 +288,37 @@ public class Graph implements Serializable {
 	}
 
 	public void dijkstraOp(Node source) { // done
-		settledNodes = new HashSet<Node>();
 		distance = new HashMap<Node, Double>();
 		predecessors = new HashMap<Node, Edge>();
 
+		for(Node node: nodes.values()){
+			distance.put(node, (double) Integer.MAX_VALUE);
+		}
+
+		for (Node node : nodes.values()) {
+			priorityQueue.insert(node);
+		}
+
+		priorityQueue.decrease_key(source, 0);
+
 		distance.put(source, 0.0);
 
-		while (priorityQueue.n > 0) {
-			Node min = priorityQueue.extract_min();
-			for (Edge edge : this.getNeighbors(min)) {
-				double weight = edge.getWeight();
-				double newLen = getShortestDistance(edge.getSrc()) + weight;
-				if(newLen < getShortestDistance(edge.getDest())){
-					priorityQueue.decrease_key(edge.getDest(), newLen);
-					distance.put(edge.getDest(), newLen);
-					predecessors.put(edge.getDest(), edge);
+		Node min = priorityQueue.extract_min();
+
+		do {
+			List<Edge> neighboors = edges.get(min.getStop().getStop_id());
+			if(neighboors != null){
+				for (Edge edge : neighboors) {
+					double weight = edge.getWeight();
+					double newLen = getShortestDistance(edge.getSrc()) + weight;
+					if(newLen < getShortestDistance(edge.getDest())){
+						priorityQueue.decrease_key(edge.getDest(), newLen);
+						distance.put(edge.getDest(), newLen);
+						predecessors.put(edge.getDest(), edge);
+					}
 				}
 			}
-			settledNodes.add(min);
-		}
+			min = priorityQueue.extract_min();
+		} while ( min != null);
 	}
 }

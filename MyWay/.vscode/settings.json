@@ -1,0 +1,7 @@
+{
+	"java.project.referencedLibraries": [
+		"lib/**/*.jar",
+		"c:\\Users\\Boudouche Hamza\\Desktop\\projet intégré\\libs\\mysql-connector-java-8.0.23.jar",
+		"c:\\Users\\Boudouche Hamza\\Desktop\\projet intégré\\libs\\gson-2.8.6.jar"
+	]
+}

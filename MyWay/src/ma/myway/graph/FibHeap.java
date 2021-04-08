@@ -62,7 +62,7 @@ public class FibHeap {
 			this.n -= 1;
 			return z;
 		}
-		return new Node(new Stop("0"));
+		return null;
 	}
 
 	public void consolidate() {

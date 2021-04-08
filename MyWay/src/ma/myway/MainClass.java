@@ -7,15 +7,15 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-<<<<<<< HEAD
 import java.util.HashSet;
 import java.util.LinkedList;
-=======
->>>>>>> 23d48bc455ea13e5878bf5d74ad151fc31836132
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.FileHandler;
 import java.util.logging.Formatter;
@@ -38,48 +38,7 @@ public class MainClass {
 	private static int initlenNode = 33778;
 
 	public static void main(String[] args) {
-<<<<<<< HEAD
 		/*
-		long StartTime = System.currentTimeMillis();		
-		
-		Logger logger = Logger.getLogger("MyLog");  
-	    FileHandler fh;  
-	    try {  
-	        fh = new FileHandler("logs.log");  
-	        logger.addHandler(fh); 
-	        fh.setFormatter(new Formatter() {
-	            @Override
-	            public String format(LogRecord record) {
-	                SimpleDateFormat logTime = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
-	                Calendar cal = new GregorianCalendar();
-	                cal.setTimeInMillis(record.getMillis());
-	                return record.getLevel()
-	                        + logTime.format(cal.getTime())
-	                        + " || "
-	                        + record.getSourceClassName().substring(
-	                                record.getSourceClassName().lastIndexOf(".")+1,
-	                                record.getSourceClassName().length())
-	                        + "."
-	                        + record.getSourceMethodName()
-	                        + "() : "
-	                        + record.getMessage() + "\n";
-	            }
-	        });  
-	    } catch (SecurityException e) {  
-	        e.printStackTrace();  
-	    } catch (IOException e) {  
-	        e.printStackTrace();  
-	    } 
-		
-		graphGeneration(StartTime);
-
-	    long endTime = System.currentTimeMillis();
-		double timeElapsed = endTime - StartTime;
-		Logger.getLogger("MyLog").info("Execution time in seconds  :  List : " + timeElapsed/1000 +  " seconde ");
-		 */
-		//testDijkstra();
-		testFibHeap();
-=======
 		long StartTime = System.currentTimeMillis();
 
 		Logger logger = Logger.getLogger("MyLog");
@@ -117,8 +76,8 @@ public class MainClass {
 		long endTime = System.currentTimeMillis();
 		double timeElapsed = endTime - StartTime;
 		Logger.getLogger("MyLog").info("Execution time in seconds  :  List : " + timeElapsed / 1000 + " seconde ");
-
->>>>>>> 23d48bc455ea13e5878bf5d74ad151fc31836132
+		*/
+		testDijkstra();
 	}
 
 	public static void saveData(Graph graph) {
@@ -268,18 +227,14 @@ public class MainClass {
 		ab3 = new Edge(a, b, 0.5, "ab3");
 
 		HashMap<String, Node> nodes = new HashMap<String, Node>();
-		Set<Edge> edges = new HashSet<Edge>();
+		HashMap<String, List<Edge>> edges = new HashMap<String, List<Edge>>();
 
 		nodes.put("a", a);
 		nodes.put("b", b);
 		nodes.put("c", c);
-
-		edges.add(ab1);
-		edges.add(ab2);
-		edges.add(ac);
-		edges.add(bc1);
-		edges.add(bc2);
-		edges.add(ab3);
+		
+		edges.put("a", new ArrayList<Edge>(Arrays.asList(ab1, ab2, ac, ab3)));
+		edges.put("b", new ArrayList<Edge>(Arrays.asList(bc1, bc2)));
 
 		Graph g = new Graph(nodes, edges);
 
