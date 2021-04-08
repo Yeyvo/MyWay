@@ -38,7 +38,7 @@ public class MainClass {
 	private static int initlenNode = 34778;
 
 	public static void main(String[] args) {
-		/*
+		
 		long StartTime = System.currentTimeMillis();
 
 		Logger logger = Logger.getLogger("MyLog");
@@ -76,8 +76,17 @@ public class MainClass {
 		long endTime = System.currentTimeMillis();
 		double timeElapsed = endTime - StartTime;
 		Logger.getLogger("MyLog").info("Execution time in seconds  :  List : " + timeElapsed / 1000 + " seconde ");
-		*/
-		testDijkstra();
+		
+		/*
+		 * Test shortest path from 2 seal stops
+		 * */
+		LinkedList<Edge> path = g.getShortestPath(g.getNodebyID("4238683"), g.getNodebyID("5478447"));
+
+		Logger.getLogger("MyLog").info("Shortest path from " + 4238683 + " to " + 5478447 + ": ");
+
+		for (Edge edge : path) {
+			Logger.getLogger("MyLog").info("go from " + edge.getSrc().getStop().getName() + " to "+ edge.getDest().getStop().getName() + "[ Trip_id =" +edge.getTrip_id()+" durée ="+edge.getWeight()+"]");
+		}
 	}
 
 	public static void saveData(Graph graph) {

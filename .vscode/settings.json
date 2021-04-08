@@ -1,7 +1,0 @@
-{
-	"java.project.referencedLibraries": [
-		"lib/**/*.jar",
-		"libs/mysql-connector-java-8.0.23.jar",
-		"libs/gson-2.8.6.jar"
-	]
-}

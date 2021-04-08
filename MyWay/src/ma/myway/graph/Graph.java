@@ -167,7 +167,7 @@ public class Graph implements Serializable {
 	}
 
 	public Node getNodebyID(String stop_id) {
-		return /* nodes. */ null;
+		return  nodes.get(stop_id);
 	}
 
 	private void setNodes(HashMap<String, Node> nodes) {
