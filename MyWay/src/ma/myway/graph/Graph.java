@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,6 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 /**
  * <p>
@@ -33,6 +36,7 @@ import java.util.logging.Logger;
  * @see Node
  * @see Edge
  */
+
 public class Graph implements Serializable {
 
 	private static final long serialVersionUID = 3220075418287104362L;
@@ -40,12 +44,8 @@ public class Graph implements Serializable {
 	private HashMap<String, List<Edge>> edges;
 	private Set<Node> settledNodes;
 	private Set<Node> unSettledNodes;
-
-	/**
-	 * Map<Node destination - Edge origine> (origin = the edge leading to Node
-	 * destination)
-	 */
-	private Map<Node, Edge> predecessors;
+	private FibHeap priorityQueue;
+	private Map<Node, Edge> predecessors; // Map<Node destination - Edge origine> (origin = the edge leading to Node destination)
 	private Map<Node, Double> distance;
 
 
@@ -57,9 +57,11 @@ public class Graph implements Serializable {
 	public Graph(HashMap<String, Node> node, HashMap<String, List<Edge>> edges) {
 		this.nodes = node;
 		this.edges = edges;
+		this.priorityQueue = new FibHeap();
 	}
 
-/*	private void writeObject(ObjectOutputStream oos) throws IOException {
+	/*	
+	private void writeObject(ObjectOutputStream oos) throws IOException {
 		oos.defaultWriteObject();
 		oos.writeObject(this.edges);
 		oos.writeObject(this.nodes);
@@ -133,10 +135,9 @@ public class Graph implements Serializable {
 	 * @param node
 	 */
 	private void findMinimalDistances(Node node) { // done
-		List<Edge> adjacentEdges = getNeighbors(node);
+		List<Edge> adjacentEdges = edges.get(node.getStop().getStop_id());
 		for (Edge target : adjacentEdges) {
-			if (getShortestDistance(target.getDest()) > getShortestDistance(node) + target.getWeight()) { // calcul a
-																											// changer
+			if (getShortestDistance(target.getDest()) > getShortestDistance(node) + target.getWeight()) { // calcul a changer
 				distance.put(target.getDest(), getShortestDistance(node) + target.getWeight());
 				predecessors.put(target.getDest(), target);
 				unSettledNodes.add(target.getDest());
@@ -151,7 +152,7 @@ public class Graph implements Serializable {
 	 * @param nodes
 	 * @return le noeud avec le cout minimum
 	 */
-	private Node getMinimum(Set<Node> nodes) { // ok
+	private Node getMinimum(Set<Node> nodes) { // ok //needs optimization
 		Node minimum = null;
 		for (Node node : nodes) {
 			if (minimum == null) {
@@ -194,22 +195,40 @@ public class Graph implements Serializable {
 	 * @param le noeud source
 	 * @return la liste des voisins du noeud passé en argument
 	 */
-	public List<Edge> getNeighbors(Node src) {
-		return this.edges.get(src.getStop().getStop_id());
-	}
-
 	/*
-	 * private double getCost(Edge edge) { //cost of an edge
-	 * if(current_transfer_type != edge.getTransferType || current_trip_id
-	 * !=edge.getTripId ) { return edge.getWeight() + edge.getSource.getNextStopTime
-	 * -current_time; } else { return edge.getWeight(); } }
-	 */
+	public List<Edge> getNeighbors(Node src) { // done // must return list of edge with origine = src ---needs optimization
+		List<Edge> neighbors = new ArrayList<Edge>();
+		for (Edge edge : edges) {
+			if (edge.getSrc().getStop().getStop_id().equals(src.getStop().getStop_id())
+					&& !this.isSettled(edge.getDest()) && edge.isActive())
+				neighbors.add(edge);
+		}
+		return neighbors;
+	}
+	*/
+
+	private double getCost(Edge edge, Edge previous) {
+		double toAdd = 0;
+		if (previous != null) {
+			if (previous.getTransferType() != edge.getTransferType()
+					|| !previous.getTrip_id().equals(edge.getTrip_id())) {
+				toAdd = ChronoUnit.SECONDS.between(edge.getNextStopTime(), LocalDate.now());
+			}
+		}
+		return toAdd + edge.getWeight();
+	}
 
 	/**
 	 * @return boolean
 	 * @param node
 	 * @see Graph#dijsktra(Node)
 	 */
+	/*
+	private boolean isSettled(Node node) { // done
+		return settledNodes.contains(node);
+	}
+	*/
+
 	private boolean isSettled(Node node) { // done
 		return settledNodes.contains(node);
 	}
@@ -264,7 +283,42 @@ public class Graph implements Serializable {
 	 * @return le plus court chemin du noeud src au noeud dest
 	 */
 	public LinkedList<Edge> getShortestPath(Node src, Node dest) {
-		dijkstra(src);
+		dijkstraOp(src);
 		return getPath(dest);
+	}
+
+	public void dijkstraOp(Node source) { // done
+		distance = new HashMap<Node, Double>();
+		predecessors = new HashMap<Node, Edge>();
+
+		for(Node node: nodes.values()){
+			distance.put(node, (double) Integer.MAX_VALUE);
+		}
+
+		for (Node node : nodes.values()) {
+			priorityQueue.insert(node);
+		}
+
+		priorityQueue.decrease_key(source, 0);
+
+		distance.put(source, 0.0);
+
+		Node min = priorityQueue.extract_min();
+
+		do {
+			List<Edge> neighboors = edges.get(min.getStop().getStop_id());
+			if(neighboors != null){
+				for (Edge edge : neighboors) {
+					double weight = edge.getWeight();
+					double newLen = getShortestDistance(edge.getSrc()) + weight;
+					if(newLen < getShortestDistance(edge.getDest())){
+						priorityQueue.decrease_key(edge.getDest(), newLen);
+						distance.put(edge.getDest(), newLen);
+						predecessors.put(edge.getDest(), edge);
+					}
+				}
+			}
+			min = priorityQueue.extract_min();
+		} while ( min != null);
 	}
 }

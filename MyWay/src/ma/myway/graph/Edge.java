@@ -1,6 +1,7 @@
 package ma.myway.graph;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 /**
  * <p>
@@ -28,7 +29,7 @@ public class Edge implements Serializable{
 	 */
 	private static final long serialVersionUID = 160843439856388648L;
 	private Node src, dest;
-	private double weight;// type a discuter
+	private double weight; // type a discuter
 	private String trip_id;
 	private int transfer_type;
 	private boolean isTransfert ;
@@ -40,6 +41,7 @@ public class Edge implements Serializable{
 		this.trip_id = trip_id;
 		this.isTransfert = false;
 	}
+
 	public Edge(Node src, Node dest, double weight, String trip_id, int transfer_type) {
 		this.src = src;
 		this.dest = dest;
@@ -50,24 +52,18 @@ public class Edge implements Serializable{
 	}
 	
 	/**
-	 * getter
-	 * 
 	 * @return boolean
 	 */
 	public boolean isTransfert() {
 		return isTransfert;
 	}
 	/**
-	 * getter
-	 * 
 	 * @return int
 	 */
 	public int getTransfer_type() {
 		return transfer_type;
 	}
 	/**
-	 * getter
-	 * 
 	 * @return Node
 	 */
 	public Node getSrc() {
@@ -75,8 +71,6 @@ public class Edge implements Serializable{
 	}
 
 	/**
-	 * getter
-	 * 
 	 * @return Node
 	 */
 	public Node getDest() {
@@ -84,8 +78,6 @@ public class Edge implements Serializable{
 	}
 
 	/**
-	 * getter
-	 * 
 	 * @return double
 	 */
 	public double getWeight() {
@@ -93,8 +85,6 @@ public class Edge implements Serializable{
 	}
 
 	/**
-	 * setter
-	 * 
 	 * @param weight
 	 */
 	public void setWeight(double weight) {
@@ -102,8 +92,6 @@ public class Edge implements Serializable{
 	}
 
 	/**
-	 * getter
-	 * 
 	 * @return String
 	 */
 	public String getTrip_id() {
@@ -119,10 +107,18 @@ public class Edge implements Serializable{
 		//a implementer (service_id ?)
 		return true;
 	}
+
 	@Override
 	public String toString() {
 		return "Edge [src=" + src + ", dest=" + dest.getStop().getStop_id() + ", weight=" + weight + ", trip_id=" + trip_id
 				+ ", transfer_type=" + transfer_type + ", isTransfert=" + isTransfert + "]";
 	}
 
+	public int getTransferType(){
+		throw new UnsupportedOperationException();
+	}
+
+	public LocalDate getNextStopTime(){
+		throw new UnsupportedOperationException();
+	}
 }

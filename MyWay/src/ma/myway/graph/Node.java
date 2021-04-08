@@ -26,10 +26,15 @@ import ma.myway.graph.data.Stop;
  * 
  * @see Stop
  */
+
 public class Node implements Serializable{
-	/**
-	 * 
-	 */
+	Node parent;
+	Node left;
+	Node right;
+	Node child;
+	int degree;
+	boolean mark;
+	double key;
 	private static final long serialVersionUID = 4549578642953851985L;
 	private Stop stop;
 	private List<Node> shortestPath = new LinkedList<>();
@@ -38,18 +43,77 @@ public class Node implements Serializable{
 	
 	//private static Stop NULL_STOP = new Stop("N/A");
 
-	/**
-	 * for testing purposes only
-	 * 
+	/** 
 	 * @param stop
 	 */
 	public Node(Stop stop) {
 		this.stop = stop;
+		this.degree = 0;
+		this.mark = false;
+		this.parent = null;
+		this.left = this;
+		this.right = this;
+		this.child = null;
+		this.key = Integer.MAX_VALUE;
+	}
+
+	void set_parent(Node x) {
+		this.parent = x;
+	}
+
+	Node get_parent() {
+		return this.parent;
+	}
+
+	void set_left(Node x) {
+		this.left = x;
+	}
+
+	Node get_left() {
+		return this.left;
+	}
+
+	void set_right(Node x) {
+		this.right = x;
+	}
+
+	Node get_right() {
+		return this.right;
+	}
+
+	void set_child(Node x) {
+		this.child = x;
+	}
+
+	Node get_child() {
+		return this.child;
+	}
+
+	void set_degree(int x) {
+		this.degree = x;
+	}
+
+	int get_degree() {
+		return this.degree;
+	}
+
+	void set_mark(boolean m) {
+		this.mark = m;
+	}
+
+	boolean get_mark() {
+		return this.mark;
+	}
+
+	public void set_key(double x) {
+		this.key = x;
+	}
+
+	double get_key() {
+		return this.key;
 	}
 
 	/**
-	 * ---
-	 * 
 	 * @param destination
 	 * @param distance
 	 */
@@ -58,8 +122,6 @@ public class Node implements Serializable{
 	}
 
 	/**
-	 * setter
-	 * 
 	 * @param distance
 	 */
 	public void setDistance(Integer distance) {
@@ -67,8 +129,6 @@ public class Node implements Serializable{
 	}
 
 	/**
-	 * getter
-	 * 
 	 * @return Stop
 	 */
 	public Stop getStop() {
@@ -76,8 +136,6 @@ public class Node implements Serializable{
 	}
 
 	/**
-	 * getter
-	 * 
 	 * @return Map<Node, Integer>
 	 */
 	public Map<Node, Integer> getAdjacentNodes() {
