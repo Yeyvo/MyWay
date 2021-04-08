@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
+import ma.myway.graph.data.Agency;
 import ma.myway.graph.data.Stop;
 
 public class StopDAO extends DAO<Stop> {
@@ -50,4 +51,17 @@ public class StopDAO extends DAO<Stop> {
 		return set_stops;
 	}
 
+	@Override
+	public boolean create(Stop obj) {
+		try {
+			int result = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)
+					.executeUpdate("INSERT INTO stops VALUES("+obj.toString()+")");
+			System.out.println(result +" Row affected ! ");
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
 }

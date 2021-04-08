@@ -17,6 +17,11 @@ public class Trips_Directions {
 	public String getDirection_id() {
 		return direction_id;
 	}
+
+
+	public String toString() {
+		return  trip_id + ",null,null,"+direction_id +",null";
+	}
 	
 	
 

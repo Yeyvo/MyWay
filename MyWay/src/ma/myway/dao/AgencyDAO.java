@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import ma.myway.graph.data.Agency;
+import ma.myway.graph.data.Service;
 
 public class AgencyDAO extends DAO<Agency> {
 
@@ -48,6 +49,19 @@ public class AgencyDAO extends DAO<Agency> {
 		
 		
 		return set_agency;
+	}
+
+	@Override
+	public boolean create(Agency obj) {
+		try {
+			int result = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)
+					.executeUpdate("INSERT INTO agency VALUES("+obj.toString()+")");
+			System.out.println(result +" Row affected ! ");
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 }

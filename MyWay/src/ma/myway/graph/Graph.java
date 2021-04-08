@@ -1,7 +1,9 @@
 package ma.myway.graph;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -9,6 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import java.time.temporal.ChronoUnit;
 
@@ -32,10 +35,11 @@ import java.time.temporal.ChronoUnit;
  * @see Node
  * @see Edge
  */
-public class Graph {
+public class Graph implements Serializable {
 
+	private static final long serialVersionUID = 3220075418287104362L;
 	private HashMap<String, Node> nodes = new HashMap<>();// en cas de mauvaises performances modifier
-	private Set<Edge> edges;
+	private HashMap<String, List<Edge>> edges;
 	private Set<Node> settledNodes;
 	private Set<Node> unSettledNodes;
 	private FibHeap priorityQueue;
@@ -47,13 +51,14 @@ public class Graph {
 	private Map<Node, Edge> predecessors;
 	private Map<Node, Double> distance;
 
+
 	public Graph(HashMap<String, Node> nodes) {
 		this.nodes = nodes;
-		this.edges = new HashSet<Edge>();
+		this.edges = new HashMap<String, List<Edge>>();
 	}
 
-	public Graph(HashMap<String, Node> nodes, Set<Edge> edges) {
-		this.nodes = nodes;
+	public Graph(HashMap<String, Node> node, HashMap<String, List<Edge>> edges) {
+		this.nodes = node;
 		this.edges = edges;
 		this.priorityQueue = new FibHeap();
 		for (Node n : nodes.values()) {
@@ -61,11 +66,44 @@ public class Graph {
 		}
 	}
 
+/*	private void writeObject(ObjectOutputStream oos) throws IOException {
+		oos.defaultWriteObject();
+		oos.writeObject(this.edges);
+		oos.writeObject(this.nodes);
+	}
+
+	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+		ois.defaultReadObject();
+		HashMap<String, List<Edge>> edgesSer = (HashMap<String, List<Edge>>) ois.readObject();
+		HashMap<String, Node> nodesSer = (HashMap<String, Node>) ois.readObject();
+		
+		//Graph g = new Graph(nodesSer,edgesSer);
+		this.setEdges(edgesSer);
+		this.setNodes(nodesSer);
+
+	}*/
+
+	public long getEdgeSize() {
+		return edges.size();
+	}
+	
+	public long getEdgeNumber() { // do not use this method !!
+		long l =0L;
+		for(String key : this.edges.keySet()) {
+			l+=edges.get(key).size();
+		}
+		return l;
+	}
+
+	public long getNodeSize() {
+		return nodes.size();
+	}
+
 	/**
 	 * @return les aretes du graphe
 	 */
-	public Set<Edge> getEdges() {
-		return new HashSet<Edge>(this.edges);
+	public HashMap<String, List<Edge>> getEdges() {
+		return new HashMap<String, List<Edge>>(this.edges);
 	}
 
 	/**
@@ -74,7 +112,25 @@ public class Graph {
 	 * @param egde
 	 */
 	public void addEdge(Edge edge) {
-		edges.add(edge);
+		if (edge.getSrc() == null || edge.getDest() == null) {
+			Logger.getLogger("MyLog").info("NULL source or destination Node");
+		}
+		if (edges.containsKey(edge.getSrc().getStop().getStop_id())) {
+			edges.get(edge.getSrc().getStop().getStop_id()).add(edge);
+			return;
+		}
+		List<Edge> lst = new LinkedList<Edge>();
+		lst.add(edge);
+		edges.put(edge.getSrc().getStop().getStop_id(), lst);
+	}
+
+	/**
+	 * ajouter un noeud au graphe
+	 * 
+	 * @param egde
+	 */
+	public void addNode(Node node) {
+		nodes.put(node.getStop().getStop_id(), node);
 	}
 
 	/**
@@ -116,6 +172,18 @@ public class Graph {
 		return minimum;
 	}
 
+	public Node getNodebyID(String stop_id) {
+		return /* nodes. */ null;
+	}
+
+	private void setNodes(HashMap<String, Node> nodes) {
+		this.nodes = nodes;
+	}
+
+	private void setEdges(HashMap<String, List<Edge>> edges) {
+		this.edges = edges;
+	}
+	
 	/**
 	 * @param destination
 	 * @return le cout d'atteinte du noeud destination

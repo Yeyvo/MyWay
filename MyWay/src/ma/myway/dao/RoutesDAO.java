@@ -8,6 +8,7 @@ import java.util.Set;
 
 import ma.myway.graph.data.Route_Service;
 import ma.myway.graph.data.Service_Direction;
+import ma.myway.graph.data.Trip;
 import ma.myway.graph.data.Trips_Directions;
 
 public class RoutesDAO extends DAO<Route_Service> {
@@ -67,6 +68,19 @@ public class RoutesDAO extends DAO<Route_Service> {
 		}
 
 		return set_Route_Service;
+	}
+
+	@Override
+	public boolean create(Route_Service obj) {
+		try {
+			int result = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)
+					.executeUpdate("INSERT INTO trips VALUES("+obj.toString()+")");
+			System.out.println(result +" Row affected ! ");
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 }

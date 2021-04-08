@@ -6,11 +6,12 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
+import ma.myway.graph.data.Route_Service;
 import ma.myway.graph.data.Service;
 
 public class ServiceDAO extends DAO<Service> {
 
-	String[] days = { "mnday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday" };
+	String[] days = { "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday" };
 
 	public ServiceDAO(Connection conn) {
 		super(conn);
@@ -61,6 +62,19 @@ public class ServiceDAO extends DAO<Service> {
 		}
 
 		return set_sevices;
+	}
+
+	@Override
+	public boolean create(Service obj) {
+		try {
+			int result = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)
+					.executeUpdate("INSERT INTO calendar VALUES("+obj.toString()+")");
+			System.out.println(result +" Row affected ! ");
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 }
