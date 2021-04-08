@@ -1,7 +1,11 @@
 package ma.myway.graph;
 
-import ma.myway.graph.data.*;
-public class FibHeap {
+import java.io.Serializable;
+
+public class FibHeap implements Serializable {
+
+
+	private static final long serialVersionUID = 6328051499771537372L;
 	Node min;
 	int n;
 	boolean trace;
@@ -198,8 +202,3 @@ public class FibHeap {
 		extract_min();
 	}
 }
-
-// insert
-// smallest
-// decreaseKey
-//

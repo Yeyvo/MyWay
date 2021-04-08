@@ -510,3 +510,5 @@ hs_err_pid*
 MyWay/.bin
 config.json
 *.bin
+
+.vscode/
