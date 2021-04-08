@@ -29,8 +29,8 @@ import ma.myway.graph.data.Transfert;
 
 public class MainClass {
 
-	private static int initlenEdges = 13384239;
-	private static int initlenNode = 33778;
+	private static int initlenEdges = 14666666;
+	private static int initlenNode = 34778;
 
 	public static void main(String[] args) {
 		long StartTime = System.currentTimeMillis();
@@ -102,6 +102,8 @@ public class MainClass {
 			final FileInputStream fichier = new FileInputStream("data.bin");
 			ois = new ObjectInputStream(fichier);
 			g = (Graph) ois.readObject();
+			Logger.getLogger("MyLog")
+			.info("Graph was loaded correctly (edges : " + g.getEdgeNumber()+", Nodes : "+g.getNodeSize()+")");
 
 		} catch (final java.io.IOException e) {
 			e.printStackTrace();

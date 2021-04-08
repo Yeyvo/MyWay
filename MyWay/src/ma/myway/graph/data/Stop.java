@@ -23,6 +23,10 @@ import ma.myway.graph.Node;
  */
 public class Stop implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3593100635691617875L;
 	private String stop_id;
 	private String name;
 	private String desc;
