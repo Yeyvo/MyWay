@@ -38,7 +38,7 @@ public class MainClass {
 	private static int initlenNode = 34778;
 
 	public static void main(String[] args) {
-		
+		/*
 		long StartTime = System.currentTimeMillis();
 
 		Logger logger = Logger.getLogger("MyLog");
@@ -76,17 +76,20 @@ public class MainClass {
 		long endTime = System.currentTimeMillis();
 		double timeElapsed = endTime - StartTime;
 		Logger.getLogger("MyLog").info("Execution time in seconds  :  List : " + timeElapsed / 1000 + " seconde ");
-		
+		*/
 		/*
 		 * Test shortest path from 2 seal stops
 		 * */
+		/*
 		LinkedList<Edge> path = g.getShortestPath(g.getNodebyID("4238683"), g.getNodebyID("5478447"));
 
 		Logger.getLogger("MyLog").info("Shortest path from " + 4238683 + " to " + 5478447 + ": ");
 
 		for (Edge edge : path) {
-			Logger.getLogger("MyLog").info("go from " + edge.getSrc().getStop().getName() + " to "+ edge.getDest().getStop().getName() + "[ Trip_id =" +edge.getTrip_id()+" durée ="+edge.getWeight()+"]");
+			Logger.getLogger("MyLog").info("go from " + edge.getSrc().getStop().getName() + " to "+ edge.getDest().getStop().getName() + "[ Trip_id =" +edge.getTrip_id()+" durï¿½e ="+edge.getWeight()+"]");
 		}
+		*/
+		testDijkstra();
 	}
 
 	public static void saveData(Graph graph) {
@@ -229,13 +232,14 @@ public class MainClass {
 		b = new Node(sb);
 		c = new Node(sc);
 
-		Edge ab1, ab2, ab3,  ac, bc1, bc2;
+		Edge ab1, ab2, ab3,  ac, bc1, bc2, aa;
 		ab1 = new Edge(a, b, 5, "ab1");
 		ab2 = new Edge(a, b, 1, "ab2");
 		ac  = new Edge(a, c, 4, "ac");
 		bc1 = new Edge(b, c, 1, "bc1");
 		bc2 = new Edge(b, c, 3, "bc2");
 		ab3 = new Edge(a, b, 0.5, "ab3");
+		aa = new Edge(a, a, 0, "aa");
 
 		HashMap<String, Node> nodes = new HashMap<String, Node>();
 		HashMap<String, List<Edge>> edges = new HashMap<String, List<Edge>>();
@@ -244,7 +248,8 @@ public class MainClass {
 		nodes.put("b", b);
 		nodes.put("c", c);
 		
-		edges.put("a", new ArrayList<Edge>(Arrays.asList(ab1, ab2, ac, ab3)));
+
+		edges.put("a", new ArrayList<Edge>(Arrays.asList(ab1, ab2, ac, ab3, aa)));
 		edges.put("b", new ArrayList<Edge>(Arrays.asList(bc1, bc2)));
 
 		Graph g = new Graph(nodes, edges);
