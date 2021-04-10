@@ -13,35 +13,43 @@ create table agency (
 	agency_phone varchar(255)
 	);
 
-LOAD DATA LOCAL INFILE "agency.txt" INTO TABLE agency FIELDS TERMINATED BY "," IGNORE 1 LINES;
+LOAD DATA LOCAL INFILE "agency.txt" INTO TABLE agency FIELDS TERMINATED BY "," ENCLOSED BY '"' IGNORE 1 LINES;
 
 DROP TABLE IF EXISTS calendar;
 
 create table calendar (
 	service_id varchar(255) NOT NULL PRIMARY KEY,
-	monday varchar(255),
-	tuesday varchar(255),
-	wednesday varchar(255),
-	thursday varchar(255),
-	friday varchar(255),
-	saturday varchar(255),
-	sunday varchar(255),
-	start_date varchar(255),
-	end_date varchar(255)
+	monday TINYINT(1),
+	tuesday TINYINT(1),
+	wednesday TINYINT(1),
+	thursday TINYINT(1),
+	friday TINYINT(1),
+	saturday TINYINT(1),
+	sunday TINYINT(1),
+	start_date DATE,
+	end_date DATE
 );
 
-LOAD DATA LOCAL INFILE "calendar.txt" INTO TABLE calendar FIELDS TERMINATED BY "," IGNORE 1 LINES;
+LOAD DATA LOCAL INFILE "calendar.txt" INTO TABLE calendar FIELDS TERMINATED BY ","
+IGNORE 1 LINES
+(service_id,monday,tuesday,wednesday,thursday,friday,saturday,sunday, @var1,@var2)
+SET start_date = STR_TO_DATE(@var1,'%Y%m%d') , end_date = STR_TO_DATE(@var2,'%Y%m%d');
+
 
 DROP TABLE IF EXISTS calendar_dates;
 
 create table calendar_dates (
 	service_id varchar(255) NOT NULL,
-	date varchar(255),
-	exception_type varchar(255),
-	PRIMARY KEY(service_id,date)
+	dateC DATE,
+	exception_type TINYINT(1),
+	PRIMARY KEY(service_id,dateC)
 );
 
-LOAD DATA LOCAL INFILE "calendar_dates.txt" INTO TABLE calendar_dates FIELDS TERMINATED BY "," IGNORE 1 LINES;
+LOAD DATA LOCAL INFILE "calendar_dates.txt" INTO TABLE calendar_dates FIELDS TERMINATED BY ","
+IGNORE 1 LINES
+(service_id, @var1, exception_type)
+SET dateC = STR_TO_DATE(@var1,'%Y%m%d');
+
 
 DROP TABLE IF EXISTS routes;
 
@@ -57,21 +65,23 @@ create table routes(
 	route_text_color varchar(255)
 );
 
-LOAD DATA LOCAL INFILE "routes.txt" INTO TABLE routes FIELDS TERMINATED BY "," IGNORE 1 LINES;
+LOAD DATA LOCAL INFILE "routes.txt" INTO TABLE routes FIELDS TERMINATED BY "," ENCLOSED BY '"' IGNORE 1 LINES;
 
 DROP TABLE IF EXISTS stop_times;
 
 CREATE TABLE stop_times (
 	trip_id varchar(255), 
-	arrival_time varchar(255), 
-	departure_time varchar(255),
+	arrival_time TIME, 
+	departure_time TIME,
 	stop_id varchar(255),
 	stop_sequence varchar(255),
 	stop_headsign varchar(255),
 	shape_dist_traveled varchar(255) 
 );
 
-LOAD DATA LOCAL INFILE "stop_times.txt" INTO TABLE stop_times FIELDS TERMINATED BY "," IGNORE 1 LINES;
+LOAD DATA LOCAL INFILE "stop_times.txt" INTO TABLE stop_times FIELDS TERMINATED BY "," ENCLOSED BY '"'
+IGNORE 1 LINES;
+
 
 DROP TABLE IF EXISTS stops;
 
@@ -86,7 +96,7 @@ CREATE TABLE stops (
 	parent_station varchar(255) 
 );
 
-LOAD DATA LOCAL INFILE "stops.txt" INTO TABLE stops FIELDS TERMINATED BY "," IGNORE 1 LINES;
+LOAD DATA LOCAL INFILE "stops.txt" INTO TABLE stops FIELDS TERMINATED BY "," ENCLOSED BY '"' IGNORE 1 LINES;
 
 DROP TABLE IF EXISTS transfers;
 
@@ -97,7 +107,7 @@ CREATE TABLE transfers (
 	min_transfer_time varchar(255) 
 );
 
-LOAD DATA LOCAL INFILE "transfers.txt" INTO TABLE transfers FIELDS TERMINATED BY "," IGNORE 1 LINES;
+LOAD DATA LOCAL INFILE "transfers.txt" INTO TABLE transfers FIELDS TERMINATED BY "," ENCLOSED BY '"' IGNORE 1 LINES;
 
 DROP TABLE IF EXISTS trips;
 
@@ -111,7 +121,7 @@ CREATE TABLE trips (
 	shape_id varchar(255) 
 );
 
-LOAD DATA LOCAL INFILE "trips.txt" INTO TABLE trips FIELDS TERMINATED BY "," IGNORE 1 LINES;
+LOAD DATA LOCAL INFILE "trips.txt" INTO TABLE trips FIELDS TERMINATED BY "," ENCLOSED BY '"' IGNORE 1 LINES;
 /*
 ALTER TABLE routes add column MT varchar(255) AFTER route_type;
 

@@ -3,7 +3,9 @@ package ma.myway.dao;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import ma.myway.graph.data.Route_Service;
@@ -42,9 +44,9 @@ public class ServiceDAO extends DAO<Service> {
 		return stop;
 	}
 
-	@Override
-	public Set<Service> all() {
-		Set<Service> set_sevices = new HashSet<>();
+	
+	public Map<String , Service> allMap() {
+		Map<String , Service> map_sevices = new HashMap<>();
 		try {
 			ResultSet result = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)
 					.executeQuery("SELECT * FROM calendar");
@@ -53,7 +55,7 @@ public class ServiceDAO extends DAO<Service> {
 				for (int i = 0; i < 7; i++) {
 					dates[i] = result.getInt(days[i]);
 				}
-				set_sevices.add(new Service(result.getString("service_id"), dates, result.getDate("start_date"),
+				map_sevices.put(result.getString("service_id"), new Service(result.getString("service_id"), dates, result.getDate("start_date"),
 						result.getDate("end_date")));
 			}
 			result.close();
@@ -61,7 +63,7 @@ public class ServiceDAO extends DAO<Service> {
 			e.printStackTrace();
 		}
 
-		return set_sevices;
+		return map_sevices;
 	}
 
 	@Override
@@ -75,6 +77,13 @@ public class ServiceDAO extends DAO<Service> {
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	@Override
+	@Deprecated
+	public Set<Service> all() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

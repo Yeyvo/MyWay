@@ -3,8 +3,8 @@ package ma.myway.dao;
 import java.sql.Connection;
 
 import ma.myway.graph.data.Agency;
+import ma.myway.graph.data.CalendarExp;
 import ma.myway.graph.data.Route_Service;
-import ma.myway.graph.data.Service;
 import ma.myway.graph.data.Stop;
 import ma.myway.graph.data.Transfert;
 
@@ -19,7 +19,7 @@ public class DAOFactory {
 		return new AgencyDAO(conn);
 	}
 
-	public static DAO<Service> getServiceDAO() {
+	public static ServiceDAO getServiceDAO() {
 		return new ServiceDAO(conn);
 	}
 
@@ -33,6 +33,10 @@ public class DAOFactory {
 
 	public static DAO<Transfert> getTransfertDAO() {
 		return new TransfertDAO(conn);
+	}
+	
+	public static CalendarExpDAO getCalendarExpDAO() {
+		return new CalendarExpDAO(conn);
 	}
 
 }

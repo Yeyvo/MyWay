@@ -7,12 +7,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -26,19 +26,22 @@ import ma.myway.config.Config;
 import ma.myway.dao.BddConnection;
 import ma.myway.dao.DAOFactory;
 import ma.myway.graph.Edge;
+import ma.myway.graph.FibHeap;
 import ma.myway.graph.Graph;
 import ma.myway.graph.Node;
+import ma.myway.graph.data.CalendarExp;
+import ma.myway.graph.data.Service;
 import ma.myway.graph.data.Stop;
 import ma.myway.graph.data.Stop_Trip;
 import ma.myway.graph.data.Transfert;
-import ma.myway.graph.FibHeap;
+
 public class MainClass {
 
 	private static int initlenEdges = 14666666;
 	private static int initlenNode = 34778;
 
 	public static void main(String[] args) {
-		/*
+
 		long StartTime = System.currentTimeMillis();
 
 		Logger logger = Logger.getLogger("MyLog");
@@ -47,6 +50,7 @@ public class MainClass {
 			fh = new FileHandler("logs.log");
 			logger.addHandler(fh);
 			fh.setFormatter(new Formatter() {
+
 				@Override
 				public String format(LogRecord record) {
 					SimpleDateFormat logTime = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
@@ -64,32 +68,34 @@ public class MainClass {
 			e.printStackTrace();
 		}
 		Graph g = null;
-		File f = new File("data.bin");
+		/*File f = new File("data.bin");
 		if (!f.exists() && !f.isDirectory()) {
 			g = graphGeneration(StartTime);
 			saveData(g);
 		} else if (f.exists() && !f.isDirectory()) {
 			System.out.println("Exist");
 			g = loadData();
-		}
-
+		}*/
+		g = graphGeneration(StartTime);
 		long endTime = System.currentTimeMillis();
 		double timeElapsed = endTime - StartTime;
 		Logger.getLogger("MyLog").info("Execution time in seconds  :  List : " + timeElapsed / 1000 + " seconde ");
-		*/
+
 		/*
 		 * Test shortest path from 2 seal stops
-		 * */
-		/*
+		 */
+/*
 		LinkedList<Edge> path = g.getShortestPath(g.getNodebyID("4238683"), g.getNodebyID("5478447"));
 
 		Logger.getLogger("MyLog").info("Shortest path from " + 4238683 + " to " + 5478447 + ": ");
 
 		for (Edge edge : path) {
-			Logger.getLogger("MyLog").info("go from " + edge.getSrc().getStop().getName() + " to "+ edge.getDest().getStop().getName() + "[ Trip_id =" +edge.getTrip_id()+" dur�e ="+edge.getWeight()+"]");
+			Logger.getLogger("MyLog")
+					.info("go from " + edge.getSrc().getStop().getName() + " to " + edge.getDest().getStop().getName()
+							+ "[ Trip_id =" + edge.getTrip_id() + " dur�e =" + edge.getWeight() + "]");
 		}
-		*/
-		testDijkstra();
+*/
+		//testDijkstra();
 	}
 
 	public static void saveData(Graph graph) {
@@ -121,8 +127,8 @@ public class MainClass {
 			final FileInputStream fichier = new FileInputStream("data.bin");
 			ois = new ObjectInputStream(fichier);
 			g = (Graph) ois.readObject();
-			Logger.getLogger("MyLog")
-			.info("Graph was loaded correctly (edges : " + g.getEdgeNumber()+", Nodes : "+g.getNodeSize()+")");
+			Logger.getLogger("MyLog").info(
+					"Graph was loaded correctly (edges : " + g.getEdgeNumber() + ", Nodes : " + g.getNodeSize() + ")");
 
 		} catch (final java.io.IOException e) {
 			e.printStackTrace();
@@ -145,7 +151,8 @@ public class MainClass {
 
 		HashMap<String, List<Edge>> edges = new HashMap<String, List<Edge>>(initlenEdges);
 		HashMap<String, Node> node = new HashMap<>(initlenNode);
-		Graph g = new Graph(node, edges);
+		Map<String, Service> services = new HashMap<>();
+		Graph g = new Graph(node, edges, services);
 
 		Logger.getLogger("MyLog").info("Config file loading Started ! ");
 		Config.load("config.json");
@@ -165,6 +172,14 @@ public class MainClass {
 		b = System.currentTimeMillis();
 		Logger.getLogger("MyLog").info("Node Generation Finished ! (" + i + ")  time : " + (b - a) / 1000);
 
+		Logger.getLogger("MyLog").info("Service data retrieving started ! ");
+		services = DAOFactory.getServiceDAO().allMap();
+		HashMap<String, CalendarExp> calExp = DAOFactory.getCalendarExpDAO().allMap();
+		merge(calExp, services);
+		g.setServices(services);
+		a = System.currentTimeMillis();
+		Logger.getLogger("MyLog").info("Service Data Retrieving Finished !  time :  " + (a - b) / 1000);
+
 		Logger.getLogger("MyLog").info("StopTrips Data Retrieving started ! ");
 		List<Stop_Trip> st = DAOFactory.getStopTripDAO().allList();
 		a = System.currentTimeMillis();
@@ -175,7 +190,9 @@ public class MainClass {
 			Stop_Trip next = Stop_Trip.getNextStop_sequence(st, st.get(j).getTrip_id(), st.get(j).getStop_sequence(),
 					j);
 			if (next != null) {
-				g.addEdge(new Edge(node.get(st.get(j).getStop_id()), node.get(next.getStop_id()), 1,
+				g.addEdge(new Edge(node.get(st.get(j).getStop_id()), node.get(next.getStop_id()),
+						ChronoUnit.SECONDS.between(st.get(j).getArrival_time().toLocalTime(),
+								st.get(j).getDeparture_time().toLocalTime()),
 						st.get(j).getTrip_id()));
 				Logger.getLogger("MyLog")
 						.info("Edge Trip (" + ++i + ") : src : " + st.get(j).getStop_id() + " dst : "
@@ -190,6 +207,7 @@ public class MainClass {
 		Set<Transfert> trans = DAOFactory.getTransfertDAO().all();
 		a = System.currentTimeMillis();
 		Logger.getLogger("MyLog").info("Transferts Data Retrieving Finished !  time :  " + (a - b) / 1000);
+
 		Logger.getLogger("MyLog").info("Edge Generation from Transferts started ! ");
 		i = 0;
 		for (Transfert tr : trans) {
@@ -217,11 +235,22 @@ public class MainClass {
 		return g;
 	}
 
+	private static void merge(HashMap<String, CalendarExp> calExp, Map<String, Service> services) {
+
+		for (String calExpKey : calExp.keySet()) {
+			
+			services.get(calExp.get(calExpKey).getService_id()).setAdded(calExp.get(calExpKey).getAdded());
+			services.get(calExp.get(calExpKey).getService_id()).setRemoved(calExp.get(calExpKey).getRemoved());
+			services.get(calExp.get(calExpKey).getService_id()).toStr();
+		}
+
+	}
+
 	public static void loggerInit() {
 
 	}
 
-	public static void testDijkstra(){
+	public static void testDijkstra() {
 		Stop sa, sb, sc;
 		sa = new Stop("a");
 		sb = new Stop("b");
@@ -232,10 +261,10 @@ public class MainClass {
 		b = new Node(sb);
 		c = new Node(sc);
 
-		Edge ab1, ab2, ab3,  ac, bc1, bc2, aa;
+		Edge ab1, ab2, ab3, ac, bc1, bc2, aa;
 		ab1 = new Edge(a, b, 5, "ab1");
 		ab2 = new Edge(a, b, 1, "ab2");
-		ac  = new Edge(a, c, 4, "ac");
+		ac = new Edge(a, c, 4, "ac");
 		bc1 = new Edge(b, c, 1, "bc1");
 		bc2 = new Edge(b, c, 3, "bc2");
 		ab3 = new Edge(a, b, 0.5, "ab3");
@@ -247,7 +276,6 @@ public class MainClass {
 		nodes.put("a", a);
 		nodes.put("b", b);
 		nodes.put("c", c);
-		
 
 		edges.put("a", new ArrayList<Edge>(Arrays.asList(ab1, ab2, ac, ab3, aa)));
 		edges.put("b", new ArrayList<Edge>(Arrays.asList(bc1, bc2)));
@@ -262,7 +290,7 @@ public class MainClass {
 			System.out.println(edge.getTrip_id());
 		}
 	}
-	
+
 	public static void testFibHeap() {
 		FibHeap obj = new FibHeap();
 		Node n7, n26, n30, n39, n10;

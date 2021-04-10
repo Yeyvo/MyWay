@@ -2,6 +2,7 @@ package ma.myway.graph;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Date;
 
 /**
  * <p>
@@ -33,6 +34,7 @@ public class Edge implements Serializable{
 	private String trip_id;
 	private int transfer_type;
 	private boolean isTransfert ;
+	private boolean isActive;
 
 	public Edge(Node src, Node dest, double weight, String trip_id) {
 		this.src = src;
@@ -49,6 +51,7 @@ public class Edge implements Serializable{
 		this.trip_id = trip_id;
 		this.transfer_type = transfer_type;
 		this.isTransfert = true;
+		//this.isActive = activity();
 	}
 	
 	/**
@@ -98,14 +101,8 @@ public class Edge implements Serializable{
 		return trip_id;
 	}
 
-	/**
-	 * exprime si l'arete est active ou non, c'est a dire si le voyage est actuellement disponible
-	 * 
-	 * @return boolean
-	 */
 	public boolean isActive() {
-		//a implementer (service_id ?)
-		return true;
+		return isActive;
 	}
 
 	@Override
@@ -113,6 +110,8 @@ public class Edge implements Serializable{
 		return "Edge [src=" + src + ", dest=" + dest.getStop().getStop_id() + ", weight=" + weight + ", trip_id=" + trip_id
 				+ ", transfer_type=" + transfer_type + ", isTransfert=" + isTransfert + "]";
 	}
+	
+	
 
 	public int getTransferType(){
 		throw new UnsupportedOperationException();
@@ -120,5 +119,15 @@ public class Edge implements Serializable{
 
 	public LocalDate getNextStopTime(){
 		throw new UnsupportedOperationException();
+	}
+	
+	
+	
+	private static boolean activity (Date dateDep, Graph g) {
+		
+		
+		
+		
+		return false;
 	}
 }

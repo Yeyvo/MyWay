@@ -1,20 +1,23 @@
 package ma.myway.graph;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Logger;
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
+
+import ma.myway.graph.data.Service;
 
 /**
  * <p>
@@ -45,9 +48,11 @@ public class Graph implements Serializable {
 	private Set<Node> settledNodes;
 	private Set<Node> unSettledNodes;
 	private FibHeap priorityQueue;
-	private Map<Node, Edge> predecessors; // Map<Node destination - Edge origine> (origin = the edge leading to Node destination)
+	private Map<Node, Edge> predecessors; // Map<Node destination - Edge origine> (origin = the edge leading to Node
+											// destination)
 	private Map<Node, Double> distance;
 
+	private Map<String, Service> services;
 
 	public Graph(HashMap<String, Node> nodes) {
 		this.nodes = nodes;
@@ -60,32 +65,37 @@ public class Graph implements Serializable {
 		this.priorityQueue = new FibHeap();
 	}
 
-	/*	
-	private void writeObject(ObjectOutputStream oos) throws IOException {
-		oos.defaultWriteObject();
-		oos.writeObject(this.edges);
-		oos.writeObject(this.nodes);
+	public Graph(HashMap<String, Node> node, HashMap<String, List<Edge>> edges, Map<String, Service> services2) {
+		this.nodes = node;
+		this.edges = edges;
+		this.services = services2;
+		this.priorityQueue = new FibHeap();
 	}
 
-	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
-		ois.defaultReadObject();
-		HashMap<String, List<Edge>> edgesSer = (HashMap<String, List<Edge>>) ois.readObject();
-		HashMap<String, Node> nodesSer = (HashMap<String, Node>) ois.readObject();
-		
-		//Graph g = new Graph(nodesSer,edgesSer);
-		this.setEdges(edgesSer);
-		this.setNodes(nodesSer);
-
-	}*/
+	/*
+	 * private void writeObject(ObjectOutputStream oos) throws IOException {
+	 * oos.defaultWriteObject(); oos.writeObject(this.edges);
+	 * oos.writeObject(this.nodes); }
+	 * 
+	 * private void readObject(ObjectInputStream ois) throws ClassNotFoundException,
+	 * IOException { ois.defaultReadObject(); HashMap<String, List<Edge>> edgesSer =
+	 * (HashMap<String, List<Edge>>) ois.readObject(); HashMap<String, Node>
+	 * nodesSer = (HashMap<String, Node>) ois.readObject();
+	 * 
+	 * //Graph g = new Graph(nodesSer,edgesSer); this.setEdges(edgesSer);
+	 * this.setNodes(nodesSer);
+	 * 
+	 * }
+	 */
 
 	public long getEdgeSize() {
 		return edges.size();
 	}
-	
+
 	public long getEdgeNumber() { // do not use this method !!
-		long l =0L;
-		for(String key : this.edges.keySet()) {
-			l+=edges.get(key).size();
+		long l = 0L;
+		for (String key : this.edges.keySet()) {
+			l += edges.get(key).size();
 		}
 		return l;
 	}
@@ -137,7 +147,8 @@ public class Graph implements Serializable {
 	private void findMinimalDistances(Node node) { // done
 		List<Edge> adjacentEdges = edges.get(node.getStop().getStop_id());
 		for (Edge target : adjacentEdges) {
-			if (getShortestDistance(target.getDest()) > getShortestDistance(node) + target.getWeight()) { // calcul a changer
+			if (getShortestDistance(target.getDest()) > getShortestDistance(node) + target.getWeight()) { // calcul a
+																											// changer
 				distance.put(target.getDest(), getShortestDistance(node) + target.getWeight());
 				predecessors.put(target.getDest(), target);
 				unSettledNodes.add(target.getDest());
@@ -167,7 +178,7 @@ public class Graph implements Serializable {
 	}
 
 	public Node getNodebyID(String stop_id) {
-		return  nodes.get(stop_id);
+		return nodes.get(stop_id);
 	}
 
 	private void setNodes(HashMap<String, Node> nodes) {
@@ -177,7 +188,7 @@ public class Graph implements Serializable {
 	private void setEdges(HashMap<String, List<Edge>> edges) {
 		this.edges = edges;
 	}
-	
+
 	/**
 	 * @param destination
 	 * @return le cout d'atteinte du noeud destination
@@ -196,16 +207,13 @@ public class Graph implements Serializable {
 	 * @return la liste des voisins du noeud passé en argument
 	 */
 	/*
-	public List<Edge> getNeighbors(Node src) { // done // must return list of edge with origine = src ---needs optimization
-		List<Edge> neighbors = new ArrayList<Edge>();
-		for (Edge edge : edges) {
-			if (edge.getSrc().getStop().getStop_id().equals(src.getStop().getStop_id())
-					&& !this.isSettled(edge.getDest()) && edge.isActive())
-				neighbors.add(edge);
-		}
-		return neighbors;
-	}
-	*/
+	 * public List<Edge> getNeighbors(Node src) { // done // must return list of
+	 * edge with origine = src ---needs optimization List<Edge> neighbors = new
+	 * ArrayList<Edge>(); for (Edge edge : edges) { if
+	 * (edge.getSrc().getStop().getStop_id().equals(src.getStop().getStop_id()) &&
+	 * !this.isSettled(edge.getDest()) && edge.isActive()) neighbors.add(edge); }
+	 * return neighbors; }
+	 */
 
 	private double getCost(Edge edge, Edge previous) {
 		double toAdd = 0;
@@ -224,10 +232,9 @@ public class Graph implements Serializable {
 	 * @see Graph#dijsktra(Node)
 	 */
 	/*
-	private boolean isSettled(Node node) { // done
-		return settledNodes.contains(node);
-	}
-	*/
+	 * private boolean isSettled(Node node) { // done return
+	 * settledNodes.contains(node); }
+	 */
 
 	private boolean isSettled(Node node) { // done
 		return settledNodes.contains(node);
@@ -287,11 +294,19 @@ public class Graph implements Serializable {
 		return getPath(dest);
 	}
 
+	public Map<String, Service> getServices() {
+		return services;
+	}
+
+	public void setServices(Map<String, Service> services) {
+		this.services = services;
+	}
+
 	public void dijkstraOp(Node source) { // done
 		distance = new HashMap<Node, Double>();
 		predecessors = new HashMap<Node, Edge>();
 
-		for(Node node: nodes.values()){
+		for (Node node : nodes.values()) {
 			distance.put(node, (double) Integer.MAX_VALUE);
 		}
 
@@ -306,12 +321,15 @@ public class Graph implements Serializable {
 		Node min = priorityQueue.extract_min();
 
 		do {
+			System.out.println(" test " + min.getStop().getStop_id());
 			List<Edge> neighboors = edges.get(min.getStop().getStop_id());
-			if(neighboors != null){
+			if (neighboors != null) {
 				for (Edge edge : neighboors) {
+					System.out.println("\t test  edge :" + edge.getSrc().getStop().getStop_id() + "  -  "
+							+ edge.getDest().getStop().getStop_id());
 					double weight = edge.getWeight();
 					double newLen = getShortestDistance(edge.getSrc()) + weight;
-					if(newLen < getShortestDistance(edge.getDest())){
+					if (newLen < getShortestDistance(edge.getDest())) {
 						priorityQueue.decrease_key(edge.getDest(), newLen);
 						distance.put(edge.getDest(), newLen);
 						predecessors.put(edge.getDest(), edge);
@@ -319,6 +337,22 @@ public class Graph implements Serializable {
 				}
 			}
 			min = priorityQueue.extract_min();
-		} while ( min != null);
+		} while (min != null);
+	}
+
+	public List<Service> Service_Date(Date date) {
+		List<Service> result = null;
+
+		for (Service service : services.values()) {// if it's runing slow whe can use MutableMap of Eclipse (CS)
+
+			if (((service.getStart_date().compareTo(date) * date.compareTo(service.getEnd_date()) >= 0)
+					&& (service.getRemoved().indexOf(date) == -1)) || (service.getAdded().indexOf(date) != -1)) {
+				result.add(service);
+
+			}
+
+		}
+
+		return result;
 	}
 }

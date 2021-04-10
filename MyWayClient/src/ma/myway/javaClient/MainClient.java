@@ -1,4 +1,4 @@
-package ma.myway.client;
+package ma.myway.javaClient;
 
 public class MainClient {
 

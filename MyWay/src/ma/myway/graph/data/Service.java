@@ -1,14 +1,25 @@
 package ma.myway.graph.data;
 
+import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.logging.Logger;
 
-public class Service {
+public class Service implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5872163854493473938L;
 	String service_id;
 	Integer dates[] = new Integer[7];
 	Date start_date;
 	Date end_date;
+	
+	private List<Date> added;
+	private List<Date> removed;
 
 	public Service(String service_id, Integer[] dates, Date start_date, Date end_date) {
 		this.service_id = service_id;
@@ -33,6 +44,22 @@ public class Service {
 		return end_date;
 	}
 
+	public List<Date> getRemoved() {
+		return removed;
+	}
+
+	public void setRemoved(List<Date> removed) {
+		this.removed = removed;
+	}
+
+	public List<Date> getAdded() {
+		return added;
+	}
+
+	public void setAdded(List<Date> added) {
+		this.added = added;
+	}
+
 	@Override
 	public String toString() {
 		String str = new String();
@@ -42,8 +69,20 @@ public class Service {
 		}
 		return str + start_date + "," + end_date ;
 	}
+
+	public void toStr() {
+		String str = new String();
+		str.concat(service_id + ",");
+		for(int jr : dates) {
+			str.concat(jr + ",");
+		}
+		Logger.getLogger("MyLog").info(str + start_date + "," + end_date  + " added=" + Arrays.toString( added.toArray() ) + ", removed=" + Arrays.toString( removed.toArray() ) + "]");
+	}
 	
-	
-	
+	public static int getDayNumber(Date date) {
+	    Calendar cal = Calendar.getInstance();
+	    cal.setTime(date);
+	    return cal.get(Calendar.DAY_OF_WEEK);
+	}
 
 }

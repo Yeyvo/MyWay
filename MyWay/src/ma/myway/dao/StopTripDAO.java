@@ -67,20 +67,20 @@ public class StopTripDAO extends DAO<Stop_Trip> {
 			Statement stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
 			stmt.setFetchSize(Integer.MIN_VALUE);
 			ResultSet result = stmt
-					.executeQuery("SELECT trip_id,arrival_time,departure_time,stop_id,stop_sequence FROM stop_times");// we can use different queries using limit and offset 
+					.executeQuery("SELECT trip_id,arrival_time,departure_time,stop_id,stop_sequence FROM stop_times limit 100, 100000");// we can use different queries using limit and offset 
 			while (result.next()) {
 				set_stop_trip.add(new Stop_Trip(result.getString("trip_id"), result.getString("stop_id"),
-						/*result.getTime("arrival_time")*/new Time(0, 0, 0),/* result.getTime("departure_time")*/new Time(0, 0, 0),
+						result.getString("arrival_time") == "24:00:00" ? result.getTime("arrival_time") : new Time(23,59,59) /*new Time(0, 0, 0)*/, result.getString("departure_time") == "24:00:00" ? result.getTime("departure_time") : new Time(23,59,59)/*new Time(0, 0, 0)*/,
 						result.getInt("stop_sequence"))); //problem in database time
 				count++;
 			}
 			result.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-
+			
 		}finally {
 			Logger.getLogger("MyLog").info("The amount of data retrieved is " + count + " line!");;
-
+			
 		}
 
 		Collections.sort( set_stop_trip);
