@@ -32,6 +32,7 @@ import ma.myway.graph.data.Stop;
 import ma.myway.graph.data.Stop_Trip;
 import ma.myway.graph.data.Transfert;
 import ma.myway.graph.FibHeap;
+import ma.myway.graph.FibonacciHeap;
 public class MainClass {
 
 	private static int initlenEdges = 14666666;
@@ -89,7 +90,8 @@ public class MainClass {
 			Logger.getLogger("MyLog").info("go from " + edge.getSrc().getStop().getName() + " to "+ edge.getDest().getStop().getName() + "[ Trip_id =" +edge.getTrip_id()+" dur�e ="+edge.getWeight()+"]");
 		}
 		*/
-		testDijkstra();
+		testDijkstra2();
+		//testFibonecciHeap();
 	}
 
 	public static void saveData(Graph graph) {
@@ -222,7 +224,7 @@ public class MainClass {
 	}
 
 	public static void testDijkstra(){
-		Stop sa, sb, sc;
+		Stop sa, sb, sc, sd;
 		sa = new Stop("a");
 		sb = new Stop("b");
 		sc = new Stop("c");
@@ -263,6 +265,81 @@ public class MainClass {
 		}
 	}
 	
+	public static void testDijkstra2() {
+		Stop sa, sb, sc, sd;
+		sa = new Stop("a");
+		sb = new Stop("b");
+		sc = new Stop("c");
+		sd = new Stop("d");
+
+		Node a, b, c, d;
+		a = new Node(sa);
+		b = new Node(sb);
+		c = new Node(sc);
+		d = new Node(sd);
+
+		Edge aa, bb, cc, dd;
+		aa = new Edge(a, a, 0, "aa");
+		bb = new Edge(b, b, 0, "bb");
+		cc = new Edge(c, c, 0, "cc");
+		dd = new Edge(d, d, 0, "dd");
+
+		Edge ab1, ab2, ac1, ac2, ad1, ad2;
+		ab1 = new Edge(a, b, 2, "ab1");
+		ab2 = new Edge(a, b, 1, "ab2");
+		ac1 = new Edge(a, c, 3, "ac1");
+		ac2 = new Edge(a, c, 0.5, "ac2");
+		ad1 = new Edge(a, d, 7, "ad1");
+		ad2 = new Edge(a, d, 3.5, "ad2");
+
+		Edge ba1, ba2, bc1, bc2, bd1, bd2;
+		ba1 = new Edge(b, a, 1.5, "ba1");
+		ba2 = new Edge(b, a, 0.5, "ba2");
+		bc1 = new Edge(b, c, 6, "bc1");
+		bc2 = new Edge(b, c, 4, "bc2");
+		bd1 = new Edge(b, d, 2, "bd1");
+		bd2 = new Edge(b, d, 3, "bd2");
+
+		Edge ca1, ca2, cb1, cb2, cd1, cd2;
+		ca1 =  new Edge(c, a, 3, "ca1");
+		ca2 =  new Edge(c, a, 5, "ca2");
+		cb1 =  new Edge(c, b, 0.5, "cb1");
+		cb2 =  new Edge(c, b, 2, "cb2");
+		cd1 =  new Edge(c, d, 1, "cd1");
+		cd2 =  new Edge(c, d, 4, "cd2");
+
+		Edge da1, da2, db1, db2, dc1, dc2;
+		da1 = new Edge(d, a, 3, "da1");
+		da2 = new Edge(d, a, 5, "da2");
+		db1 = new Edge(d, b, 1, "db1");
+		db2 = new Edge(d, b, 1.5, "db2");
+		dc1 = new Edge(d, c, 0.5, "dc1");
+		dc2 = new Edge(d, c, 4, "dc2");
+
+		HashMap<String, Node> nodes = new HashMap<String, Node>();
+		HashMap<String, List<Edge>> edges = new HashMap<String, List<Edge>>();
+
+		nodes.put("a", a);
+		nodes.put("b", b);
+		nodes.put("c", c);
+		nodes.put("d", d);
+
+		edges.put("a", new ArrayList<Edge>(Arrays.asList(aa, ab1, ab2, ac1, ac2, ad1, ad2)));
+		edges.put("b", new ArrayList<Edge>(Arrays.asList(bb, ba1, ba2, bc1, bc2, bd1, bd2)));
+		edges.put("c", new ArrayList<Edge>(Arrays.asList(cc, ca1, ca2, cb1, cb2, cd1, cd2)));
+		edges.put("d", new ArrayList<Edge>(Arrays.asList(dd, da1, da2, db1, db2, dc1, dc2)));
+
+		Graph g = new Graph(nodes, edges);
+
+		LinkedList<Edge> path = g.getShortestPath(d, c);
+
+		System.out.println("Shortest path from " + a.getStop().getStop_id() + " to " + c.getStop().getStop_id() + ": ");
+
+		for (Edge edge : path) {
+			System.out.println(edge.getTrip_id());
+		}
+	}
+
 	public static void testFibHeap() {
 		FibHeap obj = new FibHeap();
 		Node n7, n26, n30, n39, n10;
@@ -290,5 +367,36 @@ public class MainClass {
 		System.out.println(obj.extract_min().getStop().getStop_id());
 		System.out.println(obj.extract_min().getStop().getStop_id());
 		System.out.println(obj.extract_min().getStop().getStop_id());
+	}
+
+	public static void testFibonecciHeap() {
+		FibonacciHeap<Node> obj = new FibonacciHeap<Node>();
+		Node n7, n26, n30, n39, n10;
+		n7 = new Node(new Stop("7"));
+		n26 = new Node(new Stop("26"));
+		n30 = new Node(new Stop("30"));
+		n39 = new Node(new Stop("39"));
+		n10 = new Node(new Stop("10"));
+
+		n7.set_key(7);
+		n26.set_key(26);
+		n30.set_key(30);
+		n39.set_key(39);
+		n10.set_key(10);
+
+		obj.enqueue(n7, 7);
+		obj.enqueue(n26, 26);
+		FibonacciHeap.Entry<Node> n3030 = obj.enqueue(n30, 30);
+		obj.enqueue(n39, 39);
+		obj.enqueue(n10, 10);
+
+		
+		System.out.println(obj.dequeueMin().mElem.getStop().getStop_id());
+		System.out.println(obj.dequeueMin().mElem.getStop().getStop_id());
+		obj.decreaseKey(n3030, 11);
+		System.out.println(obj.dequeueMin().mElem.getStop().getStop_id());
+		System.out.println(obj.dequeueMin().mElem.getStop().getStop_id());
+		System.out.println(obj.dequeueMin().mElem.getStop().getStop_id());
+		System.out.println(obj.dequeueMin().mElem.getStop().getStop_id());
 	}
 }
