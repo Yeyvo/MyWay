@@ -3,12 +3,15 @@ package ma.myway.dao;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import ma.myway.graph.data.Route_Service;
 import ma.myway.graph.data.Service_Direction;
-import ma.myway.graph.data.Trip;
 import ma.myway.graph.data.Trips_Directions;
 
 public class RoutesDAO extends DAO<Route_Service> {
@@ -20,6 +23,28 @@ public class RoutesDAO extends DAO<Route_Service> {
 	@Override
 	public Route_Service find(String id) {
 		return null;
+	}
+
+	/*
+	 * @return a list of all active trips_id
+	 */
+	public List<String> findActiveTrips(Set<String> lstService) {
+		List<String> res = new ArrayList<String>();
+		try {
+			var stmt = String.format("SELECT trip_id FROM trips where service_id in  (%s)",
+					lstService.stream().collect(Collectors.joining(", ")));
+			ResultSet result = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)
+					.executeQuery(stmt);
+			while (result.next()) {
+				res.add(result.getString(1));
+			}
+			result.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		Collections.sort(res);
+		return res;
 	}
 
 	/*
@@ -74,8 +99,8 @@ public class RoutesDAO extends DAO<Route_Service> {
 	public boolean create(Route_Service obj) {
 		try {
 			int result = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)
-					.executeUpdate("INSERT INTO trips VALUES("+obj.toString()+")");
-			System.out.println(result +" Row affected ! ");
+					.executeUpdate("INSERT INTO trips VALUES(" + obj.toString() + ")");
+			System.out.println(result + " Row affected ! ");
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();

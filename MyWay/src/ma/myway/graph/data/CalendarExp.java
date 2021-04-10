@@ -5,11 +5,11 @@ import java.util.Date;
 import java.util.List;
 
 public class CalendarExp {
-	
+
 	private String service_id;
 	private List<Date> added;
 	private List<Date> removed;
-	
+
 	public CalendarExp(String service_id, List<Date> added, List<Date> removed) {
 		this.service_id = service_id;
 		this.added = added;
@@ -42,10 +42,8 @@ public class CalendarExp {
 
 	@Override
 	public String toString() {
-		return "CalendarExp [service_id=" + service_id + ", added=" + Arrays.toString( added.toArray() ) + ", removed=" + Arrays.toString( removed.toArray() ) + "]";
+		return "CalendarExp [service_id=" + service_id + ", added=" + Arrays.toString(added.toArray()) + ", removed="
+				+ Arrays.toString(removed.toArray()) + "]";
 	}
-	
-	
-	
 
 }

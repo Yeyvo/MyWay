@@ -1,7 +1,7 @@
 package ma.myway.graph.data;
 
 import java.io.Serializable;
-import java.sql.Time;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -13,11 +13,11 @@ public class Stop_Trip implements Comparable<Stop_Trip>, Serializable {
 	private static final long serialVersionUID = -3892778082575559141L;
 	String trip_id;
 	String stop_id;
-	Time arrival_time;
-	Time departure_time;
+	Date arrival_time;
+	Date departure_time;
 	int stop_sequence;
 
-	public Stop_Trip(String trip_id, String stop_id, Time arrival_time, Time departure_time, int stop_sequence) {
+	public Stop_Trip(String trip_id, String stop_id, Date arrival_time, Date departure_time, int stop_sequence) {
 		this.trip_id = trip_id;
 		this.stop_id = stop_id;
 		this.arrival_time = arrival_time;
@@ -29,11 +29,11 @@ public class Stop_Trip implements Comparable<Stop_Trip>, Serializable {
 		return stop_id;
 	}
 
-	public Time getArrival_time() {
+	public Date getArrival_time() {
 		return arrival_time;
 	}
 
-	public Time getDeparture_time() {
+	public Date getDeparture_time() {
 		return departure_time;
 	}
 
@@ -88,6 +88,14 @@ public class Stop_Trip implements Comparable<Stop_Trip>, Serializable {
 	@Override
 	public String toString() {
 		return trip_id + "," + arrival_time + "," + departure_time + "," + stop_id + "," + stop_sequence + ",null,null";
+	}
+
+	public static long calculateWeight(Stop_Trip stop_Trip, Stop_Trip next) {
+
+		long a = next.getArrival_time().toInstant().getEpochSecond()
+				- stop_Trip.getDeparture_time().toInstant().getEpochSecond();
+
+		return a;
 	}
 
 }

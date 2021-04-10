@@ -4,11 +4,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import ma.myway.graph.data.Route_Service;
 import ma.myway.graph.data.Service;
 
 public class ServiceDAO extends DAO<Service> {
@@ -44,9 +42,8 @@ public class ServiceDAO extends DAO<Service> {
 		return stop;
 	}
 
-	
-	public Map<String , Service> allMap() {
-		Map<String , Service> map_sevices = new HashMap<>();
+	public Map<String, Service> allMap() {
+		Map<String, Service> map_sevices = new HashMap<>();
 		try {
 			ResultSet result = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)
 					.executeQuery("SELECT * FROM calendar");
@@ -55,8 +52,8 @@ public class ServiceDAO extends DAO<Service> {
 				for (int i = 0; i < 7; i++) {
 					dates[i] = result.getInt(days[i]);
 				}
-				map_sevices.put(result.getString("service_id"), new Service(result.getString("service_id"), dates, result.getDate("start_date"),
-						result.getDate("end_date")));
+				map_sevices.put(result.getString("service_id"), new Service(result.getString("service_id"), dates,
+						result.getDate("start_date"), result.getDate("end_date")));
 			}
 			result.close();
 		} catch (SQLException e) {
@@ -70,8 +67,8 @@ public class ServiceDAO extends DAO<Service> {
 	public boolean create(Service obj) {
 		try {
 			int result = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)
-					.executeUpdate("INSERT INTO calendar VALUES("+obj.toString()+")");
-			System.out.println(result +" Row affected ! ");
+					.executeUpdate("INSERT INTO calendar VALUES(" + obj.toString() + ")");
+			System.out.println(result + " Row affected ! ");
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();

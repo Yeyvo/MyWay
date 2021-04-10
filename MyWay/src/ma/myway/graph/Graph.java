@@ -1,22 +1,19 @@
 package ma.myway.graph;
 
 import java.io.Serializable;
-import java.sql.Time;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import ma.myway.dao.DAOFactory;
 import ma.myway.graph.data.Service;
 
 /**
@@ -49,7 +46,8 @@ public class Graph implements Serializable {
 	private Set<Node> unSettledNodes;
 	private FibHeap priorityQueue;
 	private FibonacciHeap<Node> pq;
-	private Map<Node, Edge> predecessors; // Map<Node destination - Edge origine> (origin = the edge leading to Node destination)
+	private Map<Node, Edge> predecessors; // Map<Node destination - Edge origine> (origin = the edge leading to Node
+											// destination)
 
 	private Map<Node, Double> distance;
 
@@ -65,10 +63,10 @@ public class Graph implements Serializable {
 		this.edges = edges;
 	}
 
-	public Graph(HashMap<String, Node> node, HashMap<String, List<Edge>> edges, Map<String, Service> services2) {
+	public Graph(HashMap<String, Node> node, HashMap<String, List<Edge>> edges, Map<String, Service> services) {
 		this.nodes = node;
 		this.edges = edges;
-		this.services = services2;
+		this.services = services;
 		this.priorityQueue = new FibHeap();
 	}
 
@@ -322,12 +320,9 @@ public class Graph implements Serializable {
 		Node min = priorityQueue.extract_min();
 
 		do {
-			System.out.println(" test " + min.getStop().getStop_id());
 			List<Edge> neighboors = edges.get(min.getStop().getStop_id());
 			if (neighboors != null) {
 				for (Edge edge : neighboors) {
-					System.out.println("\t test  edge :" + edge.getSrc().getStop().getStop_id() + "  -  "
-							+ edge.getDest().getStop().getStop_id());
 					double weight = edge.getWeight();
 					double newLen = getShortestDistance(edge.getSrc()) + weight;
 					if (newLen < getShortestDistance(edge.getDest())) {
@@ -341,20 +336,37 @@ public class Graph implements Serializable {
 		} while (min != null);
 	}
 
-	public List<Service> Service_Date(Date date) {
-		List<Service> result = null;
+	public Set<String> Service_Date(Date date) {
+		Set<String> result = new HashSet<String>();
 
 		for (Service service : services.values()) {// if it's runing slow whe can use MutableMap of Eclipse (CS)
 
 			if (((service.getStart_date().compareTo(date) * date.compareTo(service.getEnd_date()) >= 0)
 					&& (service.getRemoved().indexOf(date) == -1)) || (service.getAdded().indexOf(date) != -1)) {
-				result.add(service);
+				result.add(service.getService_id());
 
 			}
 
 		}
 
 		return result;
+	}
+
+	// a modifier si il y'as des problemmes
+	public List<String> Trip_Date(Date date) {
+//		Set<String> result = null;
+		Set<String> lstService = Service_Date(date);
+//		Set<Route_Service> routeS = DAOFactory.getRoutesDAO().all();
+//		for(String service_id : lstService) {
+//			
+//			for(Route_Service strk : routeS)
+//			for(Trips_Directions td : Route_Service.search_by_id(routeS., strk.getRoute_id())) {
+//				
+//			}
+//		}
+//			
+//		lstService = null; 
+		return DAOFactory.getRoutesDAO().findActiveTrips(lstService);
 	}
 
 	public void dijkstraOp2(Node source) { // done
@@ -364,12 +376,11 @@ public class Graph implements Serializable {
 
 		HashMap<Node, FibonacciHeap.Entry<Node>> entries = new HashMap<Node, FibonacciHeap.Entry<Node>>();
 
-		for(Node node: nodes.values()){
+		for (Node node : nodes.values()) {
 			distance.put(node, (double) Integer.MAX_VALUE);
 		}
 
 		distance.put(source, 0.0);
-
 
 		for (Node node : nodes.values()) {
 			entries.put(node, pq.enqueue(node, distance.get(node)));
@@ -379,11 +390,11 @@ public class Graph implements Serializable {
 
 		do {
 			List<Edge> neighboors = edges.get(min.getStop().getStop_id());
-			if(neighboors != null){
+			if (neighboors != null) {
 				for (Edge edge : neighboors) {
 					double weight = edge.getWeight();
 					double newLen = getShortestDistance(edge.getSrc()) + weight;
-					if(newLen < getShortestDistance(edge.getDest())){
+					if (newLen < getShortestDistance(edge.getDest())) {
 						pq.decreaseKey(entries.get(edge.getDest()), newLen);
 						distance.put(edge.getDest(), newLen);
 						predecessors.put(edge.getDest(), edge);
@@ -391,10 +402,10 @@ public class Graph implements Serializable {
 				}
 			}
 			try {
-				min =  (Node) pq.dequeueMin().mElem;
+				min = (Node) pq.dequeueMin().mElem;
 			} catch (Exception e) {
 				min = null;
 			}
-		} while ( min != null);
+		} while (min != null);
 	}
 }

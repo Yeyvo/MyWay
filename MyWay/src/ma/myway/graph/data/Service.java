@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class Service implements Serializable{
+public class Service implements Serializable {
 
 	/**
 	 * 
@@ -17,7 +17,7 @@ public class Service implements Serializable{
 	Integer dates[] = new Integer[7];
 	Date start_date;
 	Date end_date;
-	
+
 	private List<Date> added;
 	private List<Date> removed;
 
@@ -64,25 +64,49 @@ public class Service implements Serializable{
 	public String toString() {
 		String str = new String();
 		str.concat(service_id + ",");
-		for(int jr : dates) {
+		for (int jr : dates) {
 			str.concat(jr + ",");
 		}
-		return str + start_date + "," + end_date ;
+		return str + start_date + "," + end_date;
 	}
 
 	public void toStr() {
 		String str = new String();
 		str.concat(service_id + ",");
-		for(int jr : dates) {
+		for (int jr : dates) {
 			str.concat(jr + ",");
 		}
-		Logger.getLogger("MyLog").info(str + start_date + "," + end_date  + " added=" + Arrays.toString( added.toArray() ) + ", removed=" + Arrays.toString( removed.toArray() ) + "]");
+		Logger.getLogger("MyLog").info(str + start_date + "," + end_date + " added=" + Arrays.toString(added.toArray())
+				+ ", removed=" + Arrays.toString(removed.toArray()) + "]");
 	}
-	
+
 	public static int getDayNumber(Date date) {
-	    Calendar cal = Calendar.getInstance();
-	    cal.setTime(date);
-	    return cal.get(Calendar.DAY_OF_WEEK);
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		return cal.get(Calendar.DAY_OF_WEEK);
+	}
+
+	public static Date datetimeload(String str) {
+		Date result = new Date(1970, 1, 1, 0, 0, 0);
+
+		String strtmp[] = str.split(":");
+		if (str.equals("24:00:00")) {
+			result.setDate(1 + result.getDate());
+			result.setHours(0);
+			result.setMinutes(0);
+			result.setSeconds(0);
+		} else if (Integer.parseInt(strtmp[0]) >= 24) {
+			result.setDate(1 + result.getDate());
+			result.setHours(Integer.parseInt(strtmp[0]) - 24);
+			result.setMinutes(Integer.parseInt(strtmp[1]));
+			result.setSeconds(Integer.parseInt(strtmp[2]));
+		} else {
+			result.setHours(Integer.parseInt(strtmp[0]));
+			result.setMinutes(Integer.parseInt(strtmp[1]));
+			result.setSeconds(Integer.parseInt(strtmp[2]));
+		}
+		strtmp = null;
+		return result;
 	}
 
 }

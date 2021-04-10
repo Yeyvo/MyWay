@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -27,6 +26,7 @@ import ma.myway.dao.BddConnection;
 import ma.myway.dao.DAOFactory;
 import ma.myway.graph.Edge;
 import ma.myway.graph.FibHeap;
+import ma.myway.graph.FibonacciHeap;
 import ma.myway.graph.Graph;
 import ma.myway.graph.Node;
 import ma.myway.graph.data.CalendarExp;
@@ -34,9 +34,6 @@ import ma.myway.graph.data.Service;
 import ma.myway.graph.data.Stop;
 import ma.myway.graph.data.Stop_Trip;
 import ma.myway.graph.data.Transfert;
-import ma.myway.graph.FibHeap;
-import ma.myway.graph.FibonacciHeap;
-
 
 public class MainClass {
 
@@ -71,36 +68,40 @@ public class MainClass {
 			e.printStackTrace();
 		}
 		Graph g = null;
-		/*File f = new File("data.bin");
+		File f = new File("data.bin");
 		if (!f.exists() && !f.isDirectory()) {
 			g = graphGeneration(StartTime);
 			saveData(g);
 		} else if (f.exists() && !f.isDirectory()) {
 			System.out.println("Exist");
 			g = loadData();
-		}*/
-		g = graphGeneration(StartTime);
+		}
 		long endTime = System.currentTimeMillis();
 		double timeElapsed = endTime - StartTime;
-		Logger.getLogger("MyLog").info("Execution time in seconds  :  List : " + timeElapsed / 1000 + " seconde ");
+		Logger.getLogger("MyLog").info("Execution time in seconds   : " + timeElapsed / 1000 + " seconde ");
 
 		/*
 		 * Test shortest path from 2 seal stops
 		 */
-/*
-		LinkedList<Edge> path = g.getShortestPath(g.getNodebyID("4238683"), g.getNodebyID("5478447"));
 
-		Logger.getLogger("MyLog").info("Shortest path from " + 4238683 + " to " + 5478447 + ": ");
+		LinkedList<Edge> path = g.getShortestPath(g.getNodebyID("1911"), g.getNodebyID("1639"));
+
+		Logger.getLogger("MyLog").info("Shortest path from " + 1911 + " to " + 1639 + ": ");
 
 		for (Edge edge : path) {
 			Logger.getLogger("MyLog")
 					.info("go from " + edge.getSrc().getStop().getName() + " to " + edge.getDest().getStop().getName()
-							+ "[ Trip_id =" + edge.getTrip_id() + " dur�e =" + edge.getWeight() + "]");
+							+ "[ Trip_id =" + edge.getTrip_id() + " duree =" + edge.getWeight() + "]");
 		}
 
-		*/
-		testDijkstra2();
-		//testFibonecciHeap();
+//		int k = 0;
+//		List<String> res = g.Trip_Date(new Date());
+//		for(String s : res) {
+//			System.out.println(s);
+//			k++;
+//		}
+//		System.out.println(k);
+
 	}
 
 	public static void saveData(Graph graph) {
@@ -174,6 +175,7 @@ public class MainClass {
 			Logger.getLogger("MyLog").info("Node : " + stop.getStop_id());
 			i++;
 		}
+		stops = null;
 		b = System.currentTimeMillis();
 		Logger.getLogger("MyLog").info("Node Generation Finished ! (" + i + ")  time : " + (b - a) / 1000);
 
@@ -182,6 +184,7 @@ public class MainClass {
 		HashMap<String, CalendarExp> calExp = DAOFactory.getCalendarExpDAO().allMap();
 		merge(calExp, services);
 		g.setServices(services);
+		calExp = null;
 		a = System.currentTimeMillis();
 		Logger.getLogger("MyLog").info("Service Data Retrieving Finished !  time :  " + (a - b) / 1000);
 
@@ -195,16 +198,16 @@ public class MainClass {
 			Stop_Trip next = Stop_Trip.getNextStop_sequence(st, st.get(j).getTrip_id(), st.get(j).getStop_sequence(),
 					j);
 			if (next != null) {
-				g.addEdge(new Edge(node.get(st.get(j).getStop_id()), node.get(next.getStop_id()),
-						ChronoUnit.SECONDS.between(st.get(j).getArrival_time().toLocalTime(),
-								st.get(j).getDeparture_time().toLocalTime()),
-						st.get(j).getTrip_id()));
+				Edge e = new Edge(node.get(st.get(j).getStop_id()), node.get(next.getStop_id()),
+						Stop_Trip.calculateWeight(st.get(j), next), st.get(j).getTrip_id());
+				g.addEdge(e);
 				Logger.getLogger("MyLog")
 						.info("Edge Trip (" + ++i + ") : src : " + st.get(j).getStop_id() + " dst : "
 								+ next.getStop_id() + " Trip_id : " + st.get(j).getTrip_id() + " Stop_sequence : "
-								+ st.get(j).getStop_sequence());
+								+ st.get(j).getStop_sequence() + "   poid : " + e.getWeight());
 			}
 		}
+		st = null;
 		b = System.currentTimeMillis();
 		Logger.getLogger("MyLog").info("Edge Generation from Trips Finished ! (" + i + ")  time : " + (b - a) / 1000);
 
@@ -233,6 +236,7 @@ public class MainClass {
 					+ tr.getDest_stop_id() + " Trip_id : 0  Transfert Time :  " + tr.getTransfert_time());
 			i++;
 		}
+		trans = null;
 		b = System.currentTimeMillis();
 		Logger.getLogger("MyLog")
 				.info("Edge from Transferts Generation Finished ! (" + i + ")  time :  " + (b - a) / 1000);
@@ -243,7 +247,7 @@ public class MainClass {
 	private static void merge(HashMap<String, CalendarExp> calExp, Map<String, Service> services) {
 
 		for (String calExpKey : calExp.keySet()) {
-			
+
 			services.get(calExp.get(calExpKey).getService_id()).setAdded(calExp.get(calExpKey).getAdded());
 			services.get(calExp.get(calExpKey).getService_id()).setRemoved(calExp.get(calExpKey).getRemoved());
 			services.get(calExp.get(calExpKey).getService_id()).toStr();
@@ -255,8 +259,7 @@ public class MainClass {
 
 	}
 
-
-	public static void testDijkstra(){
+	public static void testDijkstra() {
 		Stop sa, sb, sc, sd;
 
 		sa = new Stop("a");
@@ -274,7 +277,7 @@ public class MainClass {
 		ac = new Edge(a, c, 4, "ac");
 		bc1 = new Edge(b, c, 1, "bc1");
 		bc2 = new Edge(b, c, 3, "bc2");
-		ab3 = new Edge(a, b, 0.5, "ab3");
+		ab3 = new Edge(a, b, 1, "ab3");
 		aa = new Edge(a, a, 0, "aa");
 
 		HashMap<String, Node> nodes = new HashMap<String, Node>();
@@ -298,7 +301,6 @@ public class MainClass {
 		}
 	}
 
-	
 	public static void testDijkstra2() {
 		Stop sa, sb, sc, sd;
 		sa = new Stop("a");
@@ -322,32 +324,32 @@ public class MainClass {
 		ab1 = new Edge(a, b, 2, "ab1");
 		ab2 = new Edge(a, b, 1, "ab2");
 		ac1 = new Edge(a, c, 3, "ac1");
-		ac2 = new Edge(a, c, 0.5, "ac2");
+		ac2 = new Edge(a, c, 0, "ac2");
 		ad1 = new Edge(a, d, 7, "ad1");
-		ad2 = new Edge(a, d, 3.5, "ad2");
+		ad2 = new Edge(a, d, 3, "ad2");
 
 		Edge ba1, ba2, bc1, bc2, bd1, bd2;
-		ba1 = new Edge(b, a, 1.5, "ba1");
-		ba2 = new Edge(b, a, 0.5, "ba2");
+		ba1 = new Edge(b, a, 1, "ba1");
+		ba2 = new Edge(b, a, 0, "ba2");
 		bc1 = new Edge(b, c, 6, "bc1");
 		bc2 = new Edge(b, c, 4, "bc2");
 		bd1 = new Edge(b, d, 2, "bd1");
 		bd2 = new Edge(b, d, 3, "bd2");
 
 		Edge ca1, ca2, cb1, cb2, cd1, cd2;
-		ca1 =  new Edge(c, a, 3, "ca1");
-		ca2 =  new Edge(c, a, 5, "ca2");
-		cb1 =  new Edge(c, b, 0.5, "cb1");
-		cb2 =  new Edge(c, b, 2, "cb2");
-		cd1 =  new Edge(c, d, 1, "cd1");
-		cd2 =  new Edge(c, d, 4, "cd2");
+		ca1 = new Edge(c, a, 3, "ca1");
+		ca2 = new Edge(c, a, 5, "ca2");
+		cb1 = new Edge(c, b, 0, "cb1");
+		cb2 = new Edge(c, b, 2, "cb2");
+		cd1 = new Edge(c, d, 1, "cd1");
+		cd2 = new Edge(c, d, 4, "cd2");
 
 		Edge da1, da2, db1, db2, dc1, dc2;
 		da1 = new Edge(d, a, 3, "da1");
 		da2 = new Edge(d, a, 5, "da2");
 		db1 = new Edge(d, b, 1, "db1");
-		db2 = new Edge(d, b, 1.5, "db2");
-		dc1 = new Edge(d, c, 0.5, "dc1");
+		db2 = new Edge(d, b, 1, "db2");
+		dc1 = new Edge(d, c, 0, "dc1");
 		dc2 = new Edge(d, c, 4, "dc2");
 
 		HashMap<String, Node> nodes = new HashMap<String, Node>();
@@ -424,7 +426,6 @@ public class MainClass {
 		obj.enqueue(n39, 39);
 		obj.enqueue(n10, 10);
 
-		
 		System.out.println(obj.dequeueMin().mElem.getStop().getStop_id());
 		System.out.println(obj.dequeueMin().mElem.getStop().getStop_id());
 		obj.decreaseKey(n3030, 11);
