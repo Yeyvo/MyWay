@@ -48,8 +48,9 @@ public class Graph implements Serializable {
 	private Set<Node> settledNodes;
 	private Set<Node> unSettledNodes;
 	private FibHeap priorityQueue;
-	private Map<Node, Edge> predecessors; // Map<Node destination - Edge origine> (origin = the edge leading to Node
-											// destination)
+	private FibonacciHeap<Node> pq;
+	private Map<Node, Edge> predecessors; // Map<Node destination - Edge origine> (origin = the edge leading to Node destination)
+
 	private Map<Node, Double> distance;
 
 	private Map<String, Service> services;
@@ -62,7 +63,6 @@ public class Graph implements Serializable {
 	public Graph(HashMap<String, Node> node, HashMap<String, List<Edge>> edges) {
 		this.nodes = node;
 		this.edges = edges;
-		this.priorityQueue = new FibHeap();
 	}
 
 	public Graph(HashMap<String, Node> node, HashMap<String, List<Edge>> edges, Map<String, Service> services2) {
@@ -290,7 +290,7 @@ public class Graph implements Serializable {
 	 * @return le plus court chemin du noeud src au noeud dest
 	 */
 	public LinkedList<Edge> getShortestPath(Node src, Node dest) {
-		dijkstraOp(src);
+		dijkstraOp2(src);
 		return getPath(dest);
 	}
 
@@ -305,6 +305,7 @@ public class Graph implements Serializable {
 	public void dijkstraOp(Node source) { // done
 		distance = new HashMap<Node, Double>();
 		predecessors = new HashMap<Node, Edge>();
+		priorityQueue = new FibHeap();
 
 		for (Node node : nodes.values()) {
 			distance.put(node, (double) Integer.MAX_VALUE);
@@ -354,5 +355,46 @@ public class Graph implements Serializable {
 		}
 
 		return result;
+	}
+
+	public void dijkstraOp2(Node source) { // done
+		distance = new HashMap<Node, Double>(); // to be changed
+		predecessors = new HashMap<Node, Edge>();
+		pq = new FibonacciHeap<Node>();
+
+		HashMap<Node, FibonacciHeap.Entry<Node>> entries = new HashMap<Node, FibonacciHeap.Entry<Node>>();
+
+		for(Node node: nodes.values()){
+			distance.put(node, (double) Integer.MAX_VALUE);
+		}
+
+		distance.put(source, 0.0);
+
+
+		for (Node node : nodes.values()) {
+			entries.put(node, pq.enqueue(node, distance.get(node)));
+		}
+
+		Node min = (Node) pq.dequeueMin().mElem;
+
+		do {
+			List<Edge> neighboors = edges.get(min.getStop().getStop_id());
+			if(neighboors != null){
+				for (Edge edge : neighboors) {
+					double weight = edge.getWeight();
+					double newLen = getShortestDistance(edge.getSrc()) + weight;
+					if(newLen < getShortestDistance(edge.getDest())){
+						pq.decreaseKey(entries.get(edge.getDest()), newLen);
+						distance.put(edge.getDest(), newLen);
+						predecessors.put(edge.getDest(), edge);
+					}
+				}
+			}
+			try {
+				min =  (Node) pq.dequeueMin().mElem;
+			} catch (Exception e) {
+				min = null;
+			}
+		} while ( min != null);
 	}
 }
