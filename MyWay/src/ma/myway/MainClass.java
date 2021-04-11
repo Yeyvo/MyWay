@@ -25,7 +25,6 @@ import ma.myway.config.Config;
 import ma.myway.dao.BddConnection;
 import ma.myway.dao.DAOFactory;
 import ma.myway.graph.Edge;
-import ma.myway.graph.FibHeap;
 import ma.myway.graph.FibonacciHeap;
 import ma.myway.graph.Graph;
 import ma.myway.graph.Node;
@@ -41,7 +40,7 @@ public class MainClass {
 	private static int initlenNode = 34778;
 
 	public static void main(String[] args) {
-
+		
 		long StartTime = System.currentTimeMillis();
 
 		Logger logger = Logger.getLogger("MyLog");
@@ -79,11 +78,11 @@ public class MainClass {
 		long endTime = System.currentTimeMillis();
 		double timeElapsed = endTime - StartTime;
 		Logger.getLogger("MyLog").info("Execution time in seconds   : " + timeElapsed / 1000 + " seconde ");
-
+		
 		/*
 		 * Test shortest path from 2 seal stops
 		 */
-
+		
 		LinkedList<Edge> path = g.getShortestPath(g.getNodebyID("1911"), g.getNodebyID("1639"));
 
 		Logger.getLogger("MyLog").info("Shortest path from " + 1911 + " to " + 1639 + ": ");
@@ -93,7 +92,7 @@ public class MainClass {
 					.info("go from " + edge.getSrc().getStop().getName() + " to " + edge.getDest().getStop().getName()
 							+ "[ Trip_id =" + edge.getTrip_id() + " duree =" + edge.getWeight() + "]");
 		}
-
+		
 //		int k = 0;
 //		List<String> res = g.Trip_Date(new Date());
 //		for(String s : res) {
@@ -101,7 +100,6 @@ public class MainClass {
 //			k++;
 //		}
 //		System.out.println(k);
-
 	}
 
 	public static void saveData(Graph graph) {
@@ -259,48 +257,6 @@ public class MainClass {
 
 	}
 
-	public static void testDijkstra() {
-		Stop sa, sb, sc, sd;
-
-		sa = new Stop("a");
-		sb = new Stop("b");
-		sc = new Stop("c");
-
-		Node a, b, c;
-		a = new Node(sa);
-		b = new Node(sb);
-		c = new Node(sc);
-
-		Edge ab1, ab2, ab3, ac, bc1, bc2, aa;
-		ab1 = new Edge(a, b, 5, "ab1");
-		ab2 = new Edge(a, b, 1, "ab2");
-		ac = new Edge(a, c, 4, "ac");
-		bc1 = new Edge(b, c, 1, "bc1");
-		bc2 = new Edge(b, c, 3, "bc2");
-		ab3 = new Edge(a, b, 1, "ab3");
-		aa = new Edge(a, a, 0, "aa");
-
-		HashMap<String, Node> nodes = new HashMap<String, Node>();
-		HashMap<String, List<Edge>> edges = new HashMap<String, List<Edge>>();
-
-		nodes.put("a", a);
-		nodes.put("b", b);
-		nodes.put("c", c);
-
-		edges.put("a", new ArrayList<Edge>(Arrays.asList(ab1, ab2, ac, ab3, aa)));
-		edges.put("b", new ArrayList<Edge>(Arrays.asList(bc1, bc2)));
-
-		Graph g = new Graph(nodes, edges);
-
-		LinkedList<Edge> path = g.getShortestPath(a, c);
-
-		System.out.println("Shortest path from " + a.getStop().getStop_id() + " to " + c.getStop().getStop_id() + ": ");
-
-		for (Edge edge : path) {
-			System.out.println(edge.getTrip_id());
-		}
-	}
-
 	public static void testDijkstra2() {
 		Stop sa, sb, sc, sd;
 		sa = new Stop("a");
@@ -339,7 +295,7 @@ public class MainClass {
 		Edge ca1, ca2, cb1, cb2, cd1, cd2;
 		ca1 = new Edge(c, a, 3, "ca1");
 		ca2 = new Edge(c, a, 5, "ca2");
-		cb1 = new Edge(c, b, 0, "cb1");
+		cb1 = new Edge(c, b, 2, "cb1");
 		cb2 = new Edge(c, b, 2, "cb2");
 		cd1 = new Edge(c, d, 1, "cd1");
 		cd2 = new Edge(c, d, 4, "cd2");
@@ -367,42 +323,13 @@ public class MainClass {
 
 		Graph g = new Graph(nodes, edges);
 
-		LinkedList<Edge> path = g.getShortestPath(d, c);
+		LinkedList<Edge> path = g.getShortestPath(b, c);
 
 		System.out.println("Shortest path from " + a.getStop().getStop_id() + " to " + c.getStop().getStop_id() + ": ");
 
 		for (Edge edge : path) {
 			System.out.println(edge.getTrip_id());
 		}
-	}
-
-	public static void testFibHeap() {
-		FibHeap obj = new FibHeap();
-		Node n7, n26, n30, n39, n10;
-		n7 = new Node(new Stop("7"));
-		n26 = new Node(new Stop("26"));
-		n30 = new Node(new Stop("30"));
-		n39 = new Node(new Stop("39"));
-		n10 = new Node(new Stop("10"));
-
-		n7.set_key(7);
-		n26.set_key(26);
-		n30.set_key(30);
-		n39.set_key(39);
-		n10.set_key(10);
-
-		obj.insert(n7);
-		obj.insert(n26);
-		obj.insert(n30);
-		obj.insert(n39);
-		obj.insert(n10);
-
-		System.out.println(obj.extract_min().getStop().getStop_id());
-		System.out.println(obj.extract_min().getStop().getStop_id());
-		obj.decrease_key(n30, 11);
-		System.out.println(obj.extract_min().getStop().getStop_id());
-		System.out.println(obj.extract_min().getStop().getStop_id());
-		System.out.println(obj.extract_min().getStop().getStop_id());
 	}
 
 	public static void testFibonecciHeap() {
@@ -413,12 +340,6 @@ public class MainClass {
 		n30 = new Node(new Stop("30"));
 		n39 = new Node(new Stop("39"));
 		n10 = new Node(new Stop("10"));
-
-		n7.set_key(7);
-		n26.set_key(26);
-		n30.set_key(30);
-		n39.set_key(39);
-		n10.set_key(10);
 
 		obj.enqueue(n7, 7);
 		obj.enqueue(n26, 26);

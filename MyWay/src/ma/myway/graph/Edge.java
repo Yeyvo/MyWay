@@ -25,9 +25,6 @@ import java.util.Date;
  * @see Node
  */
 public class Edge implements Serializable {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 160843439856388648L;
 	private Node src, dest;
 	private long weight; // type a discuter
@@ -54,51 +51,30 @@ public class Edge implements Serializable {
 		// this.isActive = activity();
 	}
 
-	/**
-	 * @return boolean
-	 */
 	public boolean isTransfert() {
 		return isTransfert;
 	}
 
-	/**
-	 * @return int
-	 */
 	public int getTransfer_type() {
 		return transfer_type;
 	}
 
-	/**
-	 * @return Node
-	 */
 	public Node getSrc() {
 		return src;
 	}
 
-	/**
-	 * @return Node
-	 */
 	public Node getDest() {
 		return this.dest;
 	}
 
-	/**
-	 * @return double
-	 */
 	public long getWeight() {
 		return this.weight;
 	}
 
-	/**
-	 * @param weight
-	 */
 	public void setWeight(long weight) {
 		this.weight = weight;
 	}
 
-	/**
-	 * @return String
-	 */
 	public String getTrip_id() {
 		return trip_id;
 	}

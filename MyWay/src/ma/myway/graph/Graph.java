@@ -44,7 +44,6 @@ public class Graph implements Serializable {
 	private HashMap<String, List<Edge>> edges;
 	private Set<Node> settledNodes;
 	private Set<Node> unSettledNodes;
-	private FibHeap priorityQueue;
 	private FibonacciHeap<Node> pq;
 	private Map<Node, Edge> predecessors; // Map<Node destination - Edge origine> (origin = the edge leading to Node
 											// destination)
@@ -67,7 +66,6 @@ public class Graph implements Serializable {
 		this.nodes = node;
 		this.edges = edges;
 		this.services = services;
-		this.priorityQueue = new FibHeap();
 	}
 
 	/*
@@ -267,11 +265,11 @@ public class Graph implements Serializable {
 		Node step = target;
 		Edge next;
 		// check if a path exists
-		if (predecessors.get(step) == null) {
+		if (step.getPredecessor() == null) {
 			return null;
 		}
-		while (predecessors.get(step) != null) {
-			next = predecessors.get(step);
+		while (step.getPredecessor() != null) {
+			next = step.getPredecessor();
 			step = next.getSrc();
 			path.add(next);
 		}
@@ -288,7 +286,7 @@ public class Graph implements Serializable {
 	 * @return le plus court chemin du noeud src au noeud dest
 	 */
 	public LinkedList<Edge> getShortestPath(Node src, Node dest) {
-		dijkstraOp2(src);
+		dijkstraOp3(src);
 		return getPath(dest);
 	}
 
@@ -300,41 +298,6 @@ public class Graph implements Serializable {
 		this.services = services;
 	}
 
-	public void dijkstraOp(Node source) { // done
-		distance = new HashMap<Node, Double>();
-		predecessors = new HashMap<Node, Edge>();
-		priorityQueue = new FibHeap();
-
-		for (Node node : nodes.values()) {
-			distance.put(node, (double) Integer.MAX_VALUE);
-		}
-
-		for (Node node : nodes.values()) {
-			priorityQueue.insert(node);
-		}
-
-		priorityQueue.decrease_key(source, 0);
-
-		distance.put(source, 0.0);
-
-		Node min = priorityQueue.extract_min();
-
-		do {
-			List<Edge> neighboors = edges.get(min.getStop().getStop_id());
-			if (neighboors != null) {
-				for (Edge edge : neighboors) {
-					double weight = edge.getWeight();
-					double newLen = getShortestDistance(edge.getSrc()) + weight;
-					if (newLen < getShortestDistance(edge.getDest())) {
-						priorityQueue.decrease_key(edge.getDest(), newLen);
-						distance.put(edge.getDest(), newLen);
-						predecessors.put(edge.getDest(), edge);
-					}
-				}
-			}
-			min = priorityQueue.extract_min();
-		} while (min != null);
-	}
 
 	public Set<String> Service_Date(Date date) {
 		Set<String> result = new HashSet<String>();
@@ -398,6 +361,40 @@ public class Graph implements Serializable {
 						pq.decreaseKey(entries.get(edge.getDest()), newLen);
 						distance.put(edge.getDest(), newLen);
 						predecessors.put(edge.getDest(), edge);
+					}
+				}
+			}
+			try {
+				min = (Node) pq.dequeueMin().mElem;
+			} catch (Exception e) {
+				min = null;
+			}
+		} while (min != null);
+	}
+
+	public void dijkstraOp3(Node source) { // done
+		pq = new FibonacciHeap<Node>();
+
+		HashMap<Node, FibonacciHeap.Entry<Node>> entries = new HashMap<Node, FibonacciHeap.Entry<Node>>();
+
+		source.setDistance(0.0);
+
+		for (Node node : nodes.values()) {
+			entries.put(node, pq.enqueue(node, node.getDistance()));
+		}
+
+		Node min = (Node) pq.dequeueMin().mElem;
+
+		do {
+			List<Edge> neighboors = edges.get(min.getStop().getStop_id());
+			if (neighboors != null) {
+				for (Edge edge : neighboors) {
+					double weight = edge.getWeight();
+					double newLen = edge.getSrc().getDistance() + weight;
+					if (newLen < edge.getDest().getDistance()) {
+						pq.decreaseKey(entries.get(edge.getDest()), newLen);
+						edge.getDest().setDistance(newLen);
+						edge.getDest().setPredecessor(edge);
 					}
 				}
 			}
