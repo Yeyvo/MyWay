@@ -49,7 +49,6 @@ public class Graph implements Serializable {
 	private Map<Node, Edge> predecessors; // Map<Node destination - Edge origine> (origin = the edge leading to Node destination)
 	private Map<Node, Double> distance;
 
-
 	public Graph(HashMap<String, Node> nodes) {
 		this.nodes = nodes;
 		this.edges = new HashMap<String, List<Edge>>();
@@ -223,12 +222,6 @@ public class Graph implements Serializable {
 	 * @param node
 	 * @see Graph#dijsktra(Node)
 	 */
-	/*
-	private boolean isSettled(Node node) { // done
-		return settledNodes.contains(node);
-	}
-	*/
-
 	private boolean isSettled(Node node) { // done
 		return settledNodes.contains(node);
 	}
