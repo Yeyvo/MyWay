@@ -6,7 +6,7 @@ public class Transfert {
 	String dest_stop_id;
 	int transfert_type;
 	int transfert_time;
-	
+
 	public Transfert(String src_stop_id, String dest_stop_id, int transfert_type, int transfert_time) {
 		this.src_stop_id = src_stop_id;
 		this.dest_stop_id = dest_stop_id;
@@ -32,10 +32,7 @@ public class Transfert {
 
 	@Override
 	public String toString() {
-		return  src_stop_id + "," + dest_stop_id + ","
-				+ transfert_type + "," + transfert_time ;
+		return src_stop_id + "," + dest_stop_id + "," + transfert_type + "," + transfert_time;
 	}
-	
-	
 
 }

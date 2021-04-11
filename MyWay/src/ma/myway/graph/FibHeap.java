@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 public class FibHeap implements Serializable {
 
-
 	private static final long serialVersionUID = 6328051499771537372L;
 	Node min;
 	int n;

@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
-import ma.myway.graph.data.Stop_Trip;
 import ma.myway.graph.data.Transfert;
 
 public class TransfertDAO extends DAO<Transfert> {
@@ -16,7 +15,7 @@ public class TransfertDAO extends DAO<Transfert> {
 	}
 
 	@Override
-	
+
 	public Transfert find(String id) {
 		// TODO Auto-generated method stub
 		return null;
@@ -39,13 +38,13 @@ public class TransfertDAO extends DAO<Transfert> {
 
 		return set_transferts;
 	}
-	
+
 	@Override
 	public boolean create(Transfert obj) {
 		try {
 			int result = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)
-					.executeUpdate("INSERT INTO transfers VALUES("+obj.toString()+")");
-			System.out.println(result +" Row affected ! ");
+					.executeUpdate("INSERT INTO transfers VALUES(" + obj.toString() + ")");
+			System.out.println(result + " Row affected ! ");
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();

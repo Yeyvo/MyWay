@@ -2,6 +2,7 @@ package ma.myway.graph;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Date;
 
 /**
  * <p>
@@ -23,18 +24,19 @@ import java.time.LocalDate;
  * 
  * @see Node
  */
-public class Edge implements Serializable{
+public class Edge implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 160843439856388648L;
 	private Node src, dest;
-	private double weight; // type a discuter
+	private long weight; // type a discuter
 	private String trip_id;
 	private int transfer_type;
-	private boolean isTransfert ;
+	private boolean isTransfert;
+	private boolean isActive;
 
-	public Edge(Node src, Node dest, double weight, String trip_id) {
+	public Edge(Node src, Node dest, long weight, String trip_id) {
 		this.src = src;
 		this.dest = dest;
 		this.weight = weight;
@@ -42,27 +44,30 @@ public class Edge implements Serializable{
 		this.isTransfert = false;
 	}
 
-	public Edge(Node src, Node dest, double weight, String trip_id, int transfer_type) {
+	public Edge(Node src, Node dest, long weight, String trip_id, int transfer_type) {
 		this.src = src;
 		this.dest = dest;
 		this.weight = weight;
 		this.trip_id = trip_id;
 		this.transfer_type = transfer_type;
 		this.isTransfert = true;
+		// this.isActive = activity();
 	}
-	
+
 	/**
 	 * @return boolean
 	 */
 	public boolean isTransfert() {
 		return isTransfert;
 	}
+
 	/**
 	 * @return int
 	 */
 	public int getTransfer_type() {
 		return transfer_type;
 	}
+
 	/**
 	 * @return Node
 	 */
@@ -80,14 +85,14 @@ public class Edge implements Serializable{
 	/**
 	 * @return double
 	 */
-	public double getWeight() {
+	public long getWeight() {
 		return this.weight;
 	}
 
 	/**
 	 * @param weight
 	 */
-	public void setWeight(double weight) {
+	public void setWeight(long weight) {
 		this.weight = weight;
 	}
 
@@ -98,27 +103,26 @@ public class Edge implements Serializable{
 		return trip_id;
 	}
 
-	/**
-	 * exprime si l'arete est active ou non, c'est a dire si le voyage est actuellement disponible
-	 * 
-	 * @return boolean
-	 */
 	public boolean isActive() {
-		//a implementer (service_id ?)
-		return true;
+		return isActive;
 	}
 
 	@Override
 	public String toString() {
-		return "Edge [src=" + src + ", dest=" + dest.getStop().getStop_id() + ", weight=" + weight + ", trip_id=" + trip_id
-				+ ", transfer_type=" + transfer_type + ", isTransfert=" + isTransfert + "]";
+		return "Edge [src=" + src + ", dest=" + dest.getStop().getStop_id() + ", weight=" + weight + ", trip_id="
+				+ trip_id + ", transfer_type=" + transfer_type + ", isTransfert=" + isTransfert + "]";
 	}
 
-	public int getTransferType(){
+	public int getTransferType() {
 		throw new UnsupportedOperationException();
 	}
 
-	public LocalDate getNextStopTime(){
+	public LocalDate getNextStopTime() {
 		throw new UnsupportedOperationException();
+	}
+
+	private static boolean activity(Date dateDep, Graph g) {
+
+		return false;
 	}
 }

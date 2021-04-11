@@ -21,7 +21,7 @@ import ma.myway.graph.Node;
  * 
  * @see Node
  */
-public class Stop implements Serializable{
+public class Stop implements Serializable {
 
 	/**
 	 * 
@@ -39,7 +39,7 @@ public class Stop implements Serializable{
 	 * 
 	 * @param stop_id
 	 */
-	public Stop(String stop_id){
+	public Stop(String stop_id) {
 		this.stop_id = stop_id;
 	}
 
@@ -84,10 +84,7 @@ public class Stop implements Serializable{
 
 	@Override
 	public String toString() {
-		return  stop_id + ",null," + name + "," + desc + "," + lat + "," + lon
-				+ "," + location_type +",null";
+		return stop_id + ",null," + name + "," + desc + "," + lat + "," + lon + "," + location_type + ",null";
 	}
-	
-	
-	
+
 }

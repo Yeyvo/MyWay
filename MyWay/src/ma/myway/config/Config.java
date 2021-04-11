@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -19,14 +20,13 @@ public class Config {
 	public String USR;
 	public String PSWD;
 
-
 	public Config() {
-		  this.BDD = "mysql";
-		  this.IP = "127.0.0.1";
-		  this.PRT =  "3306";
-		  this.BDDNAME = "gtfs";
-		  this.USR = "test";
-		  this.PSWD = "test";
+		this.BDD = "mysql";
+		this.IP = "127.0.0.1";
+		this.PRT = "3306";
+		this.BDDNAME = "gtfs";
+		this.USR = "test";
+		this.PSWD = "test";
 	}
 
 	private static Config instance;

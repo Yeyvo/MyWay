@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
 import ma.myway.graph.data.Stop;
 
 /**
@@ -27,7 +28,7 @@ import ma.myway.graph.data.Stop;
  * @see Stop
  */
 
-public class Node implements Serializable{
+public class Node implements Serializable {
 	Node parent;
 	Node left;
 	Node right;
@@ -40,10 +41,10 @@ public class Node implements Serializable{
 	private List<Node> shortestPath = new LinkedList<>();
 	private Integer distance = Integer.MAX_VALUE;
 	Map<Node, Integer> adjacentNodes = new HashMap<>();
-	
-	//private static Stop NULL_STOP = new Stop("N/A");
 
-	/** 
+	// private static Stop NULL_STOP = new Stop("N/A");
+
+	/**
 	 * @param stop
 	 */
 	public Node(Stop stop) {
@@ -132,7 +133,7 @@ public class Node implements Serializable{
 	 * @return Stop
 	 */
 	public Stop getStop() {
-		return stop /*== null ? NULL_STOP : stop */;
+		return stop /* == null ? NULL_STOP : stop */;
 	}
 
 	/**
@@ -142,17 +143,17 @@ public class Node implements Serializable{
 		// change to return only active nodes
 		return adjacentNodes;
 	}
-	
+
 	@Deprecated
 	public static Node getNodeByID(List<Node> nodes, String stop_id) {
 
-		for(Node n : nodes) {
-			if(n.getStop().getStop_id().equals(stop_id)) {
+		for (Node n : nodes) {
+			if (n.getStop().getStop_id().equals(stop_id)) {
 				return n;
 			}
 		}
-		
+
 		return null;
-		
+
 	}
 }

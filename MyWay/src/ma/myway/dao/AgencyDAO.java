@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import ma.myway.graph.data.Agency;
-import ma.myway.graph.data.Service;
 
 public class AgencyDAO extends DAO<Agency> {
 
@@ -18,7 +17,7 @@ public class AgencyDAO extends DAO<Agency> {
 	@Override
 	public Agency find(String agency_id) {
 
-		Agency stop  = null;
+		Agency stop = null;
 		try {
 			ResultSet result = this.connect
 					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
@@ -31,23 +30,20 @@ public class AgencyDAO extends DAO<Agency> {
 		return stop;
 	}
 
-
 	@Override
 	public Set<Agency> all() {
-		Set<Agency> set_agency = new HashSet<>() ;
+		Set<Agency> set_agency = new HashSet<>();
 		try {
-			ResultSet result = this.connect
-					.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)
+			ResultSet result = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)
 					.executeQuery("SELECT * FROM agency");
-			while(result.next()) {
+			while (result.next()) {
 				set_agency.add(new Agency(result.getString("agency_id"), result.getString("agency_name")));
 			}
 			result.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		
+
 		return set_agency;
 	}
 
@@ -55,8 +51,8 @@ public class AgencyDAO extends DAO<Agency> {
 	public boolean create(Agency obj) {
 		try {
 			int result = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)
-					.executeUpdate("INSERT INTO agency VALUES("+obj.toString()+")");
-			System.out.println(result +" Row affected ! ");
+					.executeUpdate("INSERT INTO agency VALUES(" + obj.toString() + ")");
+			System.out.println(result + " Row affected ! ");
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
