@@ -68,22 +68,6 @@ public class Graph implements Serializable {
 		this.services = services;
 	}
 
-	/*
-	 * private void writeObject(ObjectOutputStream oos) throws IOException {
-	 * oos.defaultWriteObject(); oos.writeObject(this.edges);
-	 * oos.writeObject(this.nodes); }
-	 * 
-	 * private void readObject(ObjectInputStream ois) throws ClassNotFoundException,
-	 * IOException { ois.defaultReadObject(); HashMap<String, List<Edge>> edgesSer =
-	 * (HashMap<String, List<Edge>>) ois.readObject(); HashMap<String, Node>
-	 * nodesSer = (HashMap<String, Node>) ois.readObject();
-	 * 
-	 * //Graph g = new Graph(nodesSer,edgesSer); this.setEdges(edgesSer);
-	 * this.setNodes(nodesSer);
-	 * 
-	 * }
-	 */
-
 	public long getEdgeSize() {
 		return edges.size();
 	}
@@ -237,26 +221,6 @@ public class Graph implements Serializable {
 	}
 
 	/**
-	 * @param graph
-	 * @param source
-	 */
-	public void dijkstra(Node source) { // done
-		settledNodes = new HashSet<Node>();
-		unSettledNodes = new HashSet<Node>();
-		distance = new HashMap<Node, Double>();
-		predecessors = new HashMap<Node, Edge>();
-
-		distance.put(source, 0.0);
-		unSettledNodes.add(source);
-		while (unSettledNodes.size() > 0) {
-			Node node = getMinimum(unSettledNodes);
-			settledNodes.add(node);
-			unSettledNodes.remove(node);
-			findMinimalDistances(node);
-		}
-	}
-
-	/**
 	 * @param Node
 	 * @return LinkedList<Edge>
 	 */
@@ -286,7 +250,7 @@ public class Graph implements Serializable {
 	 * @return le plus court chemin du noeud src au noeud dest
 	 */
 	public LinkedList<Edge> getShortestPath(Node src, Node dest) {
-		dijkstraOp3(src);
+		dijkstra(src);
 		return getPath(dest);
 	}
 
@@ -297,7 +261,6 @@ public class Graph implements Serializable {
 	public void setServices(Map<String, Service> services) {
 		this.services = services;
 	}
-
 
 	public Set<String> Service_Date(Date date) {
 		Set<String> result = new HashSet<String>();
@@ -316,63 +279,16 @@ public class Graph implements Serializable {
 	}
 
 	// a modifier si il y'as des problemmes
-	public List<String> Trip_Date(Date date) {
-//		Set<String> result = null;
+	public Map<String, String> Trip_Date(Date date) {
 		Set<String> lstService = Service_Date(date);
-//		Set<Route_Service> routeS = DAOFactory.getRoutesDAO().all();
-//		for(String service_id : lstService) {
-//			
-//			for(Route_Service strk : routeS)
-//			for(Trips_Directions td : Route_Service.search_by_id(routeS., strk.getRoute_id())) {
-//				
-//			}
-//		}
-//			
-//		lstService = null; 
 		return DAOFactory.getRoutesDAO().findActiveTrips(lstService);
 	}
 
-	public void dijkstraOp2(Node source) { // done
-		distance = new HashMap<Node, Double>(); // to be changed
-		predecessors = new HashMap<Node, Edge>();
-		pq = new FibonacciHeap<Node>();
-
-		HashMap<Node, FibonacciHeap.Entry<Node>> entries = new HashMap<Node, FibonacciHeap.Entry<Node>>();
-
-		for (Node node : nodes.values()) {
-			distance.put(node, (double) Integer.MAX_VALUE);
-		}
-
-		distance.put(source, 0.0);
-
-		for (Node node : nodes.values()) {
-			entries.put(node, pq.enqueue(node, distance.get(node)));
-		}
-
-		Node min = (Node) pq.dequeueMin().mElem;
-
-		do {
-			List<Edge> neighboors = edges.get(min.getStop().getStop_id());
-			if (neighboors != null) {
-				for (Edge edge : neighboors) {
-					double weight = edge.getWeight();
-					double newLen = getShortestDistance(edge.getSrc()) + weight;
-					if (newLen < getShortestDistance(edge.getDest())) {
-						pq.decreaseKey(entries.get(edge.getDest()), newLen);
-						distance.put(edge.getDest(), newLen);
-						predecessors.put(edge.getDest(), edge);
-					}
-				}
-			}
-			try {
-				min = (Node) pq.dequeueMin().mElem;
-			} catch (Exception e) {
-				min = null;
-			}
-		} while (min != null);
-	}
-
-	public void dijkstraOp3(Node source) { // done
+	/**
+	 * @param graph
+	 * @param source
+	 */
+	public void dijkstra(Node source) { // done
 		pq = new FibonacciHeap<Node>();
 
 		HashMap<Node, FibonacciHeap.Entry<Node>> entries = new HashMap<Node, FibonacciHeap.Entry<Node>>();
@@ -383,7 +299,7 @@ public class Graph implements Serializable {
 			entries.put(node, pq.enqueue(node, node.getDistance()));
 		}
 
-		Node min = (Node) pq.dequeueMin().mElem;
+		Node min = pq.dequeueMin().mElem;
 
 		do {
 			List<Edge> neighboors = edges.get(min.getStop().getStop_id());
@@ -399,7 +315,7 @@ public class Graph implements Serializable {
 				}
 			}
 			try {
-				min = (Node) pq.dequeueMin().mElem;
+				min = pq.dequeueMin().mElem;
 			} catch (Exception e) {
 				min = null;
 			}

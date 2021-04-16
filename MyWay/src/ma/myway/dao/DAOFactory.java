@@ -25,7 +25,7 @@ public class DAOFactory {
 		return new RoutesDAO(conn);
 	}
 
-	public static StopTripDAO getStopTripDAO() { // MODIFIED
+	public static StopTripDAO getStopTripDAO() { 
 		return new StopTripDAO(conn);
 	}
 

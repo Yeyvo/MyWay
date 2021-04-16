@@ -3,6 +3,10 @@ package ma.myway.graph;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+
+import ma.myway.graph.data.Stop;
 
 /**
  * <p>
@@ -101,4 +105,17 @@ public class Edge implements Serializable {
 
 		return false;
 	}
+	
+	public static List<Stop> edgesToStops (LinkedList<Edge> edges) {
+		List<Stop> stops = new LinkedList<>();
+		
+		for(Edge edge : edges) {
+			stops.add(edge.src.getStop());
+		}
+		 stops.add(edges.getLast().dest.getStop());
+		
+		return edges.size() >= 1 ? stops : null;
+		
+	}
+	
 }

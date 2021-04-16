@@ -25,10 +25,7 @@ public class BddConnection {
 			} catch (SQLException e) {
 				e.printStackTrace();
 				Logger.getLogger("MyLog").info(" Error onnection DBDD " + e.getStackTrace());
-
-//			    System.out.println("SQLException: " + e.getMessage());
-//			    System.out.println("SQLState: " + e.getSQLState());
-//			    System.out.println("VendorError: " + e.getErrorCode());		
+	
 			}
 		}
 		return connect;

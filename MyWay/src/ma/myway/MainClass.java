@@ -6,6 +6,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,6 +22,8 @@ import java.util.logging.FileHandler;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
+
+import com.google.gson.stream.JsonWriter;
 
 import ma.myway.config.Config;
 import ma.myway.dao.BddConnection;
@@ -40,7 +44,7 @@ public class MainClass {
 	private static int initlenNode = 34778;
 
 	public static void main(String[] args) {
-		
+
 		long StartTime = System.currentTimeMillis();
 
 		Logger logger = Logger.getLogger("MyLog");
@@ -78,11 +82,11 @@ public class MainClass {
 		long endTime = System.currentTimeMillis();
 		double timeElapsed = endTime - StartTime;
 		Logger.getLogger("MyLog").info("Execution time in seconds   : " + timeElapsed / 1000 + " seconde ");
-		
+
 		/*
 		 * Test shortest path from 2 seal stops
 		 */
-		
+
 		LinkedList<Edge> path = g.getShortestPath(g.getNodebyID("1911"), g.getNodebyID("1639"));
 
 		Logger.getLogger("MyLog").info("Shortest path from " + 1911 + " to " + 1639 + ": ");
@@ -90,16 +94,15 @@ public class MainClass {
 		for (Edge edge : path) {
 			Logger.getLogger("MyLog")
 					.info("go from " + edge.getSrc().getStop().getName() + " to " + edge.getDest().getStop().getName()
-							+ "[ Trip_id =" + edge.getTrip_id() + " duree =" + edge.getWeight() + "]");
+							+ "[ Trip_id =" + edge.getTrip_id() + " duree =" + edge.getWeight() + "] ");
 		}
-		
-//		int k = 0;
-//		List<String> res = g.Trip_Date(new Date());
-//		for(String s : res) {
-//			System.out.println(s);
-//			k++;
-//		}
-//		System.out.println(k);
+
+
+		try {
+			JsonParse(path);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void saveData(Graph graph) {
@@ -250,6 +253,35 @@ public class MainClass {
 			services.get(calExp.get(calExpKey).getService_id()).setRemoved(calExp.get(calExpKey).getRemoved());
 			services.get(calExp.get(calExpKey).getService_id()).toStr();
 		}
+
+	}
+
+	public static void JsonParse(LinkedList<Edge> path) throws IOException {
+
+		List<Stop> stops = Edge.edgesToStops(path);
+
+		OutputStream outputStream = new FileOutputStream("test.json");
+
+		JsonWriter jsonWriter = new JsonWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+		jsonWriter.setIndent("        ");
+
+		jsonWriter.beginObject();
+
+		jsonWriter.name("path");
+		jsonWriter.beginArray();
+
+		for (Stop stop : stops) {
+			jsonWriter.beginObject();
+			jsonWriter.name("lat").value(stop.getLat());
+			jsonWriter.name("lon").value(stop.getLon());
+			jsonWriter.name("desc").value(stop.getName() + stop.getDesc());
+			jsonWriter.endObject();
+		}
+		jsonWriter.endArray();
+		jsonWriter.endObject();
+		jsonWriter.close();
+		
+		outputStream.close();
 
 	}
 

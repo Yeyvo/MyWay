@@ -18,6 +18,7 @@ public class Trips_Directions {
 		return direction_id;
 	}
 
+	@Override
 	public String toString() {
 		return trip_id + ",null,null," + direction_id + ",null";
 	}

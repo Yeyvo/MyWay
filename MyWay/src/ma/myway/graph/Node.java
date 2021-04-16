@@ -30,7 +30,7 @@ import ma.myway.graph.data.Stop;
 public class Node implements Serializable {
 	private static final long serialVersionUID = 4549578642953851985L;
 	private Stop stop;
-	private double distance = (double) Integer.MAX_VALUE;
+	private double distance = Integer.MAX_VALUE;
 	private Edge predecessor = null;
 	Map<Node, Integer> adjacentNodes = new HashMap<>();
 

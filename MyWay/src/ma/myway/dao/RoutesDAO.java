@@ -3,10 +3,9 @@ package ma.myway.dao;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -28,22 +27,21 @@ public class RoutesDAO extends DAO<Route_Service> {
 	/*
 	 * @return a list of all active trips_id
 	 */
-	public List<String> findActiveTrips(Set<String> lstService) {
-		List<String> res = new ArrayList<String>();
+	public Map<String,String> findActiveTrips(Set<String> lstService) {
+		Map<String,String> res = new HashMap<>();
 		try {
 			var stmt = String.format("SELECT trip_id FROM trips where service_id in  (%s)",
 					lstService.stream().collect(Collectors.joining(", ")));
 			ResultSet result = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)
 					.executeQuery(stmt);
 			while (result.next()) {
-				res.add(result.getString(1));
+				res.put(result.getString(1),result.getString(1));
 			}
 			result.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
-		Collections.sort(res);
 		return res;
 	}
 
