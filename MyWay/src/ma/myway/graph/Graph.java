@@ -2,6 +2,7 @@ package ma.myway.graph;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.Date;
@@ -250,7 +251,7 @@ public class Graph implements Serializable {
 	 * @return le plus court chemin du noeud src au noeud dest
 	 */
 	public LinkedList<Edge> getShortestPath(Node src, Node dest) {
-		dijkstra(src);
+		dijkstra(src, LocalDate.now());
 		return getPath(dest);
 	}
 
@@ -288,7 +289,7 @@ public class Graph implements Serializable {
 	 * @param graph
 	 * @param source
 	 */
-	public void dijkstra(Node source) { // done
+	public void dijkstra(Node source, LocalDate localDate) { // done
 		pq = new FibonacciHeap<Node>();
 
 		HashMap<Node, FibonacciHeap.Entry<Node>> entries = new HashMap<Node, FibonacciHeap.Entry<Node>>();
@@ -305,12 +306,14 @@ public class Graph implements Serializable {
 			List<Edge> neighboors = edges.get(min.getStop().getStop_id());
 			if (neighboors != null) {
 				for (Edge edge : neighboors) {
-					double weight = edge.getWeight();
-					double newLen = edge.getSrc().getDistance() + weight;
-					if (newLen < edge.getDest().getDistance()) {
-						pq.decreaseKey(entries.get(edge.getDest()), newLen);
-						edge.getDest().setDistance(newLen);
-						edge.getDest().setPredecessor(edge);
+					if(Trip_Date(Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant())).containsKey(edge.getTrip_id())){
+						double weight = edge.getWeight();
+						double newLen = edge.getSrc().getDistance() + weight;
+						if (newLen < edge.getDest().getDistance()) {
+							pq.decreaseKey(entries.get(edge.getDest()), newLen);
+							edge.getDest().setDistance(newLen);
+							edge.getDest().setPredecessor(edge);
+						}
 					}
 				}
 			}
