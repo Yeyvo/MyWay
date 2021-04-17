@@ -3,7 +3,7 @@ Projet intégré S1
 
 ## Contributeurs
 • Hamza Chafkan \
-• Hamza Booudouche \
+• Hamza Boudouche \
 • Ahmed Ali Attaoui \
 • Ossama Bouzekraoui 
 
