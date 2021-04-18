@@ -24,7 +24,6 @@ public class UIBase extends Application {
 
 		List<String> stops = new ArrayList<>();
 
-
 		SplitPane splitPane = new SplitPane();
 		VBox leftControl = new VBox();
 		//VBox rightControl = new VBox();

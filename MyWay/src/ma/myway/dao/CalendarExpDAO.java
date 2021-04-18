@@ -66,7 +66,6 @@ public class CalendarExpDAO extends DAO<CalendarExp> {
 	@Override
 	@Deprecated
 	public Set<CalendarExp> all() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

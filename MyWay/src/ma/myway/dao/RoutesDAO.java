@@ -63,7 +63,7 @@ public class RoutesDAO extends DAO<Route_Service> {
 		Statement stmt = null;
 		try {
 			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-			ResultSet result = stmt.executeQuery("SELECT * FROM trips");
+			ResultSet result = stmt.executeQuery("SELECT route_id,service_id,trip_id,direction_id FROM trips");
 			while (result.next()) {
 				Route_Service resRS = Route_Service.search_by_id(set_Route_Service, result.getString("route_id"));
 				if (resRS != null) { // route found
