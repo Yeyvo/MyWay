@@ -3,6 +3,7 @@ package ma.myway.dao;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -27,19 +28,26 @@ public class RoutesDAO extends DAO<Route_Service> {
 	/*
 	 * @return a list of all active trips_id
 	 */
-	public Map<String,String> findActiveTrips(Set<String> lstService) {
-		Map<String,String> res = new HashMap<>();
+	public Map<String, String> findActiveTrips(Set<String> lstService) {
+		Map<String, String> res = new HashMap<>();
+		Statement stmt = null;
 		try {
-			var stmt = String.format("SELECT trip_id FROM trips where service_id in  (%s)",
+			var var = String.format("SELECT trip_id FROM trips where service_id in  (%s)",
 					lstService.stream().collect(Collectors.joining(", ")));
-			ResultSet result = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)
-					.executeQuery(stmt);
+			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+			ResultSet result = stmt.executeQuery(var);
 			while (result.next()) {
-				res.put(result.getString(1),result.getString(1));
+				res.put(result.getString(1), result.getString(1));
 			}
 			result.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 
 		return res;
@@ -52,9 +60,10 @@ public class RoutesDAO extends DAO<Route_Service> {
 	@Override
 	public Set<Route_Service> all() {
 		Set<Route_Service> set_Route_Service = new HashSet<>();
+		Statement stmt = null;
 		try {
-			ResultSet result = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)
-					.executeQuery("SELECT * FROM trips");
+			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+			ResultSet result = stmt.executeQuery("SELECT * FROM trips");
 			while (result.next()) {
 				Route_Service resRS = Route_Service.search_by_id(set_Route_Service, result.getString("route_id"));
 				if (resRS != null) { // route found
@@ -88,6 +97,12 @@ public class RoutesDAO extends DAO<Route_Service> {
 			result.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 
 		return set_Route_Service;
@@ -95,13 +110,20 @@ public class RoutesDAO extends DAO<Route_Service> {
 
 	@Override
 	public boolean create(Route_Service obj) {
+		Statement stmt = null;
 		try {
-			int result = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)
-					.executeUpdate("INSERT INTO trips VALUES(" + obj.toString() + ")");
+			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+			int result = stmt.executeUpdate("INSERT INTO trips VALUES(" + obj.toString() + ")");
 			System.out.println(result + " Row affected ! ");
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return false;
 	}

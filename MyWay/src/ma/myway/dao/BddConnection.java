@@ -30,4 +30,14 @@ public class BddConnection {
 		}
 		return connect;
 	}
+	
+	public static void close() {
+		if(connect != null) {
+			try {
+				connect.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }

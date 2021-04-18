@@ -30,10 +30,10 @@ public class StopTripDAO extends DAO<Stop_Trip> {
 	public Set<Stop_Trip> all() {
 		Set<Stop_Trip> set_stop_trip = new HashSet<>();
 		long count = 0;
-
+		Statement stmt = null;
 		try {
 
-			Statement stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
 			stmt.setFetchSize(Integer.MIN_VALUE);
 			// stmt.setFetchDirection (ResultSet.FETCH_REVERSE);
 			ResultSet result = stmt
@@ -52,7 +52,11 @@ public class StopTripDAO extends DAO<Stop_Trip> {
 
 		} finally {
 			Logger.getLogger("MyLog").info("The amount of data retrieved is " + count + " line!");
-			;
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 
 		}
 
@@ -62,13 +66,14 @@ public class StopTripDAO extends DAO<Stop_Trip> {
 	public List<Stop_Trip> allList() {
 		List<Stop_Trip> set_stop_trip = new ArrayList<>();
 		long count = 0;
+		Statement stmt = null;
 		try {
 
-			Statement stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
 			stmt.setFetchSize(Integer.MIN_VALUE);
 			// stmt.setFetchSize(100);
 			ResultSet result = stmt.executeQuery(
-					"SELECT trip_id,arrival_time,departure_time,stop_id,stop_sequence FROM stop_times limit 5000000");
+					"SELECT trip_id,arrival_time,departure_time,stop_id,stop_sequence FROM stop_times limit 500000");
 			while (result.next()) {
 				set_stop_trip.add(new Stop_Trip(result.getString("trip_id"), result.getString("stop_id"),
 						Service.datetimeload(result.getString("arrival_time")),
@@ -81,7 +86,11 @@ public class StopTripDAO extends DAO<Stop_Trip> {
 
 		} finally {
 			Logger.getLogger("MyLog").info("The amount of data retrieved is " + count + " line!");
-
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 
 		Collections.sort(set_stop_trip);
@@ -90,13 +99,20 @@ public class StopTripDAO extends DAO<Stop_Trip> {
 
 	@Override
 	public boolean create(Stop_Trip obj) {
+		Statement stmt = null;
 		try {
-			int result = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)
-					.executeUpdate("INSERT INTO stop_times VALUES(" + obj.toString() + ")");
+			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+			int result = stmt.executeUpdate("INSERT INTO stop_times VALUES(" + obj.toString() + ")");
 			System.out.println(result + " Row affected ! ");
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return false;
 	}

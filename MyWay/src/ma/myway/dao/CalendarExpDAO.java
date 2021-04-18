@@ -3,11 +3,13 @@ package ma.myway.dao;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import ma.myway.graph.data.CalendarExp;
 
@@ -31,9 +33,10 @@ public class CalendarExpDAO extends DAO<CalendarExp> {
 
 	public HashMap<String, CalendarExp> allMap() {
 		HashMap<String, CalendarExp> set_CalendarExp = new HashMap<>();
+		Statement stmt = null;
 		try {
-			ResultSet result = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)
-					.executeQuery("SELECT * FROM calendar_dates");
+			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+				ResultSet result = 	stmt.executeQuery("SELECT * FROM calendar_dates");
 			while (result.next()) {
 				if (!set_CalendarExp.containsKey(result.getString(1))) {
 					List<Date> added = new LinkedList<Date>();
@@ -49,6 +52,12 @@ public class CalendarExpDAO extends DAO<CalendarExp> {
 			result.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 
 		return set_CalendarExp;

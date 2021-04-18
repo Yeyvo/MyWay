@@ -3,6 +3,7 @@ package ma.myway.dao;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,15 +19,23 @@ public class StopDAO extends DAO<Stop> {
 	public Stop find(String stop_id) {
 
 		Stop stop = null;
+		Statement stmt = null;
+		ResultSet result = null;
 		try {
-			ResultSet result = this.connect
-					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
-					.executeQuery("SELECT * FROM stops WHERE stop_id = " + stop_id);
+			stmt = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			result = stmt.executeQuery("SELECT * FROM stops WHERE stop_id = " + stop_id);
 			if (result.first())
 				stop = new Stop(stop_id, result.getString("stop_name"), result.getString("stop_desc"),
 						result.getFloat("stop_lat"), result.getFloat("stop_lon"), result.getInt("location_type"));
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			try {
+				result.close();
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return stop;
 	}
@@ -34,9 +43,11 @@ public class StopDAO extends DAO<Stop> {
 	@Override
 	public Set<Stop> all() {
 		Set<Stop> set_stops = new HashSet<>();
+		ResultSet result = null;
+		Statement stmt = null;
 		try {
-			ResultSet result = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)
-					.executeQuery("SELECT * FROM stops");
+			stmt  = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+			result = stmt.executeQuery("SELECT * FROM stops");
 			while (result.next()) {
 				set_stops.add(new Stop(result.getString("stop_id"), result.getString("stop_name"),
 						result.getString("stop_desc"),  result.getFloat("stop_lat") , result.getFloat("stop_lon"),
@@ -45,6 +56,13 @@ public class StopDAO extends DAO<Stop> {
 			result.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			try {
+				stmt.close();
+				result.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 
 		return set_stops;
@@ -52,13 +70,20 @@ public class StopDAO extends DAO<Stop> {
 
 	@Override
 	public boolean create(Stop obj) {
+		Statement stmt = null;
 		try {
-			int result = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)
-					.executeUpdate("INSERT INTO stops VALUES(" + obj.toString() + ")");
+			 stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+			int result = stmt.executeUpdate("INSERT INTO stops VALUES(" + obj.toString() + ")");
 			System.out.println(result + " Row affected ! ");
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return false;
 	}

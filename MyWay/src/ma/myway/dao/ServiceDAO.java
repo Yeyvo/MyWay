@@ -3,6 +3,7 @@ package ma.myway.dao;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -20,9 +21,10 @@ public class ServiceDAO extends DAO<Service> {
 	@Override
 	public Service find(String service_id) {
 		Service stop = null;
+		Statement stmt = null;
 		try {
-			ResultSet result = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)
-					.executeQuery("SELECT * FROM calendar WHERE service_id = " + service_id);
+			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+					ResultSet result = stmt.executeQuery("SELECT * FROM calendar WHERE service_id = " + service_id);
 
 			if (result.first()) {
 
@@ -38,15 +40,23 @@ public class ServiceDAO extends DAO<Service> {
 			result.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return stop;
 	}
 
 	public Map<String, Service> allMap() {
 		Map<String, Service> map_sevices = new HashMap<>();
+		Statement stmt = null;
+
 		try {
-			ResultSet result = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)
-					.executeQuery("SELECT * FROM calendar");
+			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+			ResultSet result = stmt.executeQuery("SELECT * FROM calendar");
 			while (result.next()) {
 				Integer dates[] = new Integer[7];
 				for (int i = 0; i < 7; i++) {
@@ -58,6 +68,12 @@ public class ServiceDAO extends DAO<Service> {
 			result.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 
 		return map_sevices;
@@ -65,13 +81,20 @@ public class ServiceDAO extends DAO<Service> {
 
 	@Override
 	public boolean create(Service obj) {
+		Statement stmt = null;
 		try {
-			int result = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)
-					.executeUpdate("INSERT INTO calendar VALUES(" + obj.toString() + ")");
+			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+			int result = stmt.executeUpdate("INSERT INTO calendar VALUES(" + obj.toString() + ")");
 			System.out.println(result + " Row affected ! ");
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return false;
 	}

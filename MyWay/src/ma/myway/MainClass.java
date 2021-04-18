@@ -103,6 +103,8 @@ public class MainClass {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		BddConnection.close();
 	}
 
 	public static void saveData(Graph graph) {
@@ -256,6 +258,7 @@ public class MainClass {
 
 	}
 
+	@SuppressWarnings("resource")
 	public static void JsonParse(LinkedList<Edge> path) throws IOException {
 
 		List<Stop> stops = Edge.edgesToStops(path);
