@@ -51,7 +51,7 @@ public class Graph implements Serializable {
 
 	private Map<Node, Double> distance;
 
-	private static Map<String, Service> services;
+	private Map<String, Service> services;
 
 	public Graph(HashMap<String, Node> nodes) {
 		this.nodes = nodes;
