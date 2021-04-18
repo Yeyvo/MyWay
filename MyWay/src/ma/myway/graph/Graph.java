@@ -263,7 +263,7 @@ public class Graph implements Serializable {
 		this.services = services;
 	}
 
-	public static Set<String> Service_Date(Date date) {
+	public  Set<String> Service_Date(Date date) {
 		Set<String> result = new HashSet<String>();
 
 		for (Service service : services.values()) {// if it's runing slow whe can use MutableMap of Eclipse (CS)
@@ -280,7 +280,7 @@ public class Graph implements Serializable {
 	}
 
 	// a modifier si il y'as des problemmes
-	public static Map<String, String> Trip_Date(Date date) {
+	public  Map<String, String> Trip_Date(Date date) {
 		Set<String> lstService = Service_Date(date);
 		return DAOFactory.getRoutesDAO().findActiveTrips(lstService);
 	}
