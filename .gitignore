@@ -12,7 +12,7 @@ factoryConfiguration.json
 
 ### Eclipse ###
 .metadata
-
+bin/
 tmp/
 *.tmp
 *.bak
