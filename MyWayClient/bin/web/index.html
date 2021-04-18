@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+
+    <style>
+        #mapid {
+            height: 600px;
+            width: 600px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="mapid"></div>
+    <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+    <script>
+        //get data from json response
+        fetch("test.json")
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(obj) {
+                //create map centered on the first station
+                var mymap = L.map("mapid").setView([obj.path[0].lat, obj.path[0].lon], 13);
+                //attributions
+                L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
+                    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+                }).addTo(mymap);
+                //draw a marker for each station
+                let array2 = obj.path.slice();
+                obj.path.forEach((element) => L.marker([element.lat, element.lon]).addTo(mymap).bindPopup(element.desc).openPopup());
+                //draw path between each station and the next one
+                var control = L.Routing.control({
+                    waypoints: array2,
+                    show: false,
+                    waypointMode: "snap",
+                    createMarker: function() {},
+					lineOptions : {
+						addWaypoints: false
+					}
+                }).addTo(mymap);
+            })
+            .catch(function(error) {
+                console.error("Something went wrong!");
+                console.error(error);
+            });
+    </script>
+</body>
+
+</html>

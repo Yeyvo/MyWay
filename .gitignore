@@ -12,7 +12,7 @@ factoryConfiguration.json
 
 ### Eclipse ###
 .metadata
-bin/
+
 tmp/
 *.tmp
 *.bak
@@ -296,6 +296,9 @@ modules.xml
 # Log file
 *.log
 
+# JSON file
+.json
+
 # BlueJ files
 *.ctxt
 
@@ -303,7 +306,6 @@ modules.xml
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.nar
 *.ear
@@ -508,7 +510,6 @@ hs_err_pid*
 *.lck
 *.1
 MyWay/.bin
-config.json
 *.bin
 
 .vscode/
