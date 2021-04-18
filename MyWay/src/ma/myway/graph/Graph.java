@@ -301,12 +301,12 @@ public class Graph implements Serializable {
 		}
 
 		Node min = pq.dequeueMin().mElem;
-
+		Map<String,String> tripDate = Trip_Date(Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 		do {
 			List<Edge> neighboors = edges.get(min.getStop().getStop_id());
 			if (neighboors != null) {
 				for (Edge edge : neighboors) {
-					if(Trip_Date(Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant())).containsKey(edge.getTrip_id())){
+					if(tripDate.containsKey(edge.getTrip_id())){
 						double weight = edge.getWeight();
 						double newLen = edge.getSrc().getDistance() + weight;
 						if (newLen < edge.getDest().getDistance()) {

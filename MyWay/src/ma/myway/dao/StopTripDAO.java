@@ -68,7 +68,7 @@ public class StopTripDAO extends DAO<Stop_Trip> {
 			stmt.setFetchSize(Integer.MIN_VALUE);
 			// stmt.setFetchSize(100);
 			ResultSet result = stmt.executeQuery(
-					"SELECT trip_id,arrival_time,departure_time,stop_id,stop_sequence FROM stop_times ");
+					"SELECT trip_id,arrival_time,departure_time,stop_id,stop_sequence FROM stop_times limit 5000000");
 			while (result.next()) {
 				set_stop_trip.add(new Stop_Trip(result.getString("trip_id"), result.getString("stop_id"),
 						Service.datetimeload(result.getString("arrival_time")),

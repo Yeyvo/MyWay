@@ -41,6 +41,9 @@
                     show: false,
                     waypointMode: "snap",
                     createMarker: function() {},
+					lineOptions : {
+						addWaypoints: false
+					}
                 }).addTo(mymap);
             })
             .catch(function(error) {

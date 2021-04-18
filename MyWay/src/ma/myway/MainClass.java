@@ -274,7 +274,7 @@ public class MainClass {
 			jsonWriter.beginObject();
 			jsonWriter.name("lat").value(stop.getLat());
 			jsonWriter.name("lon").value(stop.getLon());
-			jsonWriter.name("desc").value(stop.getName() + stop.getDesc());
+			jsonWriter.name("desc").value(stop.getName() + " " + stop.getDesc());
 			jsonWriter.endObject();
 		}
 		jsonWriter.endArray();
