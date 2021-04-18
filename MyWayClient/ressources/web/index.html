@@ -17,7 +17,7 @@
     <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
-    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+    <!--<script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>-->
     <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
     <script>
         //get data from json response
@@ -26,19 +26,23 @@
                 return response.json();
             })
             .then(function(obj) {
-                //create map centered on the first station
-                var mymap = L.map("mapid").setView([obj.path[0].lat, obj.path[0].lon], 13);
+                //draw a marker for each station
+                let array2 = obj.path.slice();
+                let latitudes = array2.map(element => element.lat);
+                let longitudes = array2.map(element => element.lon);
+                let mymap = L.map("mapid").fitBounds([
+                                                        [Math.max(...latitudes), Math.max(...longitudes)],
+                                                        [Math.min(...latitudes), Math.min(...longitudes)]
+                                                    ]);
                 //attributions
                 L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
                     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
                 }).addTo(mymap);
-                //draw a marker for each station
-                let array2 = obj.path.slice();
                 obj.path.forEach((element) => L.marker([element.lat, element.lon]).addTo(mymap).bindPopup(element.desc).openPopup());
                 //draw path between each station and the next one
                 var control = L.Routing.control({
                     waypoints: array2,
-                    show: false,
+                    show: true,
                     waypointMode: "snap",
                     createMarker: function() {},
 					lineOptions : {
