@@ -95,8 +95,22 @@ public class MainClass {
 		 */
 
 		LinkedList<Edge> path = g.getShortestPath(g.getNodebyID("1911"), g.getNodebyID("1639"));
-
+		
+		
+		
 		Logger.getLogger("MyLog").info("Shortest path from " + 1911 + " to " + 1639 + ": ");
+		
+		for (Edge edge : path) {
+			Logger.getLogger("MyLog")
+			.info("go from " + edge.getSrc().getStop().getName() + " to " + edge.getDest().getStop().getName()
+					+ "[ Trip_id =" + edge.getTrip_id() + " duree =" + edge.getWeight() + "] ");
+		}
+		StartTime = System.currentTimeMillis();
+		Logger.getLogger("MyLog").info("path found  time : " + (StartTime - endTime) / 1000);
+		
+		LinkedList<Edge> path2 = g.getShortestPath(g.getNodebyID("1911"), g.getNodebyID("4024808"));
+
+		Logger.getLogger("MyLog").info("Shortest path from " + 1911 + " to " + 4024808 + ": ");
 
 		for (Edge edge : path) {
 			Logger.getLogger("MyLog")
@@ -104,7 +118,9 @@ public class MainClass {
 							+ "[ Trip_id =" + edge.getTrip_id() + " duree =" + edge.getWeight() + "] ");
 		}
 
-
+		endTime = System.currentTimeMillis();
+		Logger.getLogger("MyLog").info("path found  time : " + -(StartTime - endTime) / 1000);
+		
 		try {
 			JsonParse(path);
 		} catch (IOException e) {
