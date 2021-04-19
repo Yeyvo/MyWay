@@ -46,6 +46,13 @@ public class MainClass {
 	public static void main(String[] args) {
 
 		long StartTime = System.currentTimeMillis();
+		
+		
+		Logger.getLogger("MyLog").info("Config file loading Started ! ");
+		Config.load("config.json");
+		Logger.getLogger("MyLog")
+				.info("Config file loading Finished !  time " + (System.currentTimeMillis() - StartTime) / 1000);
+		BddConnection.getInstance();
 
 		Logger logger = Logger.getLogger("MyLog");
 		FileHandler fh;
@@ -163,11 +170,6 @@ public class MainClass {
 		Map<String, Service> services = new HashMap<>();
 		Graph g = new Graph(node, edges, services);
 
-		Logger.getLogger("MyLog").info("Config file loading Started ! ");
-		Config.load("config.json");
-		Logger.getLogger("MyLog")
-				.info("Config file loading Finished !  time " + (System.currentTimeMillis() - StartTime) / 1000);
-		BddConnection.getInstance();
 		Logger.getLogger("MyLog").info("Node Generation Started ! ");
 		a = System.currentTimeMillis();
 

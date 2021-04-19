@@ -280,7 +280,7 @@ public class Graph implements Serializable {
 	}
 
 	// a modifier si il y'as des problemmes
-	public  Map<String, String> Trip_Date(Date date) {
+	public Map<String, String> Trip_Date(Date date) {
 		Set<String> lstService = Service_Date(date);
 		return DAOFactory.getRoutesDAO().findActiveTrips(lstService);
 	}
