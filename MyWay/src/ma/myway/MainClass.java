@@ -112,7 +112,7 @@ public class MainClass {
 
 		Logger.getLogger("MyLog").info("Shortest path from " + 1911 + " to " + 4024808 + ": ");
 
-		for (Edge edge : path) {
+		for (Edge edge : path2) {
 			Logger.getLogger("MyLog")
 					.info("go from " + edge.getSrc().getStop().getName() + " to " + edge.getDest().getStop().getName()
 							+ "[ Trip_id =" + edge.getTrip_id() + " duree =" + edge.getWeight() + "] ");
