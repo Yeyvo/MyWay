@@ -1,4 +1,4 @@
-package ma.myway.client.ui;
+package ma.myway.client.ui.view;
 
 import java.util.LinkedList;
 import java.util.List;

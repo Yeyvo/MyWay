@@ -19,6 +19,8 @@ public class Config {
 	public String BDDNAME;
 	public String USR;
 	public String PSWD;
+	public String SERVERIP;
+	public String SERVERPORT;
 
 	public Config() {
 		this.BDD = "mysql";
@@ -27,6 +29,8 @@ public class Config {
 		this.BDDNAME = "gtfs";
 		this.USR = "test";
 		this.PSWD = "test";
+		this.SERVERIP = "127.0.0.1";
+		this.SERVERPORT = "8623";
 	}
 
 	private static Config instance;

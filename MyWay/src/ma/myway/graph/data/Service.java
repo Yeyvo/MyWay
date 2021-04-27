@@ -76,7 +76,7 @@ public class Service implements Serializable {
 		for (int jr : dates) {
 			str.concat(jr + ",");
 		}
-		Logger.getLogger("MyLog").info(str + start_date + "," + end_date + " added=" + Arrays.toString(added.toArray())
+		Logger.getLogger("BASE").info(str + start_date + "," + end_date + " added=" + Arrays.toString(added.toArray())
 				+ ", removed=" + Arrays.toString(removed.toArray()) + "]");
 	}
 

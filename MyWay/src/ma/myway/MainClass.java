@@ -37,28 +37,51 @@ import ma.myway.graph.data.Service;
 import ma.myway.graph.data.Stop;
 import ma.myway.graph.data.Stop_Trip;
 import ma.myway.graph.data.Transfert;
+import ma.myway.network.Server;
 
 public class MainClass {
 
 	private static int initlenEdges = 14666666;
 	private static int initlenNode = 34778;
+	public static Graph g = null;
 
 	public static void main(String[] args) {
 
 		long StartTime = System.currentTimeMillis();
 		
-		
-		Logger.getLogger("MyLog").info("Config file loading Started ! ");
+		LoadLogger();
+		Logger.getLogger("BASE").info("Config file loading Started ! ");
 		Config.load("config.json");
-		Logger.getLogger("MyLog")
+		Logger.getLogger("BASE")
 				.info("Config file loading Finished !  time " + (System.currentTimeMillis() - StartTime) / 1000);
 		BddConnection.getInstance();
 
-		Logger logger = Logger.getLogger("MyLog");
+		Graph g = null;
+		Graph.setGraph(g);
+		File f = new File("graph.bin");
+		if (!f.exists() && !f.isDirectory()) {
+			g = graphGeneration(StartTime);
+			Graph.saveGraph(g);
+		} else if (f.exists() && !f.isDirectory()) {
+			System.out.println("Exist");
+			g = Graph.getGraph();
+		}
+		long endTime = System.currentTimeMillis();
+		double timeElapsed = endTime - StartTime;
+		Logger.getLogger("BASE").info("Execution time in seconds   : " + timeElapsed / 1000 + " seconde ");
+
+		Server server = new Server(10);
+		server.open();
+		
+		//server.close();
+	}
+
+	private static void LoadLogger() {
+		Logger loggerBASE = Logger.getLogger("BASE");
 		FileHandler fh;
 		try {
-			fh = new FileHandler("logs.log");
-			logger.addHandler(fh);
+			fh = new FileHandler("logs_BASE.log");
+			loggerBASE.addHandler(fh);
 			fh.setFormatter(new Formatter() {
 
 				@Override
@@ -77,106 +100,31 @@ public class MainClass {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		Graph g = null;
-		File f = new File("data.bin");
-		if (!f.exists() && !f.isDirectory()) {
-			g = graphGeneration(StartTime);
-			saveData(g);
-		} else if (f.exists() && !f.isDirectory()) {
-			System.out.println("Exist");
-			g = loadData();
-		}
-		long endTime = System.currentTimeMillis();
-		double timeElapsed = endTime - StartTime;
-		Logger.getLogger("MyLog").info("Execution time in seconds   : " + timeElapsed / 1000 + " seconde ");
-
-		/*
-		 * Test shortest path from 2 seal stops
-		 */
-
-		LinkedList<Edge> path = g.getShortestPath(g.getNodebyID("1911"), g.getNodebyID("1639"));
 		
-		
-		
-		Logger.getLogger("MyLog").info("Shortest path from " + 1911 + " to " + 1639 + ": ");
-		
-		for (Edge edge : path) {
-			Logger.getLogger("MyLog")
-			.info("go from " + edge.getSrc().getStop().getName() + " to " + edge.getDest().getStop().getName()
-					+ "[ Trip_id =" + edge.getTrip_id() + " duree =" + edge.getWeight() + "] ");
-		}
-		StartTime = System.currentTimeMillis();
-		Logger.getLogger("MyLog").info("path found  time : " + (StartTime - endTime) / 1000);
-		
-		LinkedList<Edge> path2 = g.getShortestPath(g.getNodebyID("1911"), g.getNodebyID("4024808"));
-
-		Logger.getLogger("MyLog").info("Shortest path from " + 1911 + " to " + 4024808 + ": ");
-
-		for (Edge edge : path2) {
-			Logger.getLogger("MyLog")
-					.info("go from " + edge.getSrc().getStop().getName() + " to " + edge.getDest().getStop().getName()
-							+ "[ Trip_id =" + edge.getTrip_id() + " duree =" + edge.getWeight() + "] ");
-		}
-
-		endTime = System.currentTimeMillis();
-		Logger.getLogger("MyLog").info("path found  time : " + -(StartTime - endTime) / 1000);
-		
+		Logger loggerServer = Logger.getLogger("SERVER");
 		try {
-			JsonParse(path);
+			fh = new FileHandler("Logs_Server.log");
+			loggerServer.addHandler(fh);
+			fh.setFormatter(new Formatter() {
+
+				@Override
+				public String format(LogRecord record) {
+					SimpleDateFormat logTime = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
+					Calendar cal = new GregorianCalendar();
+					cal.setTimeInMillis(record.getMillis());
+					return record.getLevel() + logTime.format(cal.getTime()) + " || "
+							+ record.getSourceClassName().substring(record.getSourceClassName().lastIndexOf(".") + 1,
+									record.getSourceClassName().length())
+							+ "." + record.getSourceMethodName() + "() : " + record.getMessage() + "\n";
+				}
+			});
+		} catch (SecurityException e) {
+			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		BddConnection.close();
 	}
 
-	public static void saveData(Graph graph) {
-		ObjectOutputStream oos = null;
-
-		try {
-			final FileOutputStream fichier = new FileOutputStream("data.bin");
-			oos = new ObjectOutputStream(fichier);
-			oos.writeObject(graph);
-			oos.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (oos != null) {
-					oos.flush();
-					oos.close();
-				}
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
-		}
-	}
-
-	public static Graph loadData() {
-		ObjectInputStream ois = null;
-		Graph g = null;
-		try {
-			final FileInputStream fichier = new FileInputStream("data.bin");
-			ois = new ObjectInputStream(fichier);
-			g = (Graph) ois.readObject();
-			Logger.getLogger("MyLog").info(
-					"Graph was loaded correctly (edges : " + g.getEdgeNumber() + ", Nodes : " + g.getNodeSize() + ")");
-
-		} catch (final java.io.IOException e) {
-			e.printStackTrace();
-		} catch (final ClassNotFoundException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (ois != null) {
-					ois.close();
-				}
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
-		}
-		return g;
-	}
 
 	public static Graph graphGeneration(long StartTime) {
 		long a, b;
@@ -186,34 +134,34 @@ public class MainClass {
 		Map<String, Service> services = new HashMap<>();
 		Graph g = new Graph(node, edges, services);
 
-		Logger.getLogger("MyLog").info("Node Generation Started ! ");
+		Logger.getLogger("BASE").info("Node Generation Started ! ");
 		a = System.currentTimeMillis();
 
 		Set<Stop> stops = DAOFactory.getStopDAO().all();
 		long i = 0;
 		for (Stop stop : stops) {
 			g.addNode(new Node(stop));
-			Logger.getLogger("MyLog").info("Node : " + stop.getStop_id());
+			Logger.getLogger("BASE").info("Node : " + stop.getStop_id());
 			i++;
 		}
 		stops = null;
 		b = System.currentTimeMillis();
-		Logger.getLogger("MyLog").info("Node Generation Finished ! (" + i + ")  time : " + (b - a) / 1000);
+		Logger.getLogger("BASE").info("Node Generation Finished ! (" + i + ")  time : " + (b - a) / 1000);
 
-		Logger.getLogger("MyLog").info("Service data retrieving started ! ");
+		Logger.getLogger("BASE").info("Service data retrieving started ! ");
 		services = DAOFactory.getServiceDAO().allMap();
 		HashMap<String, CalendarExp> calExp = DAOFactory.getCalendarExpDAO().allMap();
 		merge(calExp, services);
 		g.setServices(services);
 		calExp = null;
 		a = System.currentTimeMillis();
-		Logger.getLogger("MyLog").info("Service Data Retrieving Finished !  time :  " + (a - b) / 1000);
+		Logger.getLogger("BASE").info("Service Data Retrieving Finished !  time :  " + (a - b) / 1000);
 
-		Logger.getLogger("MyLog").info("StopTrips Data Retrieving started ! ");
+		Logger.getLogger("BASE").info("StopTrips Data Retrieving started ! ");
 		List<Stop_Trip> st = DAOFactory.getStopTripDAO().allList();
 		a = System.currentTimeMillis();
-		Logger.getLogger("MyLog").info("StopTrips Data Retrieving Ended !   time :  " + (a - b) / 1000);
-		Logger.getLogger("MyLog").info("Edge Generation from Trips started ! ");
+		Logger.getLogger("BASE").info("StopTrips Data Retrieving Ended !   time :  " + (a - b) / 1000);
+		Logger.getLogger("BASE").info("Edge Generation from Trips started ! ");
 		i = 0;
 		for (int j = 0; j < st.size(); j++) {
 			Stop_Trip next = Stop_Trip.getNextStop_sequence(st, st.get(j).getTrip_id(), st.get(j).getStop_sequence(),
@@ -222,7 +170,7 @@ public class MainClass {
 				Edge e = new Edge(node.get(st.get(j).getStop_id()), node.get(next.getStop_id()),
 						Stop_Trip.calculateWeight(st.get(j), next), st.get(j).getTrip_id());
 				g.addEdge(e);
-				Logger.getLogger("MyLog")
+				Logger.getLogger("BASE")
 						.info("Edge Trip (" + ++i + ") : src : " + st.get(j).getStop_id() + " dst : "
 								+ next.getStop_id() + " Trip_id : " + st.get(j).getTrip_id() + " Stop_sequence : "
 								+ st.get(j).getStop_sequence() + "   poid : " + e.getWeight());
@@ -230,14 +178,14 @@ public class MainClass {
 		}
 		st = null;
 		b = System.currentTimeMillis();
-		Logger.getLogger("MyLog").info("Edge Generation from Trips Finished ! (" + i + ")  time : " + (b - a) / 1000);
+		Logger.getLogger("BASE").info("Edge Generation from Trips Finished ! (" + i + ")  time : " + (b - a) / 1000);
 
-		Logger.getLogger("MyLog").info("Transferts Data Retrieving started ! ");
+		Logger.getLogger("BASE").info("Transferts Data Retrieving started ! ");
 		Set<Transfert> trans = DAOFactory.getTransfertDAO().all();
 		a = System.currentTimeMillis();
-		Logger.getLogger("MyLog").info("Transferts Data Retrieving Finished !  time :  " + (a - b) / 1000);
+		Logger.getLogger("BASE").info("Transferts Data Retrieving Finished !  time :  " + (a - b) / 1000);
 
-		Logger.getLogger("MyLog").info("Edge Generation from Transferts started ! ");
+		Logger.getLogger("BASE").info("Edge Generation from Transferts started ! ");
 		i = 0;
 		for (Transfert tr : trans) {
 
@@ -253,13 +201,13 @@ public class MainClass {
 
 			g.addEdge(new Edge(node.get(tr.getSrc_stop_id()), node.get(tr.getDest_stop_id()), tr.getTransfert_time(),
 					"0", tr.getTransfert_type()));
-			Logger.getLogger("MyLog").info("Edge Transferts: src : " + tr.getSrc_stop_id() + " dst : "
+			Logger.getLogger("BASE").info("Edge Transferts: src : " + tr.getSrc_stop_id() + " dst : "
 					+ tr.getDest_stop_id() + " Trip_id : 0  Transfert Time :  " + tr.getTransfert_time());
 			i++;
 		}
 		trans = null;
 		b = System.currentTimeMillis();
-		Logger.getLogger("MyLog")
+		Logger.getLogger("BASE")
 				.info("Edge from Transferts Generation Finished ! (" + i + ")  time :  " + (b - a) / 1000);
 
 		return g;
@@ -276,35 +224,6 @@ public class MainClass {
 
 	}
 
-	@SuppressWarnings("resource")
-	public static void JsonParse(LinkedList<Edge> path) throws IOException {
-
-		List<Stop> stops = Edge.edgesToStops(path);
-
-		OutputStream outputStream = new FileOutputStream("test.json");
-
-		JsonWriter jsonWriter = new JsonWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-		jsonWriter.setIndent("        ");
-
-		jsonWriter.beginObject();
-
-		jsonWriter.name("path");
-		jsonWriter.beginArray();
-
-		for (Stop stop : stops) {
-			jsonWriter.beginObject();
-			jsonWriter.name("lat").value(stop.getLat());
-			jsonWriter.name("lon").value(stop.getLon());
-			jsonWriter.name("desc").value(stop.getName() + " " + stop.getDesc());
-			jsonWriter.endObject();
-		}
-		jsonWriter.endArray();
-		jsonWriter.endObject();
-		jsonWriter.close();
-		
-		outputStream.close();
-
-	}
 
 	public static void loggerInit() {
 

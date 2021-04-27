@@ -1,6 +1,14 @@
 package ma.myway.graph;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
@@ -52,6 +60,8 @@ public class Graph implements Serializable {
 	private Map<Node, Double> distance;
 
 	private Map<String, Service> services;
+	
+	private static Graph g = null;
 
 	public Graph(HashMap<String, Node> nodes) {
 		this.nodes = nodes;
@@ -99,7 +109,7 @@ public class Graph implements Serializable {
 	 */
 	public void addEdge(Edge edge) {
 		if (edge.getSrc() == null || edge.getDest() == null) {
-			Logger.getLogger("MyLog").info("NULL source or destination Node");
+			Logger.getLogger("BASE").info("NULL source or destination Node");
 		}
 		if (edges.containsKey(edge.getSrc().getStop().getStop_id())) {
 			edges.get(edge.getSrc().getStop().getStop_id()).add(edge);
@@ -324,4 +334,73 @@ public class Graph implements Serializable {
 			}
 		} while (min != null);
 	}
+	
+	public static void saveGraph(Graph graph) {
+		ObjectOutputStream oos = null;
+
+		try {
+			final FileOutputStream fichier = new FileOutputStream("graph.bin");
+			oos = new ObjectOutputStream(fichier);
+			oos.writeObject(graph);
+			oos.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (oos != null) {
+					oos.flush();
+					oos.close();
+				}
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+	}
+	
+	public static Graph loadGraph() {
+		ObjectInputStream ois = null;
+		Graph g = null;
+		try {
+			final FileInputStream fichier = new FileInputStream("graph.bin");
+			ois = new ObjectInputStream(fichier);
+			g = (Graph) ois.readObject();
+			Logger.getLogger("BASE").info(
+					"Graph was loaded correctly (edges : " + g.getEdgeNumber() + ", Nodes : " + g.getNodeSize() + ")");
+
+		} catch (final java.io.IOException e) {
+			e.printStackTrace();
+		} catch (final ClassNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (ois != null) {
+					ois.close();
+				}
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+		return g;
+	}
+	
+	
+	public static Graph getGraph() {
+		if (g == null) {
+			g = loadGraph();
+		}
+		return g;
+	}
+	
+	public static void setGraph(Graph g) {
+		Graph.g = g;
+	}
+	
+
+	public HashMap<String, Node> getNodes() {
+		return nodes;
+	}
+	
+	
+	
+	
 }

@@ -19,12 +19,12 @@ public class BddConnection {
 		if (connect == null) {
 			try {
 				long StartTime = System.currentTimeMillis();
-				Logger.getLogger("MyLog").info("Connection to BDD Started ! ");
+				Logger.getLogger("BASE").info("Connection to BDD Started ! ");
 				connect = DriverManager.getConnection(url, user, passwd);
 				System.out.println("Connection succesful time : " + (System.currentTimeMillis() - StartTime) / 1000);
 			} catch (SQLException e) {
 				e.printStackTrace();
-				Logger.getLogger("MyLog").info(" Error onnection DBDD " + e.getStackTrace());
+				Logger.getLogger("BASE").info(" Error onnection DBDD " + e.getStackTrace());
 	
 			}
 		}

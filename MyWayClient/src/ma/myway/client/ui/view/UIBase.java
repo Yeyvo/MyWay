@@ -1,29 +1,43 @@
-package ma.myway.client.ui;
+package ma.myway.client.ui.view;
 
-import java.util.ArrayList;
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import javafx.application.Application;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
-import javafx.scene.image.Image;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
-import javafx.stage.Stage;
+import ma.myway.client.network.Client;
+import ma.myway.client.ui.Main;
 
-public class UIBase extends Application {
+public class UIBase implements ViewMaker {
+
+//	private Stage stage;
+//	
+//	public UIBase(Stage primaryStage) {
+//		this.stage = primaryStage;
+//	}
+
 
 	@Override
-	public void start(Stage primaryStage) throws Exception {
+	public Scene getScene() {
 
-
-		List<String> stops = new ArrayList<>();
-
+		Map<String, String> mapStops =  Client.GetStops();
+		Set<String> setStops = mapStops.keySet();
+		List<String> stops = List.copyOf(setStops);
+		//List<String> stops = new 	ArrayList<>();
 		SplitPane splitPane = new SplitPane();
 		VBox leftControl = new VBox();
 		//VBox rightControl = new VBox();
@@ -31,16 +45,30 @@ public class UIBase extends Application {
 		splitPane.getItems().addAll(leftControl/*, rightControl*/);
 		Scene scene = new Scene(splitPane, 824, 618);
 
+		WebView map = new WebView();
+		//map.getEngine().load("https://openlayers.org/en/main/examples/simple.html");
+		map.getEngine().setJavaScriptEnabled(true);
+		try {
+			try {
+				map.getEngine().load(new File(Main.path+"index.html").toURL().toURI().toString());
+			} catch (URISyntaxException e) {
+				e.printStackTrace();
+			}
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		splitPane.getItems().addAll(map/*, rightControl*/);
+		
 		VBox srcControl = new VBox();
 		Label lblSrc = new Label("\t*Choisisser la gare de depart :");
-		AutocompletionlTextField souce = new AutocompletionlTextField();
-		souce.getEntries().addAll(stops);
-		srcControl.getChildren().addAll(lblSrc, souce);
+		AutocompletionlTextField source = new AutocompletionlTextField();
+		source.getEntries().addAll(stops);
+		srcControl.getChildren().addAll(lblSrc, source);
 		srcControl.setSpacing(5);
 		leftControl.getChildren().add(srcControl);
 
 		VBox destControl = new VBox();
-		Label lblDest = new Label("\t*Choisisser la gare de depart :");
+		Label lblDest = new Label("\t*Choisisser la gare d'arriver :");
 		AutocompletionlTextField dest = new AutocompletionlTextField();
 		dest.getEntries().addAll(stops);
 		destControl.getChildren().addAll(lblDest, dest);
@@ -64,6 +92,18 @@ public class UIBase extends Application {
 		leftControl.getChildren().add(timeControl);
 
 		Button rechercher = new Button("Rechercher !");
+		rechercher.setOnMouseClicked(new EventHandler<Event>() {
+
+			@Override
+			public void handle(Event event) {
+				if((mapStops.get(source.getText()) != null && mapStops.get(dest.getText()) !=null ) && !source.getText().equals(dest.getText())) {
+					Client.chem(mapStops.get(source.getText()), mapStops.get(dest.getText()));
+					map.getEngine().reload();
+
+				}
+				
+			}
+		});
 		leftControl.getChildren().add(rechercher);
 
 		splitPane.setDividerPositions(0.25);
@@ -75,21 +115,13 @@ public class UIBase extends Application {
 		//rightControl.setFillWidth(true);
 		//rightControl.setMaxHeight(Double.MAX_VALUE);
 		
-		WebView map = new WebView();
-		//map.getEngine().load("https://openlayers.org/en/main/examples/simple.html");
-		map.getEngine().setJavaScriptEnabled(true);
-		map.getEngine().load(UIBase.class.getResource("/web/index.html").toExternalForm());
-		splitPane.getItems().addAll(map/*, rightControl*/);
+
 		
 		/*rightControl.getChildren().add(map);
 		//VBox.setVgrow(map, Priority.ALWAYS);
 		rightControl.setBackground(new Background(new BackgroundFill(Color.GREY, CornerRadii.EMPTY, Insets.EMPTY)));
 */
-		primaryStage.getIcons().add(new Image("/img/logo.png"));
-		primaryStage.setScene(scene);
-		primaryStage.setTitle("MyWay");
-		primaryStage.show();
-		primaryStage.setResizable(false);
+
 
 		/*
 		 * DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
@@ -97,10 +129,7 @@ public class UIBase extends Application {
 		 * System.out.println(formatter.format(newTime)));
 		 */
 
-	}
-
-	public static void main(String[] args) {
-		launch(args);
+		return scene;
 	}
 
 }

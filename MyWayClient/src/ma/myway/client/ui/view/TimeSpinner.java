@@ -1,4 +1,4 @@
-package ma.myway.client.ui;
+package ma.myway.client.ui.view;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 

@@ -24,7 +24,7 @@ public class AgencyDAO extends DAO<Agency> {
 
 		try {
 			stmt = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			 result = stmt.executeQuery("SELECT * FROM agency WHERE stop_id = " + agency_id);
+			 result = stmt.executeQuery("SELECT * FROM agency WHERE stop_id = \"" + agency_id+"\"");
 			if (result.first())
 				stop = new Agency(result.getString("agency_id"), result.getString("agency_name"));
 		} catch (SQLException e) {

@@ -24,7 +24,7 @@ public class ServiceDAO extends DAO<Service> {
 		Statement stmt = null;
 		try {
 			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-					ResultSet result = stmt.executeQuery("SELECT * FROM calendar WHERE service_id = " + service_id);
+					ResultSet result = stmt.executeQuery("SELECT * FROM calendar WHERE service_id = \"" + service_id+"\"");
 
 			if (result.first()) {
 

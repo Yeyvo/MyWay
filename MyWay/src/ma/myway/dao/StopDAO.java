@@ -49,8 +49,8 @@ public class StopDAO extends DAO<Stop> {
 			stmt  = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
 			result = stmt.executeQuery("SELECT * FROM stops");
 			while (result.next()) {
-				set_stops.add(new Stop(result.getString("stop_id"), result.getString("stop_name"),
-						result.getString("stop_desc"),  result.getFloat("stop_lat") , result.getFloat("stop_lon"),
+				set_stops.add(new Stop(result.getString("stop_id"), result.getString("stop_name").toLowerCase().replaceAll("é", "e").replaceAll("è", "e"),
+						result.getString("stop_desc").toLowerCase(),  result.getFloat("stop_lat") , result.getFloat("stop_lon"),
 						result.getInt("location_type")));
 			}
 			result.close();

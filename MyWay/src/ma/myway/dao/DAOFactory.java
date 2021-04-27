@@ -5,6 +5,7 @@ import java.sql.Connection;
 import ma.myway.graph.data.Agency;
 import ma.myway.graph.data.Stop;
 import ma.myway.graph.data.Transfert;
+import ma.myway.users.User;
 
 public class DAOFactory {
 	protected static final Connection conn = BddConnection.getInstance();
@@ -32,9 +33,13 @@ public class DAOFactory {
 	public static DAO<Transfert> getTransfertDAO() {
 		return new TransfertDAO(conn);
 	}
-
+	
 	public static CalendarExpDAO getCalendarExpDAO() {
 		return new CalendarExpDAO(conn);
+	}
+
+	public static UserDAO getUserDAO() {
+		return new UserDAO(conn);
 	}
 
 }
