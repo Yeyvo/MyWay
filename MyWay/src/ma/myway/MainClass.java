@@ -38,12 +38,13 @@ import ma.myway.graph.data.Stop;
 import ma.myway.graph.data.Stop_Trip;
 import ma.myway.graph.data.Transfert;
 import ma.myway.network.Server;
+import ma.myway.users.User;
 
 public class MainClass {
 
 	private static int initlenEdges = 14666666;
 	private static int initlenNode = 34778;
-	public static Graph g = null;
+	//public static Graph g = null;
 
 	public static void main(String[] args) {
 
@@ -55,8 +56,10 @@ public class MainClass {
 		Logger.getLogger("BASE")
 				.info("Config file loading Finished !  time " + (System.currentTimeMillis() - StartTime) / 1000);
 		BddConnection.getInstance();
-
-		Graph g = null;
+		User u = new User("test","test");
+		DAOFactory.getUserDAO().create(u);
+		
+		/*Graph g = null;
 		Graph.setGraph(g);
 		File f = new File("graph.bin");
 		if (!f.exists() && !f.isDirectory()) {
@@ -71,7 +74,7 @@ public class MainClass {
 		Logger.getLogger("BASE").info("Execution time in seconds   : " + timeElapsed / 1000 + " seconde ");
 
 		Server server = new Server(10);
-		server.open();
+		server.open();*/
 		
 		//server.close();
 	}

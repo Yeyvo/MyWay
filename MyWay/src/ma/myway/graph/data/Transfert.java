@@ -32,7 +32,7 @@ public class Transfert {
 
 	@Override
 	public String toString() {
-		return src_stop_id + "," + dest_stop_id + "," + transfert_type + "," + transfert_time;
+		return "'"+src_stop_id + "','" + dest_stop_id + "','" + transfert_type + "','" + transfert_time+"'";
 	}
 
 }

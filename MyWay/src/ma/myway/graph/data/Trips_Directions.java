@@ -20,7 +20,7 @@ public class Trips_Directions {
 
 	@Override
 	public String toString() {
-		return trip_id + ",null,null," + direction_id + ",null";
+		return "'"+trip_id + "',null,null,'" + direction_id + "',null";
 	}
 
 }

@@ -19,7 +19,7 @@ public class UserDAO extends DAO<User> {
 		Statement stmt = null;
 		try {
 			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-			int result = stmt.executeUpdate("INSERT INTO users VALUES(" + obj.toString() + ")");
+			int result = stmt.executeUpdate("INSERT INTO users(username,password) VALUES(" + obj.toString() + ")");
 			System.out.println(result + " Row affected ! ");
 			return true;
 		} catch (SQLException e) {
@@ -77,6 +77,12 @@ public class UserDAO extends DAO<User> {
 	public User find(String id) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public boolean delete(User obj) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

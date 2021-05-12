@@ -24,15 +24,17 @@ public abstract class DAO<T> {
 	 * @param obj
 	 * @return boolean
 	 */
-	// public abstract boolean delete(T obj);
-
+	public abstract boolean delete(T obj); //ali
+	
 	/**
 	 * Méthode de mise à jour
 	 * 
 	 * @param obj
 	 * @return boolean
 	 */
-	// public abstract boolean update(T obj);
+	public boolean update(T oldobj,T newobj) {
+		return false;
+	}//ali
 
 	/**
 	 * Méthode de recherche des informations
@@ -49,5 +51,8 @@ public abstract class DAO<T> {
 	 * @return Set<T>
 	 */
 	public abstract Set<T> all();
+	
+	
+
 
 }

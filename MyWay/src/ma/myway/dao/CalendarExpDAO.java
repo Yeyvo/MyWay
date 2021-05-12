@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import ma.myway.graph.data.Agency;
 import ma.myway.graph.data.CalendarExp;
 
 public class CalendarExpDAO extends DAO<CalendarExp> {
@@ -61,6 +62,38 @@ public class CalendarExpDAO extends DAO<CalendarExp> {
 		}
 
 		return set_CalendarExp;
+	}
+	
+	public boolean delete(CalendarExp obj) {//fait
+		Statement stmt=null;
+		try {
+			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+			int result = stmt.executeUpdate("DELETE FROM calendar_dates WHERE service_id = "+obj.getService_id());
+			System.out.println(result + " Row affected !");
+			return(true);
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				stmt.close();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return(false);
+	}
+	
+	public boolean update(CalendarExp obj) {
+		Statement stmt=null;
+		try {
+			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+			int result = stmt.executeUpdate("UPDATE agency set  WHERE service_id = "+obj.getService_id());
+			System.out.println(result + " Row affected !");
+			return(true);
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return(false);
 	}
 
 	@Override

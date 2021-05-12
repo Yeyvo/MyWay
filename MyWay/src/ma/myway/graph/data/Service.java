@@ -16,7 +16,7 @@ public class Service implements Serializable {
 	String service_id;
 	Integer dates[] = new Integer[7];
 	Date start_date;
-	Date end_date;
+	Date end_date; //changement de class necessaire
 
 	private List<Date> added;
 	private List<Date> removed;
@@ -63,7 +63,7 @@ public class Service implements Serializable {
 	@Override
 	public String toString() {
 		String str = new String();
-		str.concat(service_id + ",");
+		str.concat("'"+service_id + "',");
 		for (int jr : dates) {
 			str.concat(jr + ",");
 		}

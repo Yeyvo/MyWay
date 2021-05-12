@@ -1,10 +1,10 @@
 {
   "BDD": "mysql",
-  "IP": "192.168.1.64",
+  "IP": "127.0.0.1",
   "PRT": "3306",
   "BDDNAME": "gtfs",
-  "USR": "test",
-  "PSWD": "test",
+  "USR": "root",
+  "PSWD": "",
   "SERVERIP": "127.0.0.1",
   "SERVERPORT": "8623"
 }

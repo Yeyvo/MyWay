@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import ma.myway.graph.data.Route_Service;
 import ma.myway.graph.data.Service;
 import ma.myway.graph.data.Stop_Trip;
 
@@ -115,6 +116,38 @@ public class StopTripDAO extends DAO<Stop_Trip> {
 			}
 		}
 		return false;
+	}
+	
+	public boolean delete(Stop_Trip obj) {//fait
+		Statement stmt=null;
+		try {
+			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+			int result = stmt.executeUpdate("DELETE FROM stop_times WHERE stop_id = "+obj.getStop_id()+" and trip_id = "+obj.getTrip_id());
+			System.out.println(result + " Row affected !");
+			return(true);
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				stmt.close();
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+		}
+		return(false);
+	}
+	
+	public boolean update(Stop_Trip obj) {
+		Statement stmt=null;
+		try {
+			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+			int result = stmt.executeUpdate("UPDATE agency set  WHERE agency_id = "+obj.getStop_id());
+			System.out.println(result + " Row affected !");
+			return(true);
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return(false);
 	}
 
 }
