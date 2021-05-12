@@ -56,8 +56,7 @@ public class MainClass {
 		Logger.getLogger("BASE")
 				.info("Config file loading Finished !  time " + (System.currentTimeMillis() - StartTime) / 1000);
 		BddConnection.getInstance();
-		User u = new User("test","test");
-		DAOFactory.getUserDAO().create(u);
+		
 		
 		/*Graph g = null;
 		Graph.setGraph(g);
