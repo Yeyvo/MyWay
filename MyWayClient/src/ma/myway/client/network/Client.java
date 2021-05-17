@@ -150,47 +150,4 @@ public class Client {
 			return false;
 	}
 
-
-	private static String read(int i, Boolean isconfirmation) throws IOException {
-		String response = "";
-		int stream;
-		byte[] b = new byte[i];
-
-//		if (i < 0) {
-//			b = new byte[1024];
-//		} else {
-//			b = new byte[i];
-//		}
-		stream = reader.read(b);
-		response = new String(b, 0, stream);
-		
-		if (!isconfirmation) {
-			writer.write("received");
-			writer.flush();
-		}
-		
-		Logger.getLogger("CLIENT").info(response);
-		
-		return response;
-	}
-	
-	private static String READ() throws IOException {
-		String size = read(20,false); /* check the size */
-		//received
-		
-		String data = read(Integer.parseInt(size),false);
-		//received
-
-		return data;
-	}
-	
-	private static void WRITE(String str) throws IOException {
-		writer.write(String.valueOf(str.getBytes("UTF-8").length));
-		writer.flush();
-		read(8,true);
-		writer.write(str);
-		writer.flush();
-		read(8,true);
-	}
-
 }
