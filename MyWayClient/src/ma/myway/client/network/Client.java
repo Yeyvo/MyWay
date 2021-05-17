@@ -85,8 +85,8 @@ public class Client {
 		stream = reader.read(b);
 		response = new String(b, 0, stream);
 		
-//		writer.write("received");
-//		writer.flush();
+		writer.write("received");
+		writer.flush();
 		
 		return response;
 	}
@@ -137,9 +137,7 @@ public class Client {
 	}
 	
 	public static boolean conn(String username, String password) {
-		String commande = "CONN "+username+" " +password;
-		Logger.getLogger(commande);
-		writer.write(commande);
+		writer.write("CONN "+username+" " +password);
 		writer.flush();
 		
 		try {
