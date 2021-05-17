@@ -55,7 +55,7 @@ public class ClientProcessor implements Runnable {
 				String debug = "Thread : " + Thread.currentThread().getName() + ". ";
 				debug += "Client ADRESSE : " + remote.getAddress().getHostAddress() + ".";
 				debug += " Port : " + remote.getPort() + ".\n";
-				debug += "\t -> Commande : " + response + "\n";
+				debug += "\t -> Commande : *" + response + "*\n";
 				Logger.getLogger("SERVER").info(debug);
 
 				String toSend = "";
@@ -85,6 +85,7 @@ public class ClientProcessor implements Runnable {
 					closeConnection = true;
 					write(toSend);
 				} else if (response.toUpperCase().startsWith("CONN")) {
+					
 					StringTokenizer str = new StringTokenizer(response, " ");
 					str.nextToken();
 
