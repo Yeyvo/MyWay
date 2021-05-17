@@ -196,6 +196,7 @@ public class ClientProcessor implements Runnable {
 		response = new String(b, 0, stream);
 		return response;
 	}
+
 	
 	private void write(String str) throws IOException {
 		writer.write(str);
