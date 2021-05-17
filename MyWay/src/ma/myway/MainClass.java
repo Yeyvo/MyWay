@@ -58,7 +58,7 @@ public class MainClass {
 		BddConnection.getInstance();
 		
 		
-		/*Graph g = null;
+		Graph g = null;
 		Graph.setGraph(g);
 		File f = new File("graph.bin");
 		if (!f.exists() && !f.isDirectory()) {
@@ -73,7 +73,7 @@ public class MainClass {
 		Logger.getLogger("BASE").info("Execution time in seconds   : " + timeElapsed / 1000 + " seconde ");
 
 		Server server = new Server(10);
-		server.open();*/
+		server.open();
 		
 		//server.close();
 	}
@@ -150,7 +150,7 @@ public class MainClass {
 		b = System.currentTimeMillis();
 		Logger.getLogger("BASE").info("Node Generation Finished ! (" + i + ")  time : " + (b - a) / 1000);
 
-		Logger.getLogger("BASE").info("Service data retrieving started ! ");
+		/*Logger.getLogger("BASE").info("Service data retrieving started ! ");
 		services = DAOFactory.getServiceDAO().allMap();
 		HashMap<String, CalendarExp> calExp = DAOFactory.getCalendarExpDAO().allMap();
 		merge(calExp, services);
@@ -211,7 +211,7 @@ public class MainClass {
 		b = System.currentTimeMillis();
 		Logger.getLogger("BASE")
 				.info("Edge from Transferts Generation Finished ! (" + i + ")  time :  " + (b - a) / 1000);
-
+*/
 		return g;
 	}
 
