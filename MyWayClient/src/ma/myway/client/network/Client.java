@@ -38,24 +38,27 @@ public class Client {
 		}
 	}
 
-	public static Map<String, String> GetStops() {
+	public static Map<String, String> GetStops()  {
 		Map<String, String> stopMap = new HashMap<>();
 		String stopnames = null, stopid = null;
-		writer.write("GETSTOPS");
-		writer.flush();
+		try {
+			WRITE("GETSTOPS");
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 
 		try {
-			String sizename = read(-1);
-			Logger.getLogger("CLIENT").info("sizename : " + sizename);
+//			String sizename = read(-1);
+//			Logger.getLogger("CLIENT").info("sizename : " + sizename);
 
-			stopnames = read(Integer.parseInt(sizename));
+			stopnames = READ();
 			Logger.getLogger("CLIENT").info(stopnames);
 			
 			
-			String sizeid = read(-1);
-			Logger.getLogger("CLIENT").info("sizeid : " + sizeid);
+//			String sizeid = read(-1);
+//			Logger.getLogger("CLIENT").info("sizeid : " + sizeid);
 
-			stopid = read(Integer.parseInt(sizeid));
+			stopid = READ();
 			Logger.getLogger("CLIENT").info(stopid);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -72,30 +75,12 @@ public class Client {
 		return stopMap;
 	}
 
-	private static String read(int i) throws IOException {
-		String response = "";
-		int stream;
-		byte[] b;
 
-		if (i < 0) {
-			b = new byte[1024];
-		} else {
-			b = new byte[i];
-		}
-		stream = reader.read(b);
-		response = new String(b, 0, stream);
+	public static void close() throws IOException {
+		WRITE("CLOSE");
 		
-//		writer.write("received");
-//		writer.flush();
-		
-		return response;
-	}
-
-	public static void close() {
-		writer.write("CLOSE");
-		writer.flush();
 		try {
-			Logger.getLogger("CLIENT").info(read(-1));
+			Logger.getLogger("CLIENT").info(READ());
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -108,15 +93,13 @@ public class Client {
 		}
 	}
 
-	public static String chem(String src, String dep) {
-		writer.write("CHEM " + src + " " + dep);
-		writer.flush();
+	public static String chem(String src, String dep) throws IOException {
+		WRITE("CHEM " + src + " " + dep);
 
 		String path = null;
 		try {
-			String sizepath = read(-1);
-			Logger.getLogger("CLIENT").info("sizepath : " + sizepath);
-			path = read(Integer.parseInt(sizepath));
+			
+			path = READ();
 			Logger.getLogger("CLIENT").info(path);
 			PrintWriter pathjsonwriter = new PrintWriter( new File(Main.path+"test.json"));
 			pathjsonwriter.write(path);
@@ -136,18 +119,63 @@ public class Client {
 		return path;
 	}
 	
-	public static boolean conn(String username, String password) {
+	public static boolean conn(String username, String password) throws IOException {
 		String commande = "CONN "+username+" " +password;
 		Logger.getLogger(commande);
-		writer.write(commande);
-		writer.flush();
+		WRITE(commande);
+
 		
 		try {
-			return Boolean.parseBoolean(read(-1));
+			return Boolean.parseBoolean(READ());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 			return false;
 	}
 
+	private static String read(int i, Boolean isconfirmation) throws IOException {
+		String response = "";
+		int stream;
+		byte[] b = new byte[i];
+
+//		if (i < 0) {
+//			b = new byte[1024];
+//		} else {
+//			b = new byte[i];
+//		}
+		stream = reader.read(b);
+		response = new String(b, 0, stream);
+		
+		if (!isconfirmation) {
+			writer.write("received");
+			writer.flush();
+		}
+		
+		Logger.getLogger("CLIENT").info(response);
+		
+		return response;
+	}
+	
+	private static String READ() throws IOException {
+		String size = read(20,false); /* check the size */
+
+		//received
+
+		String data = read(Integer.parseInt(size),false);
+		
+
+		//received
+
+		return data;
+	}
+	
+	private static void WRITE(String str) throws IOException {
+		writer.write(String.valueOf(str.getBytes("UTF-8").length));
+		writer.flush();
+		Logger.getLogger("CLIENT").info(read(8,true));
+		writer.write(str);
+		writer.flush();
+		Logger.getLogger("CLIENT").info(read(8,true));
+	}
+	
 }

@@ -1,6 +1,7 @@
 package ma.myway.client.ui.view;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -100,7 +101,11 @@ public class UIBase implements ViewMaker {
 			@Override
 			public void handle(Event event) {
 				if((mapStops.get(source.getText()) != null && mapStops.get(dest.getText()) !=null ) && !source.getText().equals(dest.getText())) {
-					Client.chem(mapStops.get(source.getText()), mapStops.get(dest.getText()));
+					try {
+						Client.chem(mapStops.get(source.getText()), mapStops.get(dest.getText()));
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 					map.getEngine().reload();
 
 				}
