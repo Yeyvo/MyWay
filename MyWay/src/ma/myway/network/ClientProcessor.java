@@ -214,14 +214,14 @@ public class ClientProcessor implements Runnable {
 	}
 
 	private void WRITE(String str) throws IOException {
-
-		writer.write(String.valueOf(str.getBytes("UTF-8").length));
+		int size = str.getBytes("UTF-8").length;
+		writer.write(String.valueOf(size));
 		writer.flush();
-		Logger.getLogger("CLIENT").info(read(8,true));
-
+		read(8,true);
+		if(size > )
 		writer.write(str);
 		writer.flush();
-		Logger.getLogger("SERVER").info(read(8,true));
+		read(8,true);
 	}
 
 }

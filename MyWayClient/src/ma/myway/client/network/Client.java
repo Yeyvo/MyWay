@@ -158,12 +158,9 @@ public class Client {
 	
 	private static String READ() throws IOException {
 		String size = read(20,false); /* check the size */
-
 		//received
-
-		String data = read(Integer.parseInt(size),false);
 		
-
+		String data = read(Integer.parseInt(size),false);
 		//received
 
 		return data;
@@ -172,10 +169,10 @@ public class Client {
 	private static void WRITE(String str) throws IOException {
 		writer.write(String.valueOf(str.getBytes("UTF-8").length));
 		writer.flush();
-		Logger.getLogger("CLIENT").info(read(8,true));
+		read(8,true);
 		writer.write(str);
 		writer.flush();
-		Logger.getLogger("CLIENT").info(read(8,true));
+		read(8,true);
 	}
 	
 }
