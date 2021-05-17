@@ -36,6 +36,9 @@ public class UIBase implements ViewMaker {
 
 		Map<String, String> mapStops =  Client.GetStops();
 		Set<String> setStops = mapStops.keySet();
+//		mapStops.forEach((k, v) -> {
+//			setStops.add(v);
+//		});
 		List<String> stops = List.copyOf(setStops);
 		//List<String> stops = new 	ArrayList<>();
 		SplitPane splitPane = new SplitPane();
