@@ -1,7 +1,5 @@
 package ma.myway.client.ui.view;
 
-import java.io.IOException;
-
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -55,17 +53,11 @@ public class UILogging implements ViewMaker {
 			@Override
 			public void handle(Event event) {
 				if (!username.getText().isBlank() && !pswd.getText().isBlank()) {
-					try {
-						if (Client.conn(username.getText(), pswd.getText())) {
-							stage.setScene(Main.getScenes().get(SceneName.BASE));
-							stage.centerOnScreen();
-						}else {
-							Alert alert = new Alert(AlertType.ERROR, "USERNAME / PASSWORD invalid");
-							alert.show();
-						}
-					} catch (IOException e) {
-						e.printStackTrace();
-						Alert alert = new Alert(AlertType.ERROR, "Comunication ERROR");
+					if (Client.conn(username.getText(), pswd.getText())) {
+						stage.setScene(Main.getScenes().get(SceneName.BASE));
+						stage.centerOnScreen();
+					}else {
+						Alert alert = new Alert(AlertType.ERROR, "USERNAME / PASSWORD invalid");
 						alert.show();
 					}
 				}

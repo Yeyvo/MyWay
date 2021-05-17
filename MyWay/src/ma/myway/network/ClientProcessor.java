@@ -46,16 +46,16 @@ public class ClientProcessor implements Runnable {
 		boolean closeConnection = false;
 		while (!client.isClosed()) {
 			try {
-				// writer = new PrintWriter(client.getOutputStream());
-				writer = new PrintWriter(new OutputStreamWriter(client.getOutputStream(), StandardCharsets.UTF_8),
-						true);
+				//writer = new PrintWriter(client.getOutputStream());
+				writer = new PrintWriter(new OutputStreamWriter(
+					    client.getOutputStream(), StandardCharsets.UTF_8), true);
 				reader = new BufferedInputStream(client.getInputStream());
-				String response = READ();
+				String response = read();
 				InetSocketAddress remote = (InetSocketAddress) client.getRemoteSocketAddress();
 				String debug = "Thread : " + Thread.currentThread().getName() + ". ";
 				debug += "Client ADRESSE : " + remote.getAddress().getHostAddress() + ".";
 				debug += " Port : " + remote.getPort() + ".\n";
-				debug += "\t -> Commande : " + response + "\n";
+				debug += "\t -> Commande : *" + response + "*\n";
 				Logger.getLogger("SERVER").info(debug);
 
 				String toSend = "";
@@ -70,35 +70,37 @@ public class ClientProcessor implements Runnable {
 					long a = System.currentTimeMillis();
 					String src = str.nextToken();
 					String dest = str.nextToken();
-					LinkedList<Edge> path = Graph.getGraph().getShortestPath(Graph.getGraph().getNodebyID(src),
+					LinkedList<Edge> path = Graph.getGraph().getShortestPath(
+							Graph.getGraph().getNodebyID(src),
 							Graph.getGraph().getNodebyID(dest));
 					long b = System.currentTimeMillis();
 					Logger.getLogger("BASE").info("path found  time : " + -(a - b) / 1000);
 					toSend = JsonParse(path, Graph.getGraph().getNodebyID(src));
-
-					WRITE(toSend);
+					
+					write(String.valueOf(toSend.getBytes("UTF-8").length));
+					
+					write(toSend);
 				} else if (response.toUpperCase().startsWith("CLOSE")) {
 					toSend = "Client disconnected !";
 					closeConnection = true;
-					WRITE(toSend);
+					write(toSend);
 				} else if (response.toUpperCase().startsWith("CONN")) {
+					
 					StringTokenizer str = new StringTokenizer(response, " ");
 					str.nextToken();
 
 					String username = str.nextToken();
 					String password = str.nextToken();
-					boolean result = DAOFactory.getUserDAO().find(new User(username, password));
-
-					if (result) {
-						Logger.getLogger("SERVER").info("User {" + username + "," + password + "} connected as "
-								+ remote.getAddress().getHostAddress());
-					} else {
-						Logger.getLogger("SERVER").info("User {" + username + "," + password + "} failed ip : "
-								+ remote.getAddress().getHostAddress());
+					boolean result = DAOFactory.getUserDAO().find(new User(username,password));
+					
+					if(result) {
+						Logger.getLogger("SERVER").info("User {"+username+","+password+"} connected as "+ remote.getAddress().getHostAddress());
+					}else {
+						Logger.getLogger("SERVER").info("User {"+username+","+password+"} failed ip : "+ remote.getAddress().getHostAddress());
 
 					}
-
-					WRITE(String.valueOf(result));
+					
+					write(String.valueOf(result));
 				} else if (response.toUpperCase().startsWith("GETSTOPS")) {
 
 					String stop_names = "";
@@ -119,14 +121,16 @@ public class ClientProcessor implements Runnable {
 					}
 					Logger.getLogger("SERVER").info(stop_names);
 					Logger.getLogger("SERVER").info(Strop_id);
+					
+					write( String.valueOf(stop_names.getBytes("UTF-8").length));
+					write(stop_names);
 
-					WRITE(stop_names);
-
-					WRITE(Strop_id);
+					write(String.valueOf(Strop_id.getBytes("UTF-8").length));
+					write(Strop_id);
 
 				} else {
 					toSend = "UNKOWN Command ";
-					WRITE(toSend);
+					write(toSend);
 				}
 
 				if (closeConnection) {
@@ -148,7 +152,7 @@ public class ClientProcessor implements Runnable {
 
 	public static String JsonParse(LinkedList<Edge> path, Node src) throws IOException {
 		List<Stop> stops = new LinkedList<>();
-		if (path != null)
+		if(path != null)
 			stops = Edge.edgesToStops(path);
 
 		StringWriter stringWriter = new StringWriter();
@@ -167,15 +171,15 @@ public class ClientProcessor implements Runnable {
 			jsonWriter.name("desc").value(stop.getName() + " " + stop.getDesc());
 			jsonWriter.endObject();
 		}
-
-		if (path == null) {
+		
+		if(path == null) {
 			jsonWriter.beginObject();
 			jsonWriter.name("lat").value(src.getStop().getLat());
 			jsonWriter.name("lon").value(src.getStop().getLon());
 			jsonWriter.name("desc").value(src.getStop().getName() + " " + src.getStop().getDesc());
 			jsonWriter.endObject();
 		}
-
+		
 		jsonWriter.endArray();
 		jsonWriter.endObject();
 		jsonWriter.close();
@@ -184,44 +188,19 @@ public class ClientProcessor implements Runnable {
 
 	}
 
-	private String read(int i, Boolean isconfirmation) throws IOException {
+	private String read() throws IOException {
 		String response = "";
 		int stream;
-		byte[] b = new byte[i];
+		byte[] b = new byte[100];
 		stream = reader.read(b);
 		response = new String(b, 0, stream);
-
-		Logger.getLogger("SERVER").info("\tdata : " + response);
-
-		if (!isconfirmation) {
-			writer.write("received");
-			writer.flush();
-		}
-
 		return response;
 	}
-
-	private String READ() throws IOException {
-		String size = read(20, false); /* check the size */
-
-		// received
-
-		String data = read(Integer.parseInt(size), false);
-
-		// received
-
-		return data;
-	}
-
-	private void WRITE(String str) throws IOException {
-
-		writer.write(String.valueOf(str.getBytes("UTF-8").length));
-		writer.flush();
-		Logger.getLogger("CLIENT").info(read(8,true));
-
+	
+	private void write(String str) throws IOException {
 		writer.write(str);
 		writer.flush();
-		Logger.getLogger("SERVER").info(read(8,true));
+		Logger.getLogger("SERVER").info(read());
 	}
 
 }
