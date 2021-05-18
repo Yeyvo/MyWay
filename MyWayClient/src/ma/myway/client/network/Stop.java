@@ -1,7 +1,6 @@
 package ma.myway.client.network;
 
-
-public class Stop{
+public class Stop {
 
 	/**
 	 * 

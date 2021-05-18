@@ -43,11 +43,11 @@ public class Node implements Serializable {
 		this.stop = stop;
 	}
 
-	public void setDistance(double distance){
+	public void setDistance(double distance) {
 		this.distance = distance;
 	}
 
-	public double getDistance(){
+	public double getDistance() {
 		return this.distance;
 	}
 

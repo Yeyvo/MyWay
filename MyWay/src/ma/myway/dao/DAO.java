@@ -11,7 +11,7 @@ public abstract class DAO<T> {
 	}
 
 	/**
-	 * Méthode de création
+	 * Mï¿½thode de crï¿½ation
 	 * 
 	 * @param obj
 	 * @return boolean
@@ -19,25 +19,25 @@ public abstract class DAO<T> {
 	public abstract boolean create(T obj);
 
 	/**
-	 * Méthode pour effacer
+	 * Mï¿½thode pour effacer
 	 * 
 	 * @param obj
 	 * @return boolean
 	 */
-	public abstract boolean delete(T obj); //ali
-	
-	/**
-	 * Méthode de mise à jour
-	 * 
-	 * @param obj
-	 * @return boolean
-	 */
-	public boolean update(T oldobj,T newobj) {
-		return false;
-	}//ali
+	public abstract boolean delete(T obj); // ali
 
 	/**
-	 * Méthode de recherche des informations
+	 * Mï¿½thode de mise ï¿½ jour
+	 * 
+	 * @param obj
+	 * @return boolean
+	 */
+	public boolean update(T oldobj, T newobj) {
+		return false;
+	}// ali
+
+	/**
+	 * Mï¿½thode de recherche des informations
 	 * 
 	 * @param id
 	 * @return T (peut retourner null )
@@ -45,14 +45,11 @@ public abstract class DAO<T> {
 	public abstract T find(String id);
 
 	/**
-	 * Méthode qui permet de charger tout les enregistrement
+	 * Mï¿½thode qui permet de charger tout les enregistrement
 	 * 
 	 * @param id
 	 * @return Set<T>
 	 */
 	public abstract Set<T> all();
-	
-	
-
 
 }

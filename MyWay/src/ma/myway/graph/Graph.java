@@ -6,9 +6,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
@@ -60,7 +57,7 @@ public class Graph implements Serializable {
 	private Map<Node, Double> distance;
 
 	private Map<String, Service> services;
-	
+
 	private static Graph g = null;
 
 	public Graph(HashMap<String, Node> nodes) {
@@ -273,7 +270,7 @@ public class Graph implements Serializable {
 		this.services = services;
 	}
 
-	public  Set<String> Service_Date(Date date) {
+	public Set<String> Service_Date(Date date) {
 		Set<String> result = new HashSet<String>();
 
 		for (Service service : services.values()) {// if it's runing slow whe can use MutableMap of Eclipse (CS)
@@ -311,12 +308,12 @@ public class Graph implements Serializable {
 		}
 
 		Node min = pq.dequeueMin().mElem;
-		Map<String,String> tripDate = Trip_Date(Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+		Map<String, String> tripDate = Trip_Date(Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 		do {
 			List<Edge> neighboors = edges.get(min.getStop().getStop_id());
 			if (neighboors != null) {
 				for (Edge edge : neighboors) {
-					if(tripDate.containsKey(edge.getTrip_id())){
+					if (tripDate.containsKey(edge.getTrip_id())) {
 						double weight = edge.getWeight();
 						double newLen = edge.getSrc().getDistance() + weight;
 						if (newLen < edge.getDest().getDistance()) {
@@ -334,7 +331,7 @@ public class Graph implements Serializable {
 			}
 		} while (min != null);
 	}
-	
+
 	public static void saveGraph(Graph graph) {
 		ObjectOutputStream oos = null;
 
@@ -356,7 +353,7 @@ public class Graph implements Serializable {
 			}
 		}
 	}
-	
+
 	public static Graph loadGraph() {
 		ObjectInputStream ois = null;
 		Graph g = null;
@@ -382,22 +379,19 @@ public class Graph implements Serializable {
 		}
 		return g;
 	}
-	
-	
+
 	public static Graph getGraph() {
 		if (g == null) {
 			g = loadGraph();
 		}
 		return g;
 	}
-	
+
 	public static void setGraph(Graph g) {
 		Graph.g = g;
 	}
-	
 
 	public HashMap<String, Node> getNodes() {
 		return nodes;
 	}
-	
 }

@@ -1,13 +1,7 @@
 package ma.myway;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,8 +17,6 @@ import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import com.google.gson.stream.JsonWriter;
-
 import ma.myway.config.Config;
 import ma.myway.dao.BddConnection;
 import ma.myway.dao.DAOFactory;
@@ -38,25 +30,23 @@ import ma.myway.graph.data.Stop;
 import ma.myway.graph.data.Stop_Trip;
 import ma.myway.graph.data.Transfert;
 import ma.myway.network.Server;
-import ma.myway.users.User;
 
 public class MainClass {
 
 	private static int initlenEdges = 14666666;
 	private static int initlenNode = 34778;
-	//public static Graph g = null;
+	// public static Graph g = null;
 
 	public static void main(String[] args) {
 
 		long StartTime = System.currentTimeMillis();
-		
+
 		LoadLogger();
 		Logger.getLogger("BASE").info("Config file loading Started ! ");
 		Config.load("config.json");
 		Logger.getLogger("BASE")
 				.info("Config file loading Finished !  time " + (System.currentTimeMillis() - StartTime) / 1000);
 		BddConnection.getInstance();
-		
 		Graph g = null;
 		Graph.setGraph(g);
 		File f = new File("graph.bin");
@@ -74,27 +64,26 @@ public class MainClass {
 
 		Server server = new Server(10);
 		server.open();
-		
-		//server.close();
-	
-		
-		
+
+
+		// server.close();
+
 	}
 
 	private static void LoadLogger() {
 		Logger loggerBASE = Logger.getLogger("BASE");
-		FileHandler fh;
+		
 		try {
-			fh = new FileHandler("logs_BASE.log");
+			FileHandler fh = new FileHandler("logs_BASE.log");
 			loggerBASE.addHandler(fh);
 			fh.setFormatter(new Formatter() {
 
 				@Override
 				public String format(LogRecord record) {
-					SimpleDateFormat logTime = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
+					SimpleDateFormat logTime = new SimpleDateFormat(" MM-dd-yyyy HH:mm:ss");
 					Calendar cal = new GregorianCalendar();
 					cal.setTimeInMillis(record.getMillis());
-					return record.getLevel() + logTime.format(cal.getTime()) + " || "
+					return "BASE : " + record.getLevel() + logTime.format(cal.getTime()) + " || "
 							+ record.getSourceClassName().substring(record.getSourceClassName().lastIndexOf(".") + 1,
 									record.getSourceClassName().length())
 							+ "." + record.getSourceMethodName() + "() : " + record.getMessage() + "\n";
@@ -105,19 +94,19 @@ public class MainClass {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		Logger loggerServer = Logger.getLogger("SERVER");
 		try {
-			fh = new FileHandler("Logs_Server.log");
+			FileHandler fh = new FileHandler("Logs_Server.log");
 			loggerServer.addHandler(fh);
 			fh.setFormatter(new Formatter() {
 
 				@Override
 				public String format(LogRecord record) {
-					SimpleDateFormat logTime = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
+					SimpleDateFormat logTime = new SimpleDateFormat(" MM-dd-yyyy HH:mm:ss");
 					Calendar cal = new GregorianCalendar();
 					cal.setTimeInMillis(record.getMillis());
-					return record.getLevel() + logTime.format(cal.getTime()) + " || "
+					return "SERVER : " + record.getLevel() + logTime.format(cal.getTime()) + " || "
 							+ record.getSourceClassName().substring(record.getSourceClassName().lastIndexOf(".") + 1,
 									record.getSourceClassName().length())
 							+ "." + record.getSourceMethodName() + "() : " + record.getMessage() + "\n";
@@ -129,7 +118,6 @@ public class MainClass {
 			e.printStackTrace();
 		}
 	}
-
 
 	public static Graph graphGeneration(long StartTime) {
 		long a, b;
@@ -216,6 +204,7 @@ public class MainClass {
 				.info("Edge from Transferts Generation Finished ! (" + i + ")  time :  " + (b - a) / 1000);
 		
 		Graph.setGraph(g);
+
 		return g;
 	}
 
@@ -229,7 +218,6 @@ public class MainClass {
 		}
 
 	}
-
 
 	public static void loggerInit() {
 

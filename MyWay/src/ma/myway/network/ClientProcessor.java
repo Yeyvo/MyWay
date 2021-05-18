@@ -1,28 +1,24 @@
 package ma.myway.network;
 
 import java.io.BufferedInputStream;
-import java.io.FileOutputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
-import java.nio.Buffer;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
 import com.google.gson.stream.JsonWriter;
-import ma.myway.MainClass;
 import ma.myway.dao.DAOFactory;
 import ma.myway.graph.Edge;
 import ma.myway.graph.Graph;
@@ -33,8 +29,10 @@ import ma.myway.users.User;
 public class ClientProcessor implements Runnable {
 
 	private Socket client = null;
-	private PrintWriter writer = null;
+	private BufferedOutputStream bos = null;
+	private BufferedWriter buffWriter = null;
 	private BufferedInputStream reader = null;
+	private BufferedReader buffReader = null;
 
 	public ClientProcessor(Socket client) {
 		this.client = client;
@@ -46,11 +44,14 @@ public class ClientProcessor implements Runnable {
 		boolean closeConnection = false;
 		while (!client.isClosed()) {
 			try {
-				//writer = new PrintWriter(client.getOutputStream());
-				writer = new PrintWriter(new OutputStreamWriter(
-					    client.getOutputStream(), StandardCharsets.UTF_8), true);
+
+				bos = new BufferedOutputStream(client.getOutputStream());
+				buffWriter = new BufferedWriter(new OutputStreamWriter(bos, StandardCharsets.UTF_8));
+
 				reader = new BufferedInputStream(client.getInputStream());
-				String response = read();
+				buffReader = new BufferedReader(new InputStreamReader(reader, StandardCharsets.UTF_8));
+				String response = READ();
+
 				InetSocketAddress remote = (InetSocketAddress) client.getRemoteSocketAddress();
 				String debug = "Thread : " + Thread.currentThread().getName() + ". ";
 				debug += "Client ADRESSE : " + remote.getAddress().getHostAddress() + ".";
@@ -76,10 +77,14 @@ public class ClientProcessor implements Runnable {
 					long b = System.currentTimeMillis();
 					Logger.getLogger("BASE").info("path found  time : " + -(a - b) / 1000);
 					toSend = JsonParse(path, Graph.getGraph().getNodebyID(src));
-					
-					write(String.valueOf(toSend.getBytes("UTF-8").length));
-					
-					write(toSend);
+					int lines = 0;
+					for (char data : toSend.toCharArray()) {
+						if (data == '\n' || data == '\r')
+							lines++;
+					}
+					WRITE(String.valueOf(lines));
+					WRITE(toSend);
+
 				} else if (response.toUpperCase().startsWith("CLOSE")) {
 					toSend = "Client disconnected !";
 					closeConnection = true;
@@ -104,28 +109,19 @@ public class ClientProcessor implements Runnable {
 
 					String stop_names = "";
 					String Strop_id = "";
-//				    Iterator it = Graph.getGraph().getNodes().entrySet().iterator();
-//				    while (it.hasNext()) {
-//				        Map.Entry pair = (Map.Entry)it.next();
-//				        stop_names += ((Node) pair.getValue()).getStop().getName();
-//				        Strop_id += ((Node) pair.getValue()).getStop().getName();
-//				       // System.out.println(pair.getKey() + " = " + pair.getValue());
-//				        it.remove(); // avoids a ConcurrentModificationException
-//				    }
 
 					Collection<Node> c = Graph.getGraph().getNodes().values();
 					for (Node n : c) {
 						stop_names += n.getStop().getName() + "#";
 						Strop_id += n.getStop().getStop_id() + "#";
 					}
-					Logger.getLogger("SERVER").info(stop_names);
-					Logger.getLogger("SERVER").info(Strop_id);
-					
-					write( String.valueOf(stop_names.getBytes("UTF-8").length));
-					write(stop_names);
 
-					write(String.valueOf(Strop_id.getBytes("UTF-8").length));
-					write(Strop_id);
+
+					WRITE(stop_names);
+					Logger.getLogger("BASE").info(stop_names);
+					WRITE(Strop_id);
+					Logger.getLogger("BASE").info(Strop_id);
+
 
 				} else {
 					toSend = "UNKOWN Command ";
@@ -133,9 +129,11 @@ public class ClientProcessor implements Runnable {
 				}
 
 				if (closeConnection) {
-					writer.close();
+					buffWriter.close();
+					bos.close();
 					reader.close();
 					client.close();
+					buffReader.close();
 					break;
 				}
 
@@ -187,19 +185,28 @@ public class ClientProcessor implements Runnable {
 
 	}
 
-	private String read() throws IOException {
-		String response = "";
-		int stream;
-		byte[] b = new byte[100];
-		stream = reader.read(b);
-		response = new String(b, 0, stream);
+
+	private String read(int i, Boolean isconfirmation) throws IOException {
+
+		String response = buffReader.readLine();
+
+		Logger.getLogger("SERVER").info("\tdata : " + response);
+
 		return response;
 	}
-	
-	private void write(String str) throws IOException {
-		writer.write(str);
-		writer.flush();
-		Logger.getLogger("SERVER").info(read());
+
+	private String READ() throws IOException {
+		String data = read(-1, false);
+
+		return data;
+	}
+
+	private void WRITE(String str) throws IOException {
+
+		buffWriter.write(str);
+		buffWriter.newLine();
+		buffWriter.flush();
+
 	}
 
 }

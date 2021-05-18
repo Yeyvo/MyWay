@@ -7,8 +7,6 @@ import java.sql.Statement;
 import java.util.HashSet;
 import java.util.Set;
 
-import ma.myway.graph.data.Agency;
-import ma.myway.graph.data.Route_Service;
 import ma.myway.graph.data.Transfert;
 
 public class TransfertDAO extends DAO<Transfert> {
@@ -19,13 +17,13 @@ public class TransfertDAO extends DAO<Transfert> {
 
 	@Override
 
-	public Transfert find(String id) {//still thinking
+	public Transfert find(String id) {// still thinking
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Set<Transfert> all() {//works
+	public Set<Transfert> all() {// works
 		Set<Transfert> set_transferts = new HashSet<>();
 		Statement stmt = null;
 		try {
@@ -50,7 +48,7 @@ public class TransfertDAO extends DAO<Transfert> {
 	}
 
 	@Override
-	public boolean create(Transfert obj) {//works
+	public boolean create(Transfert obj) {// works
 		Statement stmt = null;
 		try {
 			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
@@ -68,31 +66,35 @@ public class TransfertDAO extends DAO<Transfert> {
 		}
 		return false;
 	}
-	public boolean delete(Transfert obj) {//works
-		Statement stmt=null;
+
+	@Override
+	public boolean delete(Transfert obj) {// works
+		Statement stmt = null;
 		try {
 			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-			int result = stmt.executeUpdate("DELETE FROM transfers WHERE from_stop_id = "+obj.getSrc_stop_id()+" and to_stop_id = "+obj.getDest_stop_id());
+			int result = stmt.executeUpdate("DELETE FROM transfers WHERE from_stop_id = " + obj.getSrc_stop_id()
+					+ " and to_stop_id = " + obj.getDest_stop_id());
 			System.out.println(result + " Row affected !");
-			return(true);
-		}catch(SQLException e) {
+			return (true);
+		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			try {
 				stmt.close();
-			}catch(SQLException e) {
+			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
-		return(false);
+		return (false);
 	}
-	
-	public boolean update(Transfert oldobj,Transfert newobj) {//works
+
+	@Override
+	public boolean update(Transfert oldobj, Transfert newobj) {// works
 		try {
 			delete(oldobj);
 			create(newobj);
 			return true;
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return false;

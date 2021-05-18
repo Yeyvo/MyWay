@@ -30,7 +30,7 @@ public class Stop implements Serializable {
 	private String stop_id;
 	private String name;
 	private String desc;
-	private double lat; //changement en double
+	private double lat; // changement en double
 	private double lon;
 	private int location_type;
 
@@ -84,7 +84,8 @@ public class Stop implements Serializable {
 
 	@Override
 	public String toString() {
-		return "'"+stop_id + "',null,'" + name + "','" + desc + "','" + String.valueOf(lat) + "','" + String.valueOf(lon) + "','" + String.valueOf(location_type) + "',null";
+		return "'" + stop_id + "',null,'" + name + "','" + desc + "','" + String.valueOf(lat) + "','"
+				+ String.valueOf(lon) + "','" + String.valueOf(location_type) + "',null";
 	}
 
 }

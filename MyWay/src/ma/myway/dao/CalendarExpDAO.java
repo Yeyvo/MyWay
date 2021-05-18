@@ -9,9 +9,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Logger;
-
-import ma.myway.graph.data.Agency;
 import ma.myway.graph.data.CalendarExp;
 
 public class CalendarExpDAO extends DAO<CalendarExp> {
@@ -37,7 +34,7 @@ public class CalendarExpDAO extends DAO<CalendarExp> {
 		Statement stmt = null;
 		try {
 			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-				ResultSet result = 	stmt.executeQuery("SELECT * FROM calendar_dates");
+			ResultSet result = stmt.executeQuery("SELECT * FROM calendar_dates");
 			while (result.next()) {
 				if (!set_CalendarExp.containsKey(result.getString(1))) {
 					List<Date> added = new LinkedList<Date>();
@@ -63,37 +60,38 @@ public class CalendarExpDAO extends DAO<CalendarExp> {
 
 		return set_CalendarExp;
 	}
-	
-	public boolean delete(CalendarExp obj) {//fait
-		Statement stmt=null;
+
+	@Override
+	public boolean delete(CalendarExp obj) {// fait
+		Statement stmt = null;
 		try {
 			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-			int result = stmt.executeUpdate("DELETE FROM calendar_dates WHERE service_id = "+obj.getService_id());
+			int result = stmt.executeUpdate("DELETE FROM calendar_dates WHERE service_id = " + obj.getService_id());
 			System.out.println(result + " Row affected !");
-			return(true);
-		}catch(SQLException e) {
+			return (true);
+		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			try {
 				stmt.close();
-			}catch(SQLException e) {
+			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
-		return(false);
+		return (false);
 	}
-	
+
 	public boolean update(CalendarExp obj) {
-		Statement stmt=null;
+		Statement stmt = null;
 		try {
 			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-			int result = stmt.executeUpdate("UPDATE agency set  WHERE service_id = "+obj.getService_id());
+			int result = stmt.executeUpdate("UPDATE agency set  WHERE service_id = " + obj.getService_id());
 			System.out.println(result + " Row affected !");
-			return(true);
-		}catch(SQLException e) {
+			return (true);
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return(false);
+		return (false);
 	}
 
 	@Override

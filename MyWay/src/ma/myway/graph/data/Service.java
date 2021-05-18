@@ -16,7 +16,7 @@ public class Service implements Serializable {
 	String service_id;
 	Integer dates[] = new Integer[7];
 	Date start_date;
-	Date end_date; //changement de class necessaire
+	Date end_date; // changement de class necessaire
 
 	private List<Date> added;
 	private List<Date> removed;
