@@ -98,6 +98,7 @@ public class UIBase implements ViewMaker {
 			public void handle(Event event) {
 				if ((mapStops.get(source.getText()) != null && mapStops.get(dest.getText()) != null)
 						&& !source.getText().equals(dest.getText())) {
+
 					Client.chem(mapStops.get(source.getText()), mapStops.get(dest.getText()));
 					map.getEngine().reload();
 
@@ -113,8 +114,15 @@ public class UIBase implements ViewMaker {
 		leftControl.setAlignment(Pos.CENTER);
 		leftControl.setSpacing(15);
 
-		// rightControl.setFillWidth(true);
-		// rightControl.setMaxHeight(Double.MAX_VALUE);
+
+		//rightControl.setFillWidth(true);
+		//rightControl.setMaxHeight(Double.MAX_VALUE);
+		
+		/*rightControl.getChildren().add(map);
+		//VBox.setVgrow(map, Priority.ALWAYS);
+		rightControl.setBackground(new Background(new BackgroundFill(Color.GREY, CornerRadii.EMPTY, Insets.EMPTY)));
+		 */
+
 
 		/*
 		 * rightControl.getChildren().add(map); //VBox.setVgrow(map, Priority.ALWAYS);

@@ -56,6 +56,7 @@ public class Client {
 		Map<String, String> stopMap = new HashMap<>();
 		String stopnames = null, stopid = null;
 
+
 		try {
 			WRITE("GETSTOPS");
 			stopnames = READ(false);
@@ -64,6 +65,7 @@ public class Client {
 
 			stopid = READ(false);
 			System.out.println("stopid");
+
 			Logger.getLogger("CLIENT").info(stopid);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -73,7 +75,7 @@ public class Client {
 		StringTokenizer idtok = new StringTokenizer(stopid, "#");
 		while (nametok.hasMoreElements() && idtok.hasMoreElements()) {
 			stopMap.put(nametok.nextElement().toString(), idtok.nextElement().toString());
-
+			//stopMap.put(idtok.nextElement().toString(), nametok.nextElement().toString());
 		}
 
 		return stopMap;
@@ -102,6 +104,7 @@ public class Client {
 
 		try {
 			WRITE("CLOSE");
+
 			Logger.getLogger("CLIENT").info(read(-1));
 		} catch (IOException e1) {
 			e1.printStackTrace();
@@ -122,6 +125,7 @@ public class Client {
 			WRITE("CHEM " + src + " " + dep);
 
 			path = READ(true);
+
 			Logger.getLogger("CLIENT").info(path);
 			PrintWriter pathjsonwriter = new PrintWriter(new File(Main.path + "test.json"));
 			pathjsonwriter.write(path);
@@ -141,11 +145,13 @@ public class Client {
 		return path;
 	}
 
+
 	public static boolean conn(String username, String password) {
 		try {
 			WRITE("CONN " + username + " " + password);
 
 			return Boolean.parseBoolean(READ(false));
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -178,5 +184,6 @@ public class Client {
 		buffWriter.newLine();
 		buffWriter.flush();
 	}
+
 
 }

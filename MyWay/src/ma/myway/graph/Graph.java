@@ -394,5 +394,4 @@ public class Graph implements Serializable {
 	public HashMap<String, Node> getNodes() {
 		return nodes;
 	}
-
 }

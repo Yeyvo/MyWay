@@ -51,6 +51,7 @@ public class ClientProcessor implements Runnable {
 				reader = new BufferedInputStream(client.getInputStream());
 				buffReader = new BufferedReader(new InputStreamReader(reader, StandardCharsets.UTF_8));
 				String response = READ();
+
 				InetSocketAddress remote = (InetSocketAddress) client.getRemoteSocketAddress();
 				String debug = "Thread : " + Thread.currentThread().getName() + ". ";
 				debug += "Client ADRESSE : " + remote.getAddress().getHostAddress() + ".";
@@ -70,42 +71,40 @@ public class ClientProcessor implements Runnable {
 					long a = System.currentTimeMillis();
 					String src = str.nextToken();
 					String dest = str.nextToken();
-					LinkedList<Edge> path = Graph.getGraph().getShortestPath(Graph.getGraph().getNodebyID(src),
+					LinkedList<Edge> path = Graph.getGraph().getShortestPath(
+							Graph.getGraph().getNodebyID(src),
 							Graph.getGraph().getNodebyID(dest));
 					long b = System.currentTimeMillis();
 					Logger.getLogger("BASE").info("path found  time : " + -(a - b) / 1000);
 					toSend = JsonParse(path, Graph.getGraph().getNodebyID(src));
-
 					int lines = 0;
-
 					for (char data : toSend.toCharArray()) {
 						if (data == '\n' || data == '\r')
 							lines++;
 					}
 					WRITE(String.valueOf(lines));
 					WRITE(toSend);
+
 				} else if (response.toUpperCase().startsWith("CLOSE")) {
 					toSend = "Client disconnected !";
 					closeConnection = true;
-					WRITE(toSend);
+					write(toSend);
 				} else if (response.toUpperCase().startsWith("CONN")) {
 					StringTokenizer str = new StringTokenizer(response, " ");
 					str.nextToken();
 
 					String username = str.nextToken();
 					String password = str.nextToken();
-					boolean result = DAOFactory.getUserDAO().find(new User(username, password));
-
-					if (result) {
-						Logger.getLogger("SERVER").info("User {" + username + "," + password + "} connected as "
-								+ remote.getAddress().getHostAddress());
-					} else {
-						Logger.getLogger("SERVER").info("User {" + username + "," + password + "} failed ip : "
-								+ remote.getAddress().getHostAddress());
+					boolean result = DAOFactory.getUserDAO().find(new User(username,password));
+					
+					if(result) {
+						Logger.getLogger("SERVER").info("User {"+username+","+password+"} connected as "+ remote.getAddress().getHostAddress());
+					}else {
+						Logger.getLogger("SERVER").info("User {"+username+","+password+"} failed ip : "+ remote.getAddress().getHostAddress());
 
 					}
-
-					WRITE(String.valueOf(result));
+					
+					write(String.valueOf(result));
 				} else if (response.toUpperCase().startsWith("GETSTOPS")) {
 
 					String stop_names = "";
@@ -117,14 +116,16 @@ public class ClientProcessor implements Runnable {
 						Strop_id += n.getStop().getStop_id() + "#";
 					}
 
+
 					WRITE(stop_names);
 					Logger.getLogger("BASE").info(stop_names);
 					WRITE(Strop_id);
 					Logger.getLogger("BASE").info(Strop_id);
 
+
 				} else {
 					toSend = "UNKOWN Command ";
-					WRITE(toSend);
+					write(toSend);
 				}
 
 				if (closeConnection) {
@@ -148,7 +149,7 @@ public class ClientProcessor implements Runnable {
 
 	public static String JsonParse(LinkedList<Edge> path, Node src) throws IOException {
 		List<Stop> stops = new LinkedList<>();
-		if (path != null)
+		if(path != null)
 			stops = Edge.edgesToStops(path);
 
 		StringWriter stringWriter = new StringWriter();
@@ -167,15 +168,15 @@ public class ClientProcessor implements Runnable {
 			jsonWriter.name("desc").value(stop.getName() + " " + stop.getDesc());
 			jsonWriter.endObject();
 		}
-
-		if (path == null) {
+		
+		if(path == null) {
 			jsonWriter.beginObject();
 			jsonWriter.name("lat").value(src.getStop().getLat());
 			jsonWriter.name("lon").value(src.getStop().getLon());
 			jsonWriter.name("desc").value(src.getStop().getName() + " " + src.getStop().getDesc());
 			jsonWriter.endObject();
 		}
-
+		
 		jsonWriter.endArray();
 		jsonWriter.endObject();
 		jsonWriter.close();
@@ -183,6 +184,7 @@ public class ClientProcessor implements Runnable {
 		return stringWriter.toString();
 
 	}
+
 
 	private String read(int i, Boolean isconfirmation) throws IOException {
 
@@ -204,6 +206,7 @@ public class ClientProcessor implements Runnable {
 		buffWriter.write(str);
 		buffWriter.newLine();
 		buffWriter.flush();
+
 	}
 
 }

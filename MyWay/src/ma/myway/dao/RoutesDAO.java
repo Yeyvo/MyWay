@@ -49,7 +49,7 @@ public class RoutesDAO extends DAO<Route_Service> {
 				e.printStackTrace();
 			}
 		}
-		res.put("0", "0"); // ajout des transferts
+		res.put("0", "0");
 		return res;
 	}
 

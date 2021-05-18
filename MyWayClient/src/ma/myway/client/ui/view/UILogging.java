@@ -56,6 +56,7 @@ public class UILogging implements ViewMaker {
 					if (Client.conn(username.getText(), pswd.getText())) {
 						stage.setScene(Main.getScenes().get(SceneName.BASE));
 						stage.centerOnScreen();
+
 					} else {
 						Alert alert = new Alert(AlertType.ERROR, "USERNAME / PASSWORD invalid");
 						alert.show();

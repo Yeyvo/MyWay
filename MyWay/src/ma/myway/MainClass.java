@@ -47,13 +47,13 @@ public class MainClass {
 		Logger.getLogger("BASE")
 				.info("Config file loading Finished !  time " + (System.currentTimeMillis() - StartTime) / 1000);
 		BddConnection.getInstance();
-
 		Graph g = null;
 		Graph.setGraph(g);
 		File f = new File("graph.bin");
 		if (!f.exists() && !f.isDirectory()) {
 			g = graphGeneration(StartTime);
 			Graph.saveGraph(g);
+			
 		} else if (f.exists() && !f.isDirectory()) {
 			System.out.println("Exist");
 			g = Graph.getGraph();
@@ -65,7 +65,9 @@ public class MainClass {
 		Server server = new Server(10);
 		server.open();
 
+
 		// server.close();
+
 	}
 
 	private static void LoadLogger() {
@@ -200,6 +202,8 @@ public class MainClass {
 		b = System.currentTimeMillis();
 		Logger.getLogger("BASE")
 				.info("Edge from Transferts Generation Finished ! (" + i + ")  time :  " + (b - a) / 1000);
+		
+		Graph.setGraph(g);
 
 		return g;
 	}
