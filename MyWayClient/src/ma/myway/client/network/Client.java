@@ -65,7 +65,7 @@ public class Client {
 		StringTokenizer idtok = new StringTokenizer(stopid, "#");
 		while (nametok.hasMoreElements() && idtok.hasMoreElements()) {
 			stopMap.put(nametok.nextElement().toString(), idtok.nextElement().toString());
-//			stopMap.put( idtok.nextElement().toString(),nametok.nextElement().toString());
+			//stopMap.put(idtok.nextElement().toString(), nametok.nextElement().toString());
 
 		}
 

@@ -123,7 +123,7 @@ public class UIBase implements ViewMaker {
 		/*rightControl.getChildren().add(map);
 		//VBox.setVgrow(map, Priority.ALWAYS);
 		rightControl.setBackground(new Background(new BackgroundFill(Color.GREY, CornerRadii.EMPTY, Insets.EMPTY)));
-*/
+		 */
 
 
 		/*

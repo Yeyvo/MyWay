@@ -62,21 +62,21 @@ public class Service implements Serializable {
 
 	@Override
 	public String toString() {
-		String str = new String();
-		str.concat("'"+service_id + "',");
+		String str = "";
+		str += ("'"+service_id + "',");
 		for (int jr : dates) {
-			str.concat(jr + ",");
+			str += (jr + ",");
 		}
 		return str + start_date + "," + end_date;
 	}
 
 	public void toStr() {
-		String str = new String();
-		str.concat(service_id + ",");
+		String str = "";
+		str += ("'"+service_id + "', Normal days = [");
 		for (int jr : dates) {
-			str.concat(jr + ",");
+			str += (jr + ",");
 		}
-		Logger.getLogger("BASE").info(str + start_date + "," + end_date + " added=" + Arrays.toString(added.toArray())
+		Logger.getLogger("BASE").info(str+"] / " + start_date + "," + end_date + " added=" + Arrays.toString(added.toArray())
 				+ ", removed=" + Arrays.toString(removed.toArray()) + "]");
 	}
 
