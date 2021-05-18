@@ -88,7 +88,7 @@ public class ClientProcessor implements Runnable {
 				} else if (response.toUpperCase().startsWith("CLOSE")) {
 					toSend = "Client disconnected !";
 					closeConnection = true;
-					write(toSend);
+					WRITE(toSend);
 				} else if (response.toUpperCase().startsWith("CONN")) {
 					StringTokenizer str = new StringTokenizer(response, " ");
 					str.nextToken();
@@ -104,7 +104,7 @@ public class ClientProcessor implements Runnable {
 
 					}
 					
-					write(String.valueOf(result));
+					WRITE(String.valueOf(result));
 				} else if (response.toUpperCase().startsWith("GETSTOPS")) {
 
 					String stop_names = "";
@@ -125,7 +125,7 @@ public class ClientProcessor implements Runnable {
 
 				} else {
 					toSend = "UNKOWN Command ";
-					write(toSend);
+					WRITE(toSend);
 				}
 
 				if (closeConnection) {
