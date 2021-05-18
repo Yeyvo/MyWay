@@ -1,17 +1,15 @@
 package ma.myway.client.ui.view;
 
-import java.io.IOException;
-
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import ma.myway.client.network.Client;
@@ -37,14 +35,14 @@ public class UILogging implements ViewMaker {
 		VBox usernameVbox = new VBox();
 		Label lblusername = new Label("\t Username :");
 		TextField username = new TextField();
-		//username.setText("");
+		// username.setText("");
 		usernameVbox.getChildren().addAll(lblusername, username);
 		usernameVbox.setSpacing(5);
 
 		VBox passwordVbox = new VBox();
 		Label lblpswd = new Label("\t Password :");
 		PasswordField pswd = new PasswordField();
-		//pswd.setText("");
+		// pswd.setText("");
 		passwordVbox.getChildren().addAll(lblpswd, pswd);
 		passwordVbox.setSpacing(5);
 
@@ -55,17 +53,11 @@ public class UILogging implements ViewMaker {
 			@Override
 			public void handle(Event event) {
 				if (!username.getText().isBlank() && !pswd.getText().isBlank()) {
-					try {
-						if (Client.conn(username.getText(), pswd.getText())) {
-							stage.setScene(Main.getScenes().get(SceneName.BASE));
-							stage.centerOnScreen();
-						}else {
-							Alert alert = new Alert(AlertType.ERROR, "USERNAME / PASSWORD invalid");
-							alert.show();
-						}
-					} catch (IOException e) {
-						e.printStackTrace();
-						Alert alert = new Alert(AlertType.ERROR, "Comunication ERROR");
+					if (Client.conn(username.getText(), pswd.getText())) {
+						stage.setScene(Main.getScenes().get(SceneName.BASE));
+						stage.centerOnScreen();
+					} else {
+						Alert alert = new Alert(AlertType.ERROR, "USERNAME / PASSWORD invalid");
 						alert.show();
 					}
 				}
@@ -73,9 +65,9 @@ public class UILogging implements ViewMaker {
 		});
 
 		pane.getChildren().setAll(usernameVbox, passwordVbox, connection);
-		pane.setMargin(usernameVbox, new Insets(5, 10, 0, 10));
-		pane.setMargin(passwordVbox, new Insets(0, 10, 0, 10));
-		pane.setMargin(connection, new Insets(5, scene.getWidth() * 0.35, 5, scene.getWidth() * 0.35));
+		VBox.setMargin(usernameVbox, new Insets(5, 10, 0, 10));
+		VBox.setMargin(passwordVbox, new Insets(0, 10, 0, 10));
+		VBox.setMargin(connection, new Insets(5, scene.getWidth() * 0.35, 5, scene.getWidth() * 0.35));
 
 		return scene;
 	}

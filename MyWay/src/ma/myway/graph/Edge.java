@@ -105,17 +105,17 @@ public class Edge implements Serializable {
 
 		return false;
 	}
-	
-	public static List<Stop> edgesToStops (LinkedList<Edge> edges) {
+
+	public static List<Stop> edgesToStops(LinkedList<Edge> edges) {
 		List<Stop> stops = new LinkedList<>();
-		
-		for(Edge edge : edges) {
+
+		for (Edge edge : edges) {
 			stops.add(edge.src.getStop());
 		}
-		 stops.add(edges.getLast().dest.getStop());
-		
+		stops.add(edges.getLast().dest.getStop());
+
 		return edges.size() >= 1 ? stops : null;
-		
+
 	}
-	
+
 }

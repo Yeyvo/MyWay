@@ -19,8 +19,8 @@ public class Server {
 
 	public Server(int maxConnection) {
 		try {
-			server = new ServerSocket(this.port, maxConnection, Inet4Address.getByName(this.host));
-			Logger.getLogger("SERVER").info("Server launched at  " + InetAddress.getLocalHost() +":"+port);
+			server = new ServerSocket(this.port, maxConnection, InetAddress.getByName(this.host));
+			Logger.getLogger("SERVER").info("Server launched at  " + InetAddress.getLocalHost() + ":" + port);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -42,7 +42,7 @@ public class Server {
 						e.printStackTrace();
 					}
 				}
-				
+
 				try {
 					server.close();
 					BddConnection.close();
@@ -53,10 +53,10 @@ public class Server {
 			}
 
 		});
-		
+
 		Logger.getLogger("SERVER").info("Launching Server ");
 		server_t.start();
-		
+
 	}
 
 	public void close() {

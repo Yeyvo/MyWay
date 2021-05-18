@@ -11,9 +11,7 @@ public class UIAdmin implements ViewMaker {
 		VBox pane = new VBox();
 		pane.setSpacing(10);
 		Scene scene = new Scene(pane, 300, 180);
-		
-		
-		
+
 		return scene;
 	}
 

@@ -34,7 +34,6 @@ public class Client {
 	private static BufferedWriter buffWriter = null;
 	private static BufferedInputStream reader = null;
 	private static BufferedReader buffReader = null;
-	
 
 	public Client(String host, int port) {
 		try {
@@ -42,10 +41,10 @@ public class Client {
 			writer = new PrintWriter(client.getOutputStream(), true);
 			reader = new BufferedInputStream(client.getInputStream());
 			buffReader = new BufferedReader(new InputStreamReader(reader, StandardCharsets.UTF_8));
-		
+
 			bos = new BufferedOutputStream(client.getOutputStream());
 			buffWriter = new BufferedWriter(new OutputStreamWriter(bos, StandardCharsets.UTF_8));
-			
+
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -56,29 +55,14 @@ public class Client {
 	public static Map<String, String> GetStops() {
 		Map<String, String> stopMap = new HashMap<>();
 		String stopnames = null, stopid = null;
-//		writer.write("GETSTOPS");
-//		writer.flush();
 
 		try {
 			WRITE("GETSTOPS");
-//			String sizename = read(-1);
-//			Logger.getLogger("CLIENT").info("sizename : " + sizename);
-//			
-//			stopnames = read(Integer.parseInt(sizename));
-//			Logger.getLogger("CLIENT").info(stopnames);
-//			
-//			
-//			String sizeid = read(-1);
-//			Logger.getLogger("CLIENT").info("sizeid : " + sizeid);
-//			
-//			stopid = read(Integer.parseInt(sizeid));
-//			Logger.getLogger("CLIENT").info(stopid);
-
-			stopnames = READ();
+			stopnames = READ(false);
 			System.out.println("stopnames");
 			Logger.getLogger("CLIENT").info(stopnames);
 
-			stopid = READ();
+			stopid = READ(false);
 			System.out.println("stopid");
 			Logger.getLogger("CLIENT").info(stopid);
 		} catch (IOException e) {
@@ -89,8 +73,6 @@ public class Client {
 		StringTokenizer idtok = new StringTokenizer(stopid, "#");
 		while (nametok.hasMoreElements() && idtok.hasMoreElements()) {
 			stopMap.put(nametok.nextElement().toString(), idtok.nextElement().toString());
-			// stopMap.put(idtok.nextElement().toString(),
-			// nametok.nextElement().toString());
 
 		}
 
@@ -117,10 +99,9 @@ public class Client {
 	}
 
 	public static void close() {
-//		writer.write("CLOSE");
-//		writer.flush();
-		
-		try {WRITE("CLOSE");
+
+		try {
+			WRITE("CLOSE");
 			Logger.getLogger("CLIENT").info(read(-1));
 		} catch (IOException e1) {
 			e1.printStackTrace();
@@ -135,17 +116,12 @@ public class Client {
 	}
 
 	public static String chem(String src, String dep) {
-//		writer.write("CHEM " + src + " " + dep);
-//		writer.flush();
 
 		String path = null;
 		try {
 			WRITE("CHEM " + src + " " + dep);
 
-//			String sizepath = read(-1);
-//			Logger.getLogger("CLIENT").info("sizepath : " + sizepath);
-//			path = read(Integer.parseInt(sizepath));
-			path = READ();
+			path = READ(true);
 			Logger.getLogger("CLIENT").info(path);
 			PrintWriter pathjsonwriter = new PrintWriter(new File(Main.path + "test.json"));
 			pathjsonwriter.write(path);
@@ -166,67 +142,41 @@ public class Client {
 	}
 
 	public static boolean conn(String username, String password) {
-//		writer.write("CONN " + username + " " + password);
-//		writer.flush();
-
 		try {
 			WRITE("CONN " + username + " " + password);
 
-			return Boolean.parseBoolean(READ());
+			return Boolean.parseBoolean(READ(false));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return false;
 	}
 
-	private static String read(int i, Boolean isconfirmation) throws IOException {
-//		String response = "";
-//		int stream;
-//		byte[] b = new byte[i];
-//		stream = reader.read(b);
-//		response = new String(b, 0, stream);
-		String response = buffReader.readLine();
-
+	private static String read(Boolean isjson) throws IOException {
+		String response = "";
+		if (!isjson) {
+			response = buffReader.readLine();
+		} else {
+			int lines = Integer.parseInt(buffReader.readLine());
+			for (int i = 0; i <= lines; i++) {
+				response += buffReader.readLine() + "\n";
+			}
+		}
 		Logger.getLogger("CLIENT").info("\tdata : " + response);
-
-//		if (!isconfirmation) {
-//			writer.write("received");
-//			writer.flush();
-//		}
 
 		return response;
 	}
 
-	private static String READ() throws IOException {
-//		String size = read(20, false); /* check the size */
-
-		// received
-
-//		String data = read(Integer.parseInt(size), false);
-		String data = read(-1, false);
-
-		// received
+	private static String READ(boolean isjson) throws IOException {
+		String data = read(isjson);
 
 		return data;
 	}
 
 	private static void WRITE(String str) throws IOException {
-//		int size = str.getBytes("UTF-8").length;
-//		writer.write(String.valueOf(size));
-//		writer.flush();
-//		read(8,true);
-//		writer.write(str);
-//		writer.flush();
-//		read(8,true);
-//		int size = str.getBytes("UTF-8").length;
-//		buffWriter.write(String.valueOf(size));
-//		buffWriter.newLine();
-//		buffWriter.flush();
-//		read(8,true);
 		buffWriter.write(str);
 		buffWriter.newLine();
 		buffWriter.flush();
-//		read(8,true);
 	}
 
 }

@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import ma.myway.graph.data.Agency;
 import ma.myway.graph.data.Route_Service;
 import ma.myway.graph.data.Service_Direction;
 import ma.myway.graph.data.Trips_Directions;
@@ -129,35 +128,36 @@ public class RoutesDAO extends DAO<Route_Service> {
 		return false;
 	}
 
-	public boolean delete(Route_Service obj) {//fait
-		Statement stmt=null;
+	@Override
+	public boolean delete(Route_Service obj) {// fait
+		Statement stmt = null;
 		try {
 			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-			int result = stmt.executeUpdate("DELETE FROM trips WHERE route_id = "+obj.getRoute_id());
+			int result = stmt.executeUpdate("DELETE FROM trips WHERE route_id = " + obj.getRoute_id());
 			System.out.println(result + " Row affected !");
-			return(true);
-		}catch(SQLException e) {
+			return (true);
+		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			try {
 				stmt.close();
-			}catch(SQLException e) {
+			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
-		return(false);
+		return (false);
 	}
-	
+
 	public boolean update(Route_Service obj) {
-		Statement stmt=null;
+		Statement stmt = null;
 		try {
 			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-			int result = stmt.executeUpdate("UPDATE agency set  WHERE route_id = "+obj.getRoute_id());
+			int result = stmt.executeUpdate("UPDATE agency set  WHERE route_id = " + obj.getRoute_id());
 			System.out.println(result + " Row affected !");
-			return(true);
-		}catch(SQLException e) {
+			return (true);
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return(false);
+		return (false);
 	}
 }

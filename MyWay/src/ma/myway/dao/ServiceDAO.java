@@ -8,8 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import ma.myway.graph.data.Agency;
-import ma.myway.graph.data.Route_Service;
 import ma.myway.graph.data.Service;
 
 public class ServiceDAO extends DAO<Service> {
@@ -26,7 +24,7 @@ public class ServiceDAO extends DAO<Service> {
 		Statement stmt = null;
 		try {
 			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-					ResultSet result = stmt.executeQuery("SELECT * FROM calendar WHERE service_id = \"" + service_id+"\"");
+			ResultSet result = stmt.executeQuery("SELECT * FROM calendar WHERE service_id = \"" + service_id + "\"");
 
 			if (result.first()) {
 
@@ -107,32 +105,34 @@ public class ServiceDAO extends DAO<Service> {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	public boolean delete(Service obj) {//fait
-		Statement stmt=null;
+
+	@Override
+	public boolean delete(Service obj) {// fait
+		Statement stmt = null;
 		try {
 			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-			int result = stmt.executeUpdate("DELETE FROM calendar WHERE service_id = "+obj.getService_id());
+			int result = stmt.executeUpdate("DELETE FROM calendar WHERE service_id = " + obj.getService_id());
 			System.out.println(result + " Row affected !");
-			return(true);
-		}catch(SQLException e) {
+			return (true);
+		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			try {
 				stmt.close();
-			}catch(SQLException e){
+			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
-		return(false);
+		return (false);
 	}
-	
-	public boolean update(Service oldobj,Service newobj) {//works
+
+	@Override
+	public boolean update(Service oldobj, Service newobj) {// works
 		try {
 			delete(oldobj);
 			create(newobj);
 			return true;
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return false;

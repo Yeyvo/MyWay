@@ -25,14 +25,14 @@ public class BddConnection {
 			} catch (SQLException e) {
 				e.printStackTrace();
 				Logger.getLogger("BASE").info(" Error onnection DBDD " + e.getStackTrace());
-	
+
 			}
 		}
 		return connect;
 	}
-	
+
 	public static void close() {
-		if(connect != null) {
+		if (connect != null) {
 			try {
 				connect.close();
 			} catch (SQLException e) {

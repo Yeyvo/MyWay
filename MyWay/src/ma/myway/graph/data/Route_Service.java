@@ -30,7 +30,7 @@ public class Route_Service {
 	}
 
 	public String toString(String service_id, String trip_id) {
-		return "'"+route_id + "'," + Service_Direction.search_by_id(services, service_id).String(trip_id);
+		return "'" + route_id + "'," + Service_Direction.search_by_id(services, service_id).String(trip_id);
 	}
 
 }

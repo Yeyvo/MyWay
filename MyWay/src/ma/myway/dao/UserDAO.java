@@ -7,7 +7,6 @@ import java.sql.Statement;
 import java.util.HashSet;
 import java.util.Set;
 
-import ma.myway.graph.data.Stop;
 import ma.myway.users.User;
 
 public class UserDAO extends DAO<User> {
@@ -17,7 +16,7 @@ public class UserDAO extends DAO<User> {
 	}
 
 	@Override
-	public boolean create(User obj) {//works
+	public boolean create(User obj) {// works
 		Statement stmt = null;
 		try {
 			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
@@ -39,12 +38,12 @@ public class UserDAO extends DAO<User> {
 		return false;
 	}
 
-	public boolean find(User data) {//works
+	public boolean find(User data) {// works
 		Statement stmt = null;
 		try {
 			stmt = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			ResultSet result = stmt.executeQuery(
-					"select * from users where username = \"" + data.getName() + "\" and password = \"" + data.getPassword()+"\"");
+			ResultSet result = stmt.executeQuery("select * from users where username = \"" + data.getName()
+					+ "\" and password = \"" + data.getPassword() + "\"");
 
 			int size = 0;
 			if (result != null) {
@@ -71,21 +70,22 @@ public class UserDAO extends DAO<User> {
 	}
 
 	@Override
-	public Set<User> all() { //works
+	public Set<User> all() { // works
 		Set<User> set_users = new HashSet<>();
 		ResultSet result = null;
 		Statement stmt = null;
 		try {
-			stmt  = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
 			result = stmt.executeQuery("SELECT * FROM users");
 			while (result.next()) {
-				set_users.add(new User(result.getInt("user_id"), result.getString("username").toLowerCase().replaceAll("é", "e").replaceAll("è", "e"),
-						result.getString("password").toLowerCase(),  result.getDate("dateCreation")));
+				set_users.add(new User(result.getInt("user_id"),
+						result.getString("username").toLowerCase().replaceAll("é", "e").replaceAll("è", "e"),
+						result.getString("password").toLowerCase(), result.getDate("dateCreation")));
 			}
 			result.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			try {
 				stmt.close();
 				result.close();
@@ -105,31 +105,32 @@ public class UserDAO extends DAO<User> {
 	}
 
 	@Override
-	public boolean delete(User obj) { //works
-		Statement stmt=null;
+	public boolean delete(User obj) { // works
+		Statement stmt = null;
 		try {
 			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-			int result = stmt.executeUpdate("DELETE FROM users WHERE username = '"+obj.getName()+"'");
+			int result = stmt.executeUpdate("DELETE FROM users WHERE username = '" + obj.getName() + "'");
 			System.out.println(result + " Row affected !");
-			return(true);
-		}catch(SQLException e) {
+			return (true);
+		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			try {
 				stmt.close();
-			}catch(SQLException e) {
+			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
-		return(false);
+		return (false);
 	}
-	
-	public boolean update(User oldobj,User newobj) {//works
+
+	@Override
+	public boolean update(User oldobj, User newobj) {// works
 		try {
 			delete(oldobj);
 			create(newobj);
 			return true;
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return false;

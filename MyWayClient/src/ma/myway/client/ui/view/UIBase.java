@@ -1,7 +1,6 @@
 package ma.myway.client.ui.view;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -12,8 +11,6 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -31,38 +28,37 @@ public class UIBase implements ViewMaker {
 //		this.stage = primaryStage;
 //	}
 
-
 	@Override
 	public Scene getScene() {
 
-		Map<String, String> mapStops =  Client.GetStops();
+		Map<String, String> mapStops = Client.GetStops();
 		Set<String> setStops = mapStops.keySet();
 //		mapStops.forEach((k, v) -> {
 //			setStops.add(v);
 //		});
 		List<String> stops = List.copyOf(setStops);
-		//List<String> stops = new 	ArrayList<>();
+		// List<String> stops = new ArrayList<>();
 		SplitPane splitPane = new SplitPane();
 		VBox leftControl = new VBox();
-		//VBox rightControl = new VBox();
-		//BorderPane rightControl = new BorderPane();
-		splitPane.getItems().addAll(leftControl/*, rightControl*/);
+		// VBox rightControl = new VBox();
+		// BorderPane rightControl = new BorderPane();
+		splitPane.getItems().addAll(leftControl/* , rightControl */);
 		Scene scene = new Scene(splitPane, 824, 618);
 
 		WebView map = new WebView();
-		//map.getEngine().load("https://openlayers.org/en/main/examples/simple.html");
+		// map.getEngine().load("https://openlayers.org/en/main/examples/simple.html");
 		map.getEngine().setJavaScriptEnabled(true);
 		try {
 			try {
-				map.getEngine().load(new File(Main.path+"index.html").toURL().toURI().toString());
+				map.getEngine().load(new File(Main.path + "index.html").toURL().toURI().toString());
 			} catch (URISyntaxException e) {
 				e.printStackTrace();
 			}
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
-		splitPane.getItems().addAll(map/*, rightControl*/);
-		
+		splitPane.getItems().addAll(map/* , rightControl */);
+
 		VBox srcControl = new VBox();
 		Label lblSrc = new Label("\t*Choisisser la gare de depart :");
 		AutocompletionlTextField source = new AutocompletionlTextField();
@@ -100,16 +96,13 @@ public class UIBase implements ViewMaker {
 
 			@Override
 			public void handle(Event event) {
-				if((mapStops.get(source.getText()) != null && mapStops.get(dest.getText()) !=null ) && !source.getText().equals(dest.getText())) {
-					try {
-						Client.chem(mapStops.get(source.getText()), mapStops.get(dest.getText()));
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+				if ((mapStops.get(source.getText()) != null && mapStops.get(dest.getText()) != null)
+						&& !source.getText().equals(dest.getText())) {
+					Client.chem(mapStops.get(source.getText()), mapStops.get(dest.getText()));
 					map.getEngine().reload();
 
 				}
-				
+
 			}
 		});
 		leftControl.getChildren().add(rechercher);
@@ -120,16 +113,14 @@ public class UIBase implements ViewMaker {
 		leftControl.setAlignment(Pos.CENTER);
 		leftControl.setSpacing(15);
 
-		//rightControl.setFillWidth(true);
-		//rightControl.setMaxHeight(Double.MAX_VALUE);
-		
+		// rightControl.setFillWidth(true);
+		// rightControl.setMaxHeight(Double.MAX_VALUE);
 
-		
-		/*rightControl.getChildren().add(map);
-		//VBox.setVgrow(map, Priority.ALWAYS);
-		rightControl.setBackground(new Background(new BackgroundFill(Color.GREY, CornerRadii.EMPTY, Insets.EMPTY)));
-*/
-
+		/*
+		 * rightControl.getChildren().add(map); //VBox.setVgrow(map, Priority.ALWAYS);
+		 * rightControl.setBackground(new Background(new BackgroundFill(Color.GREY,
+		 * CornerRadii.EMPTY, Insets.EMPTY)));
+		 */
 
 		/*
 		 * DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");

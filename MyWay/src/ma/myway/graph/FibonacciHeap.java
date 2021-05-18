@@ -402,8 +402,7 @@ public final class FibonacciHeap<T> {
 		if (entry.mParent.mChild == entry) {
 			if (entry.mNext != entry) {
 				entry.mParent.mChild = entry.mNext;
-			}
-			else {
+			} else {
 				entry.mParent.mChild = null;
 			}
 		}

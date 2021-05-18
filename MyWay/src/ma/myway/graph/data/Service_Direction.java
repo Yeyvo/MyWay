@@ -40,7 +40,7 @@ public class Service_Direction {
 	}
 
 	public String String(String trip_id) {
-		return "'"+service_id + "'," + searchTrip_by_id(directions, trip_id).toString();
+		return "'" + service_id + "'," + searchTrip_by_id(directions, trip_id).toString();
 	}
 
 }

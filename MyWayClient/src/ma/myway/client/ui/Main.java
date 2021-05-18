@@ -2,9 +2,7 @@ package ma.myway.client.ui;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
@@ -17,18 +15,15 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javafx.application.Application;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.stage.Stage;
-
 import java.util.logging.FileHandler;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
 import ma.myway.client.network.Client;
 import ma.myway.client.ui.model.SceneName;
 import ma.myway.client.ui.view.UIBase;
@@ -54,7 +49,7 @@ public class Main extends Application {
 					SimpleDateFormat logTime = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
 					Calendar cal = new GregorianCalendar();
 					cal.setTimeInMillis(record.getMillis());
-					return record.getLevel() + logTime.format(cal.getTime()) + " || "
+					return "CLIENT " + record.getLevel() +" "+ logTime.format(cal.getTime()) + " || "
 							+ record.getSourceClassName().substring(record.getSourceClassName().lastIndexOf(".") + 1,
 									record.getSourceClassName().length())
 							+ "." + record.getSourceMethodName() + "() : " + record.getMessage() + "\n";
