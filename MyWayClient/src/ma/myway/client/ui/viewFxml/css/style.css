@@ -1,0 +1,21 @@
+.pane-main {
+  -fx-background-color: #f6f4e6;
+}
+
+.btn {
+  -fx-background-color: #52575d;
+
+  /* -fx-text-fill: #fddb3a; */
+  -fx-text-fill: #f6f4e6;
+}
+.btn:hover {
+  /* -fx-background-color: #52575d; */
+
+  /* -fx-text-fill: #fddb3a; */
+  -fx-text-fill: #bedcfa;
+}
+
+.pane-yellow {
+  -fx-background-color: #52575d;
+  /* -fx-background-color: #fddb3a; */
+}
