@@ -359,11 +359,155 @@ public class Main extends Application {
 	}
 
 	public void showSupprimerScene() {
-
+		if (choice == 1) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UIAgencySuppr.fxml"));
+				Pane agencySuppr = loader.load();
+				mainLayout1.setCenter(agencySuppr);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if (choice == 2) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UIRoutesSuppr.fxml"));
+				Pane routesSuppr = loader.load();
+				mainLayout1.setCenter(routesSuppr);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if (choice == 3) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UIStopsSuppr.fxml"));
+				Pane stopsSuppr = loader.load();
+				mainLayout1.setCenter(stopsSuppr);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if (choice == 4) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UITripsSuppr.fxml"));
+				Pane tripsSuppr = loader.load();
+				mainLayout1.setCenter(tripsSuppr);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if (choice == 5) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UITransfersSuppr.fxml"));
+				Pane transfersSuppr = loader.load();
+				mainLayout1.setCenter(transfersSuppr);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if (choice == 6) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UICalendarSuppr.fxml"));
+				Pane calendarSuppr = loader.load();
+				mainLayout1.setCenter(calendarSuppr);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if (choice == 7) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UICalendarDatesSuppr.fxml"));
+				Pane calendarDatesSuppr = loader.load();
+				mainLayout1.setCenter(calendarDatesSuppr);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if (choice == 8) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UIStopTimesSuppr.fxml"));
+				Pane stopTimesSuppr = loader.load();
+				mainLayout1.setCenter(stopTimesSuppr);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public void showAfficherScene() {
-
+		if (choice == 1) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UIAgencyAffich.fxml"));
+				Pane agencyAffich = loader.load();
+				mainLayout1.setCenter(agencyAffich);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if (choice == 2) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UIRoutesAffich.fxml"));
+				Pane routesAffich = loader.load();
+				mainLayout1.setCenter(routesAffich);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if (choice == 3) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UIStopsAffich.fxml"));
+				Pane stopsAffich = loader.load();
+				mainLayout1.setCenter(stopsAffich);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if (choice == 4) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UITripsAffich.fxml"));
+				Pane tripsAffich = loader.load();
+				mainLayout1.setCenter(tripsAffich);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if (choice == 5) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UITransfersAffich.fxml"));
+				Pane transfersAffich = loader.load();
+				mainLayout1.setCenter(transfersAffich);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if (choice == 6) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UICalendarAffich.fxml"));
+				Pane calendarAffich = loader.load();
+				mainLayout1.setCenter(calendarAffich);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if (choice == 7) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UICalendarDatesAffich.fxml"));
+				Pane calendarDatesAffich = loader.load();
+				mainLayout1.setCenter(calendarDatesAffich);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if (choice == 8) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UIStopTimesAffich.fxml"));
+				Pane stopTimesAffich = loader.load();
+				mainLayout1.setCenter(stopTimesAffich);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public void showStatistiqueScene() {
