@@ -7,13 +7,16 @@
 
   /* -fx-text-fill: #fddb3a; */
   -fx-text-fill: #f6f4e6;
-  -fx-font-weight: bold;
+  -fx-font-size: 16px;
 }
 .btn:hover {
   /* -fx-background-color: #52575d; */
 
   /* -fx-text-fill: #fddb3a; */
   -fx-text-fill: #79b5f1;
+  -fx-font-size: 18px;
+
+  /* -fx-font-weight: bold; */
 }
 
 .btncenter {
@@ -25,12 +28,16 @@
 .btncenter:hover {
   -fx-text-fill: #52575d;
   -fx-background-color: #79b5f1;
-  -fx-transition: 0.5s;
+  /* -fx-transition: 0.5s; */
 }
 
 .pane-yellow {
   -fx-background-color: #52575d;
   /* -fx-background-color: #fddb3a; */
+}
+
+.back-transparent {
+  -fx-background-color: transparent;
 }
 
 .fn-14 {
