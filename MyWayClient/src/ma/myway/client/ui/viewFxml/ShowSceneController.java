@@ -3,6 +3,7 @@ package ma.myway.client.ui.viewFxml;
 import java.io.IOException;
 
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.stage.Stage;
 import ma.myway.client.ui.Main;
 
@@ -115,7 +116,16 @@ public class ShowSceneController {
 	private void quitApp() {
 	    System.exit(0);
 	    main.quitAppScene();
-
+	}
+	
+	@FXML
+	private javafx.scene.control.Button btnReturnAdmin;
+	
+	@FXML
+	private void returnMenuAdmin() {
+		Stage stage = (Stage) btnReturnAdmin.getScene().getWindow();
+	    stage.close();
+	    main.showMenuAdmin();
 	}
 	
 	/*@FXML

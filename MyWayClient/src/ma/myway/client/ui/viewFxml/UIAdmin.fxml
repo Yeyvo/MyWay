@@ -14,7 +14,7 @@
    <left>
       <VBox alignment="CENTER" prefHeight="481.0" prefWidth="153.0" styleClass="pane-yellow" BorderPane.alignment="CENTER">
          <children>
-            <Button maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setTransfers" styleClass="btn" text="Users">
+            <Button maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setUsers" styleClass="btn" text="Users">
                <font>
                   <Font name="Arial Black" size="12.0" />
                </font>
@@ -92,7 +92,7 @@
    <bottom>
       <Pane style="-fx-background-color: #52575d;">
          <children>
-            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="452.0" mnemonicParsing="false" styleClass="btn" text="Return To Menu">
+            <Button fx:id="btnReturnAdmin" alignment="CENTER" contentDisplay="CENTER" layoutX="452.0" mnemonicParsing="false" onAction="#returnMenuAdmin" styleClass="btn" text="Return To Menu">
                <font>
                   <Font name="Arial Black" size="12.0" />
                </font>

@@ -584,4 +584,12 @@ public class Main extends Application {
 	public void quitAppScene() {
 		
 	}
+	
+	public void showMenuAdmin() {
+		Stage stage = new Stage();
+		stage.setScene(scenes.get(SceneName.ADMINWELC));
+		stage.getIcons().add(new Image("img/logo.png"));
+		stage.setTitle("MyWay");
+		stage.show();
+	}
 }
