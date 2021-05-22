@@ -55,7 +55,7 @@
          </font>
       </Label>
       <TextField layoutX="306.0" layoutY="183.0" />
-      <Button layoutX="191.0" layoutY="224.0" mnemonicParsing="false" text="Confirmer" />
-      <Button layoutX="343.0" layoutY="224.0" mnemonicParsing="false" text="Clear" />
+      <Button layoutX="191.0" layoutY="224.0" mnemonicParsing="false" styleClass="btncenter" text="Confirmer" />
+      <Button layoutX="343.0" layoutY="224.0" mnemonicParsing="false" styleClass="btncenter" text="Clear" />
    </children>
 </Pane>

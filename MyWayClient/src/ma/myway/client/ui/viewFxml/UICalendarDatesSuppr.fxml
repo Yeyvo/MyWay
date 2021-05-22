@@ -31,7 +31,7 @@
          </font>
       </Label>
       <TextField layoutX="424.0" layoutY="85.0" />
-      <Button layoutX="204.0" layoutY="168.0" mnemonicParsing="false" text="Confirmer" />
-      <Button layoutX="364.0" layoutY="168.0" mnemonicParsing="false" text="Clear" />
+      <Button layoutX="204.0" layoutY="168.0" mnemonicParsing="false" styleClass="btncenter" text="Confirmer" />
+      <Button layoutX="364.0" layoutY="168.0" mnemonicParsing="false" styleClass="btncenter" text="Clear" />
    </children>
 </Pane>
