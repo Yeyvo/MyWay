@@ -96,8 +96,22 @@ public class ShowSceneController {
 	@FXML 
 	private javafx.scene.control.Button btnUseApp;
 	
-
+	@FXML
+	private void showApp() throws IOException{
+		Stage stage = (Stage) btnUseApp.getScene().getWindow();
+	    stage.close();
+	    main.showAppScene();
+	}
 	
+	@FXML
+	private javafx.scene.control.Button btnQuitApp;
+	
+	@FXML
+	private void quitApp() {
+	    System.exit(0);
+	    main.quitAppScene();
+
+	}
 	
 	/*@FXML
 	private void initialize() {

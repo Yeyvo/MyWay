@@ -5,20 +5,24 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="324.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ma.myway.client.ui.viewFxml.ShowSceneController">
    <children>
-      <Label layoutX="148.0" layoutY="62.0" prefHeight="67.0" prefWidth="305.0" text="Bonjour chère Admin&#10;Que voulez vous faire aujourd'hui ?" textAlignment="CENTER">
+      <Label layoutX="148.0" layoutY="43.0" prefHeight="67.0" prefWidth="305.0" text="Bonjour chère Admin&#10;Que voulez vous faire aujourd'hui ?" textAlignment="CENTER">
          <font>
             <Font name="Arial Black" size="16.0" />
          </font>
       </Label>
-      <Button fx:id="btnGestionAdmin" layoutX="160.0" layoutY="153.0" mnemonicParsing="false" onAction="#showGestion" text="Gestion des données">
+      <Button fx:id="btnGestionAdmin" layoutX="160.0" layoutY="130.0" mnemonicParsing="false" onAction="#showGestion" text="Gestion des données">
          <font>
             <Font name="Arial Black" size="22.0" />
          </font>
       </Button>
-      <Button fx:id="btnUseApp" layoutX="164.0" layoutY="224.0" mnemonicParsing="false" text="Utiliser l'application">
+      <Button fx:id="btnUseApp" layoutX="164.0" layoutY="189.0" mnemonicParsing="false" onAction="#showApp" text="Utiliser l'application">
+         <font>
+            <Font name="Arial Black" size="22.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnQuitApp" layoutX="243.0" layoutY="247.0" mnemonicParsing="false" onAction="#quitApp" text="Quitter">
          <font>
             <Font name="Arial Black" size="22.0" />
          </font>
