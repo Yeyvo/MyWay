@@ -33,10 +33,10 @@ import ma.myway.client.ui.view.UIBase;
 import ma.myway.client.ui.view.UILogging;
 
 public class Main extends Application {
-	
+
 	static BorderPane mainLayout1 = null;
 	static Pane mainLayout2 = null;
-	int choice = 0;
+	static int choice = 0;
 	/** Holds the various scenes to switch between */
 	private static Map<SceneName, Scene> scenes = new HashMap<>();
 	public static Client client = null;
@@ -55,7 +55,7 @@ public class Main extends Application {
 					SimpleDateFormat logTime = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
 					Calendar cal = new GregorianCalendar();
 					cal.setTimeInMillis(record.getMillis());
-					return "CLIENT " + record.getLevel() +" "+ logTime.format(cal.getTime()) + " || "
+					return "CLIENT " + record.getLevel() + " " + logTime.format(cal.getTime()) + " || "
 							+ record.getSourceClassName().substring(record.getSourceClassName().lastIndexOf(".") + 1,
 									record.getSourceClassName().length())
 							+ "." + record.getSourceMethodName() + "() : " + record.getMessage() + "\n";
@@ -68,8 +68,8 @@ public class Main extends Application {
 		}
 		List<File> files = new ArrayList<>();
 		try {
-			files.add(Paths.get(ClassLoader.getSystemResource("index.html").toURI()).toFile());
-			files.add(Paths.get(ClassLoader.getSystemResource("test.json").toURI()).toFile());
+			files.add(Paths.get(ClassLoader.getSystemResource("web/index.html").toURI()).toFile());
+			files.add(Paths.get(ClassLoader.getSystemResource("web/test.json").toURI()).toFile());
 
 		} catch (URISyntaxException e1) {
 			e1.printStackTrace();
@@ -103,7 +103,7 @@ public class Main extends Application {
 		scenes.put(SceneName.ADMIN, returnSceneAdmin());
 		scenes.put(SceneName.FIRSTADMIN, returnSceneFirstAdmin());
 
-		primaryStage.getIcons().add(new Image("logo.png"));
+		primaryStage.getIcons().add(new Image("img/logo.png"));
 		primaryStage.setScene(scenes.get(SceneName.LOGING));
 		primaryStage.setTitle("MyWay");
 		primaryStage.show();
@@ -122,53 +122,254 @@ public class Main extends Application {
 		return client;
 
 	}
-	
-	public static void showAgencyAjoutScene() {
-		try{
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(Main.class.getResource("viewFxml/UIAgencyAjout.fxml"));
-			Pane agencyAjout = loader.load();
-			mainLayout1.setCenter(agencyAjout);
-			}catch(Exception e) {
+
+	public static void showAgencyScene() {
+		if (choice == 1) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UIAgencyAjout.fxml"));
+				Pane agencyAjout = loader.load();
+				mainLayout1.setCenter(agencyAjout);
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
-	}
-	
-	public static void showAgencyModifScene() {
-		try{
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(Main.class.getResource("viewFxml/UIAgencyModif.fxml"));
-			Pane agencyAjout = loader.load();
-			mainLayout1.setCenter(agencyAjout);
-			}catch(Exception e) {
+		}
+		else if (choice == 2) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UIAgencyModif.fxml"));
+				Pane agencyModif = loader.load();
+				mainLayout1.setCenter(agencyModif);
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		}
+	}
+
+	public static void showRoutesScene() {
+		if (choice == 1) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UIRoutesAjout.fxml"));
+				Pane routesAjout = loader.load();
+				mainLayout1.setCenter(routesAjout);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		else if (choice == 2) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UIRoutesModif.fxml"));
+				Pane routesModif = loader.load();
+				mainLayout1.setCenter(routesModif);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
+	public static void showStopsScene() {
+		if (choice == 1) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UIStopsAjout.fxml"));
+				Pane stopsAjout = loader.load();
+				mainLayout1.setCenter(stopsAjout);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		else if (choice == 2) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UIStopsModif.fxml"));
+				Pane stopsModif = loader.load();
+				mainLayout1.setCenter(stopsModif);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public static void showTripsScene() {
+		if (choice == 1) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UITripsAjout.fxml"));
+				Pane tripsAjout = loader.load();
+				mainLayout1.setCenter(tripsAjout);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		else if (choice == 2) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UITripsModif.fxml"));
+				Pane tripsModif = loader.load();
+				mainLayout1.setCenter(tripsModif);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public static void showTransfersScene() {
+		if (choice == 1) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UITransfersAjout.fxml"));
+				Pane transfersAjout = loader.load();
+				mainLayout1.setCenter(transfersAjout);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		else if (choice == 2) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UITransfersModif.fxml"));
+				Pane transfersModif = loader.load();
+				mainLayout1.setCenter(transfersModif);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public static void showCalendarScene() {
+		if (choice == 1) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UICalendarAjout.fxml"));
+				Pane calendarAjout = loader.load();
+				mainLayout1.setCenter(calendarAjout);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		else if (choice == 2) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UICalendarModif.fxml"));
+				Pane calendarModif = loader.load();
+				mainLayout1.setCenter(calendarModif);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public static void showCalendarDatesScene() {
+		if (choice == 1) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UICalendarDatesAjout.fxml"));
+				Pane calendarDatesAjout = loader.load();
+				mainLayout1.setCenter(calendarDatesAjout);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		else if (choice == 2) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UICalendarDatesModif.fxml"));
+				Pane calendarDatesModif = loader.load();
+				mainLayout1.setCenter(calendarDatesModif);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public static void showStopTimesScene() {
+		if (choice == 1) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UIStopTimesAjout.fxml"));
+				Pane stopTimesAjout = loader.load();
+				mainLayout1.setCenter(stopTimesAjout);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		else if (choice == 2) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UIStopTimesModif.fxml"));
+				Pane stopTimesModif = loader.load();
+				mainLayout1.setCenter(stopTimesModif);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	public Scene returnSceneFirstAdmin() {
-		try
-		{
+		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(Main.class.getResource("viewFxml/FirstUIAdmin.fxml"));
 			mainLayout2 = loader.load();
 			Scene scene = new Scene(mainLayout2);
-			return(scene);
-		}catch(Exception e) {
+			return (scene);
+		} catch (Exception e) {
 			e.printStackTrace();
-			return(null);
+			return (null);
 		}
 	}
+
 	public Scene returnSceneAdmin() {
-		try
-		{
+		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(Main.class.getResource("viewFxml/UIAdmin.fxml"));
 			mainLayout1 = loader.load();
 			Scene scene = new Scene(mainLayout1);
-			return(scene);
-		}catch(Exception e) {
+			return (scene);
+		} catch (Exception e) {
 			e.printStackTrace();
-			return(null);
+			return (null);
+		}
+	}
+
+	public void choiceAjouter() {
+		if (choice != 1)
+		{
+			choice = 1;
+			mainLayout1.setCenter(null);
+		}
+	}
+
+	public void choiceModifier() {
+		if (choice != 2)
+		{
+			choice = 2;
+			mainLayout1.setCenter(null);
+		}
+	}
+
+	public void choiceSupprimer() {
+		if (choice != 3)
+		{
+			choice = 3;
+			mainLayout1.setCenter(null);
+		}
+	}
+
+	public void choiceAfficher() {
+		if (choice != 4)
+		{
+			choice = 4;
+			mainLayout1.setCenter(null);
+		}
+	}
+
+	public void choiceStatistique() {
+		if (choice != 5)
+		{
+			choice = 5;
+			mainLayout1.setCenter(null);
 		}
 	}
 
