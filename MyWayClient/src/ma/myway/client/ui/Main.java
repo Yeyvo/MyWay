@@ -518,9 +518,9 @@ public class Main extends Application {
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(Main.class.getResource("viewFxml/UIAdmin.fxml"));
-			Parent root = loader.load();
+			mainLayout1 = loader.load();
 			Stage stage = new Stage();
-			stage.setScene(new Scene(root));
+			stage.setScene(new Scene(mainLayout1));
 			stage.show();
 		
 		} catch (Exception e) {
@@ -528,8 +528,13 @@ public class Main extends Application {
 		}
 	}
 	
-	public void showApp() {
+	public void showAppScene() {
+		Stage stage = new Stage();
+		stage.setScene(scenes.get(SceneName.BASE));
+		stage.show();
+	}
+	
+	public void quitAppScene() {
 		
 	}
-
 }
