@@ -179,6 +179,13 @@ public class Main extends Application {
 			mainLayout1.setCenter(null);
 		}
 	}
+	
+	public static void choiceUsers() {
+		if (choice != 9) {
+			choice = 9;
+			mainLayout1.setCenter(null);
+		}
+	}
 
 	public Scene returnSceneAdminWelc() {
 		try {
@@ -279,6 +286,15 @@ public class Main extends Application {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		} else if (choice == 9) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UIUsersAjout.fxml"));
+				Pane stopTimesAjout = loader.load();
+				mainLayout1.setCenter(stopTimesAjout);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -350,6 +366,15 @@ public class Main extends Application {
 			try {
 				FXMLLoader loader = new FXMLLoader();
 				loader.setLocation(Main.class.getResource("viewFxml/UIStopTimesModif.fxml"));
+				Pane stopTimesModif = loader.load();
+				mainLayout1.setCenter(stopTimesModif);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}else if (choice == 9) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UIUsersModif.fxml"));
 				Pane stopTimesModif = loader.load();
 				mainLayout1.setCenter(stopTimesModif);
 			} catch (Exception e) {
@@ -431,6 +456,15 @@ public class Main extends Application {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		}else if (choice == 9) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UIUsersSuppr.fxml"));
+				Pane stopTimesSuppr = loader.load();
+				mainLayout1.setCenter(stopTimesSuppr);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -507,6 +541,15 @@ public class Main extends Application {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		}else if (choice == 9) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UIUsersAffich.fxml"));
+				Pane stopTimesAffich = loader.load();
+				mainLayout1.setCenter(stopTimesAffich);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -521,6 +564,8 @@ public class Main extends Application {
 			mainLayout1 = loader.load();
 			Stage stage = new Stage();
 			stage.setScene(new Scene(mainLayout1));
+			stage.getIcons().add(new Image("img/logo.png"));
+			stage.setTitle("MyWay");
 			stage.show();
 		
 		} catch (Exception e) {
@@ -531,6 +576,8 @@ public class Main extends Application {
 	public void showAppScene() {
 		Stage stage = new Stage();
 		stage.setScene(scenes.get(SceneName.BASE));
+		stage.getIcons().add(new Image("img/logo.png"));
+		stage.setTitle("MyWay");
 		stage.show();
 	}
 	
