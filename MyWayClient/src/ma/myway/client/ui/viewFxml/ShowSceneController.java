@@ -128,6 +128,9 @@ public class ShowSceneController {
 	    main.showMenuAdmin();
 	}
 	
+	@FXML
+	private javafx.scene.control.Button btnConfirAjoutAgency;
+	
 	/*@FXML
 	private void initialize() {
 		OptionBox.setValue("Choisissez une option");

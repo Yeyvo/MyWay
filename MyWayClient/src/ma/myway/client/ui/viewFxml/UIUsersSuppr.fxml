@@ -8,7 +8,7 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="218.0" prefWidth="631.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label layoutX="208.0" layoutY="34.0" text="Supprimer d'information : USERS" styleClass="desc">
+      <Label layoutX="208.0" layoutY="34.0" styleClass="desc" text="Supprimer d'information : USERS">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
@@ -19,24 +19,6 @@
          </font>
       </Label>
       <TextField layoutX="128.0" layoutY="85.0" />
-      <Label layoutX="31.0" layoutY="135.0" text="Username">
-         <font>
-            <Font name="Arial Black" size="12.0" />
-         </font>
-      </Label>
-      <TextField layoutX="128.0" layoutY="131.0" />
-      <Label layoutX="333.0" layoutY="89.0" text="DateCreation">
-         <font>
-            <Font name="Arial Black" size="12.0" />
-         </font>
-      </Label>
-      <TextField layoutX="449.0" layoutY="85.0" />
-      <Label layoutX="333.0" layoutY="135.0" text="Password">
-         <font>
-            <Font name="Arial Black" size="12.0" />
-         </font>
-      </Label>
-      <TextField layoutX="449.0" layoutY="131.0" />
       <Button layoutX="174.0" layoutY="180.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="104.0" styleClass="btncenter" text="Confirmer" />
       <Button layoutX="377.0" layoutY="180.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="104.0" styleClass="btncenter" text="Clear" />
    </children>
