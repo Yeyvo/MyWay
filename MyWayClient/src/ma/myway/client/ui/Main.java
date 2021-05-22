@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
@@ -101,7 +102,7 @@ public class Main extends Application {
 		scenes.put(SceneName.BASE, new UIBase().getScene());
 		scenes.put(SceneName.LOGING, new UILogging(primaryStage).getScene());
 		scenes.put(SceneName.ADMIN, returnSceneAdmin());
-		scenes.put(SceneName.FIRSTADMIN, returnSceneFirstAdmin());
+		scenes.put(SceneName.ADMINWELC, returnSceneAdminWelc());
 
 		primaryStage.getIcons().add(new Image("img/logo.png"));
 		primaryStage.setScene(scenes.get(SceneName.LOGING));
@@ -123,194 +124,66 @@ public class Main extends Application {
 
 	}
 
-	public static void showAgencyScene() {
-		if (choice == 1) {
-			try {
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(Main.class.getResource("viewFxml/UIAgencyAjout.fxml"));
-				Pane agencyAjout = loader.load();
-				mainLayout1.setCenter(agencyAjout);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		else if (choice == 2) {
-			try {
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(Main.class.getResource("viewFxml/UIAgencyModif.fxml"));
-				Pane agencyModif = loader.load();
-				mainLayout1.setCenter(agencyModif);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+	public static void choiceAgency() {
+		if (choice != 1) {
+			choice = 1;
+			mainLayout1.setCenter(null);
 		}
 	}
 
-	public static void showRoutesScene() {
-		if (choice == 1) {
-			try {
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(Main.class.getResource("viewFxml/UIRoutesAjout.fxml"));
-				Pane routesAjout = loader.load();
-				mainLayout1.setCenter(routesAjout);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		else if (choice == 2) {
-			try {
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(Main.class.getResource("viewFxml/UIRoutesModif.fxml"));
-				Pane routesModif = loader.load();
-				mainLayout1.setCenter(routesModif);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	public static void showStopsScene() {
-		if (choice == 1) {
-			try {
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(Main.class.getResource("viewFxml/UIStopsAjout.fxml"));
-				Pane stopsAjout = loader.load();
-				mainLayout1.setCenter(stopsAjout);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		else if (choice == 2) {
-			try {
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(Main.class.getResource("viewFxml/UIStopsModif.fxml"));
-				Pane stopsModif = loader.load();
-				mainLayout1.setCenter(stopsModif);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	public static void showTripsScene() {
-		if (choice == 1) {
-			try {
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(Main.class.getResource("viewFxml/UITripsAjout.fxml"));
-				Pane tripsAjout = loader.load();
-				mainLayout1.setCenter(tripsAjout);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		else if (choice == 2) {
-			try {
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(Main.class.getResource("viewFxml/UITripsModif.fxml"));
-				Pane tripsModif = loader.load();
-				mainLayout1.setCenter(tripsModif);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	public static void showTransfersScene() {
-		if (choice == 1) {
-			try {
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(Main.class.getResource("viewFxml/UITransfersAjout.fxml"));
-				Pane transfersAjout = loader.load();
-				mainLayout1.setCenter(transfersAjout);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		else if (choice == 2) {
-			try {
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(Main.class.getResource("viewFxml/UITransfersModif.fxml"));
-				Pane transfersModif = loader.load();
-				mainLayout1.setCenter(transfersModif);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	public static void showCalendarScene() {
-		if (choice == 1) {
-			try {
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(Main.class.getResource("viewFxml/UICalendarAjout.fxml"));
-				Pane calendarAjout = loader.load();
-				mainLayout1.setCenter(calendarAjout);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		else if (choice == 2) {
-			try {
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(Main.class.getResource("viewFxml/UICalendarModif.fxml"));
-				Pane calendarModif = loader.load();
-				mainLayout1.setCenter(calendarModif);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	public static void showCalendarDatesScene() {
-		if (choice == 1) {
-			try {
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(Main.class.getResource("viewFxml/UICalendarDatesAjout.fxml"));
-				Pane calendarDatesAjout = loader.load();
-				mainLayout1.setCenter(calendarDatesAjout);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		else if (choice == 2) {
-			try {
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(Main.class.getResource("viewFxml/UICalendarDatesModif.fxml"));
-				Pane calendarDatesModif = loader.load();
-				mainLayout1.setCenter(calendarDatesModif);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	public static void showStopTimesScene() {
-		if (choice == 1) {
-			try {
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(Main.class.getResource("viewFxml/UIStopTimesAjout.fxml"));
-				Pane stopTimesAjout = loader.load();
-				mainLayout1.setCenter(stopTimesAjout);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		else if (choice == 2) {
-			try {
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(Main.class.getResource("viewFxml/UIStopTimesModif.fxml"));
-				Pane stopTimesModif = loader.load();
-				mainLayout1.setCenter(stopTimesModif);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+	public static void choiceRoutes() {
+		if (choice != 2) {
+			choice = 2;
+			mainLayout1.setCenter(null);
 		}
 	}
 
-	public Scene returnSceneFirstAdmin() {
+	public static void choiceStops() {
+		if (choice != 3) {
+			choice = 3;
+			mainLayout1.setCenter(null);
+		}
+	}
+
+	public static void choiceTrips() {
+		if (choice != 4) {
+			choice = 4;
+			mainLayout1.setCenter(null);
+		}
+	}
+
+	public static void choiceTransfers() {
+		if (choice != 5) {
+			choice = 5;
+			mainLayout1.setCenter(null);
+		}
+	}
+
+	public static void choiceCalendar() {
+		if (choice != 6) {
+			choice = 6;
+			mainLayout1.setCenter(null);
+		}
+	}
+
+	public static void choiceCalendarDates() {
+		if (choice != 7) {
+			choice = 7;
+			mainLayout1.setCenter(null);
+		}
+	}
+
+	public static void choiceStopTimes() {
+		if (choice != 8) {
+			choice = 8;
+			mainLayout1.setCenter(null);
+		}
+	}
+
+	public Scene returnSceneAdminWelc() {
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(Main.class.getResource("viewFxml/FirstUIAdmin.fxml"));
+			loader.setLocation(Main.class.getResource("viewFxml/UIAdminWelcome.fxml"));
 			mainLayout2 = loader.load();
 			Scene scene = new Scene(mainLayout2);
 			return (scene);
@@ -333,44 +206,186 @@ public class Main extends Application {
 		}
 	}
 
-	public void choiceAjouter() {
-		if (choice != 1)
-		{
-			choice = 1;
-			mainLayout1.setCenter(null);
+	public void showAjouterScene() {
+		if (choice == 1) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UIAgencyAjout.fxml"));
+				Pane agencyAjout = loader.load();
+				mainLayout1.setCenter(agencyAjout);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if (choice == 2) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UIRoutesAjout.fxml"));
+				Pane routesAjout = loader.load();
+				mainLayout1.setCenter(routesAjout);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if (choice == 3) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UIStopsAjout.fxml"));
+				Pane stopsAjout = loader.load();
+				mainLayout1.setCenter(stopsAjout);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if (choice == 4) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UITripsAjout.fxml"));
+				Pane tripsAjout = loader.load();
+				mainLayout1.setCenter(tripsAjout);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if (choice == 5) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UITransfersAjout.fxml"));
+				Pane transfersAjout = loader.load();
+				mainLayout1.setCenter(transfersAjout);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if (choice == 6) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UICalendarAjout.fxml"));
+				Pane calendarAjout = loader.load();
+				mainLayout1.setCenter(calendarAjout);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if (choice == 7) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UICalendarDatesAjout.fxml"));
+				Pane calendarDatesAjout = loader.load();
+				mainLayout1.setCenter(calendarDatesAjout);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if (choice == 8) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UIStopTimesAjout.fxml"));
+				Pane stopTimesAjout = loader.load();
+				mainLayout1.setCenter(stopTimesAjout);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
-	public void choiceModifier() {
-		if (choice != 2)
-		{
-			choice = 2;
-			mainLayout1.setCenter(null);
+	public void showModifierScene() {
+		if (choice == 1) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UIAgencyModif.fxml"));
+				Pane agencyModif = loader.load();
+				mainLayout1.setCenter(agencyModif);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if (choice == 2) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UIRoutesModif.fxml"));
+				Pane routesModif = loader.load();
+				mainLayout1.setCenter(routesModif);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if (choice == 3) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UIStopsModif.fxml"));
+				Pane stopsModif = loader.load();
+				mainLayout1.setCenter(stopsModif);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if (choice == 4) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UITripsModif.fxml"));
+				Pane tripsModif = loader.load();
+				mainLayout1.setCenter(tripsModif);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if (choice == 5) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UITransfersModif.fxml"));
+				Pane transfersModif = loader.load();
+				mainLayout1.setCenter(transfersModif);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if (choice == 6) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UICalendarModif.fxml"));
+				Pane calendarModif = loader.load();
+				mainLayout1.setCenter(calendarModif);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if (choice == 7) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UICalendarDatesModif.fxml"));
+				Pane calendarDatesModif = loader.load();
+				mainLayout1.setCenter(calendarDatesModif);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if (choice == 8) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("viewFxml/UIStopTimesModif.fxml"));
+				Pane stopTimesModif = loader.load();
+				mainLayout1.setCenter(stopTimesModif);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
-	public void choiceSupprimer() {
-		if (choice != 3)
-		{
-			choice = 3;
-			mainLayout1.setCenter(null);
-		}
+	public void showSupprimerScene() {
+
 	}
 
-	public void choiceAfficher() {
-		if (choice != 4)
-		{
-			choice = 4;
-			mainLayout1.setCenter(null);
-		}
+	public void showAfficherScene() {
+
 	}
 
-	public void choiceStatistique() {
-		if (choice != 5)
-		{
-			choice = 5;
-			mainLayout1.setCenter(null);
+	public void showStatistiqueScene() {
+
+	}
+	
+	public void showGestionScene() {
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(Main.class.getResource("viewFxml/UIAdmin.fxml"));
+			Parent root = loader.load();
+			Stage stage = new Stage();
+			stage.setScene(new Scene(root));
+			stage.show();
+		
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+	}
+	
+	public void showApp() {
+		
 	}
 
 }

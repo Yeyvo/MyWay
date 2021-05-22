@@ -54,7 +54,7 @@ public class UILogging implements ViewMaker {
 			public void handle(Event event) {
 				if (!username.getText().isBlank() && !pswd.getText().isBlank()) {
 					//if (Client.conn(username.getText(), pswd.getText())) {
-						stage.setScene(Main.getScenes().get(SceneName.ADMIN));
+						stage.setScene(Main.getScenes().get(SceneName.ADMINWELC));
 						stage.centerOnScreen();
 
 					//} else {
