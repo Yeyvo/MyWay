@@ -21,8 +21,11 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import ma.myway.client.network.Client;
 import ma.myway.client.ui.model.SceneName;
@@ -30,7 +33,10 @@ import ma.myway.client.ui.view.UIBase;
 import ma.myway.client.ui.view.UILogging;
 
 public class Main extends Application {
-
+	
+	static BorderPane mainLayout1 = null;
+	static Pane mainLayout2 = null;
+	int choice = 0;
 	/** Holds the various scenes to switch between */
 	private static Map<SceneName, Scene> scenes = new HashMap<>();
 	public static Client client = null;
@@ -62,8 +68,8 @@ public class Main extends Application {
 		}
 		List<File> files = new ArrayList<>();
 		try {
-			files.add(Paths.get(ClassLoader.getSystemResource("web/index.html").toURI()).toFile());
-			files.add(Paths.get(ClassLoader.getSystemResource("web/test.json").toURI()).toFile());
+			files.add(Paths.get(ClassLoader.getSystemResource("index.html").toURI()).toFile());
+			files.add(Paths.get(ClassLoader.getSystemResource("test.json").toURI()).toFile());
 
 		} catch (URISyntaxException e1) {
 			e1.printStackTrace();
@@ -85,7 +91,7 @@ public class Main extends Application {
 			}
 		}
 
-		client = new Client("127.0.0.1", 8623);
+		client = new Client("127.0.0.1", 9325);
 		launch(args);
 
 	}
@@ -94,8 +100,10 @@ public class Main extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		scenes.put(SceneName.BASE, new UIBase().getScene());
 		scenes.put(SceneName.LOGING, new UILogging(primaryStage).getScene());
+		scenes.put(SceneName.ADMIN, returnSceneAdmin());
+		scenes.put(SceneName.FIRSTADMIN, returnSceneFirstAdmin());
 
-		primaryStage.getIcons().add(new Image("/img/logo.png"));
+		primaryStage.getIcons().add(new Image("logo.png"));
 		primaryStage.setScene(scenes.get(SceneName.LOGING));
 		primaryStage.setTitle("MyWay");
 		primaryStage.show();
@@ -113,6 +121,55 @@ public class Main extends Application {
 	public static Client getClient() {
 		return client;
 
+	}
+	
+	public static void showAgencyAjoutScene() {
+		try{
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(Main.class.getResource("viewFxml/UIAgencyAjout.fxml"));
+			Pane agencyAjout = loader.load();
+			mainLayout1.setCenter(agencyAjout);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+	}
+	
+	public static void showAgencyModifScene() {
+		try{
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(Main.class.getResource("viewFxml/UIAgencyModif.fxml"));
+			Pane agencyAjout = loader.load();
+			mainLayout1.setCenter(agencyAjout);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+	}
+	
+	public Scene returnSceneFirstAdmin() {
+		try
+		{
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(Main.class.getResource("viewFxml/FirstUIAdmin.fxml"));
+			mainLayout2 = loader.load();
+			Scene scene = new Scene(mainLayout2);
+			return(scene);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return(null);
+		}
+	}
+	public Scene returnSceneAdmin() {
+		try
+		{
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(Main.class.getResource("viewFxml/UIAdmin.fxml"));
+			mainLayout1 = loader.load();
+			Scene scene = new Scene(mainLayout1);
+			return(scene);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return(null);
+		}
 	}
 
 }

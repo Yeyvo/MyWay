@@ -1,9 +1,11 @@
 package ma.myway.client.ui.view;
 
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
 public class UIAdmin implements ViewMaker {
+
 
 	@Override
 	public Scene getScene() {
@@ -11,6 +13,9 @@ public class UIAdmin implements ViewMaker {
 		VBox pane = new VBox();
 		pane.setSpacing(10);
 		Scene scene = new Scene(pane, 300, 180);
+		
+		Label bddAttribut = new Label("Attribut : ");
+		
 
 		return scene;
 	}
