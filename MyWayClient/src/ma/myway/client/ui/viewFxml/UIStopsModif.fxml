@@ -8,7 +8,7 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="391.0" prefWidth="706.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label layoutX="239.0" layoutY="62.0" text="Modification d'information : STOPS">
+      <Label layoutX="239.0" layoutY="62.0" text="Modification d'information : STOPS" styleClass="desc">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>

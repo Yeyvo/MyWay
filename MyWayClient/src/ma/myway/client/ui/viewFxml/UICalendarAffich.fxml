@@ -31,7 +31,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Label layoutX="234.0" layoutY="29.0" text="Affichage d'informations : CALENDAR">
+      <Label layoutX="234.0" layoutY="29.0" text="Affichage d'informations : CALENDAR" styleClass="desc">
          <font>
             <Font name="Arial Black" size="14.0" />
          </font>

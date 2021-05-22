@@ -28,7 +28,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Label layoutX="271.0" layoutY="34.0" text="Affichage d'informations : STOPTIMES">
+      <Label layoutX="271.0" layoutY="34.0" text="Affichage d'informations : STOPTIMES"  styleClass="desc">
          <font>
             <Font name="Arial Black" size="14.0" />
          </font>
