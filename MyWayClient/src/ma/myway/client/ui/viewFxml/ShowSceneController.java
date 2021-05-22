@@ -131,6 +131,16 @@ public class ShowSceneController {
 	@FXML
 	private javafx.scene.control.Button btnConfirAjoutAgency;
 	
+	@FXML
+	private void confirmationAjoutAgency() {
+		
+	}
+	@FXML
+	private javafx.scene.control.Button btnConfirModifAgency;
+	
+	@FXML
+	private javafx.scene.control.Button btnConfirSupprAgency;
+	
 	/*@FXML
 	private void initialize() {
 		OptionBox.setValue("Choisissez une option");

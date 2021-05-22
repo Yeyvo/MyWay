@@ -19,7 +19,7 @@
          </font>
       </Label>
       <TextField layoutX="142.0" layoutY="115.0" />
-      <Button layoutX="203.0" layoutY="271.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0" styleClass="btncenter" text="Confirmer" />
+      <Button fx:id="btnConfirSupprAgency" layoutX="203.0" layoutY="271.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0" styleClass="btncenter" text="Confirmer" />
       <Button layoutX="386.0" layoutY="271.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0" styleClass="btncenter" text="Clear" />
    </children>
 </Pane>

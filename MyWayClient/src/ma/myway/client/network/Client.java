@@ -34,6 +34,7 @@ public class Client {
 	private static BufferedWriter buffWriter = null;
 	private static BufferedInputStream reader = null;
 	private static BufferedReader buffReader = null;
+	int confirmationAgency = 0;
 
 	public Client(String host, int port) {
 		try {
@@ -183,6 +184,10 @@ public class Client {
 		buffWriter.write(str);
 		buffWriter.newLine();
 		buffWriter.flush();
+	}
+	
+	public void ConfirmAgency(int i) {
+		confirmationAgency = i;
 	}
 
 
