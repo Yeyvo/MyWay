@@ -7,14 +7,14 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="422.0" prefWidth="820.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Button layoutX="187.0" layoutY="346.0" mnemonicParsing="false" styleClass="btncenter" text="Charger les données">
+      <Button layoutX="299.0" layoutY="368.0" mnemonicParsing="false" styleClass="btncenter" text="Charger les données">
          <font>
             <Font name="Arial Black" size="18.0" />
          </font>
       </Button>
-      <TableView layoutX="39.0" layoutY="67.0" prefHeight="259.0" prefWidth="523.0">
+      <TableView layoutX="39.0" layoutY="67.0" prefHeight="288.0" prefWidth="746.0">
          <columns>
             <TableColumn prefWidth="75.0" text="Route Id" />
             <TableColumn prefWidth="75.0" text="Service Id" />
@@ -28,7 +28,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Label layoutX="167.0" layoutY="30.0" text="Affichage d'informations : TRIPS">
+      <Label layoutX="289.0" layoutY="32.0" text="Affichage d'informations : TRIPS">
          <font>
             <Font name="Arial Black" size="14.0" />
          </font>

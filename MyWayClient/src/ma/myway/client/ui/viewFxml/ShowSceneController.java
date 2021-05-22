@@ -83,6 +83,11 @@ public class ShowSceneController {
 		main.choiceTransfers();
 	}
 	
+	@FXML
+	private void setUsers() throws IOException{
+		main.choiceUsers();
+	}
+	
 	@FXML 
 	private javafx.scene.control.Button btnGestionAdmin;
 	

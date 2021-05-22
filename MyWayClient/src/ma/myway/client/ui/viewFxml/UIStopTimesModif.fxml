@@ -6,56 +6,56 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="283.0" prefWidth="630.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="382.0" prefWidth="745.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label layoutX="186.0" layoutY="31.0" text="Modification d'information : Stop Times">
+      <Label layoutX="221.0" layoutY="58.0" text="Modifcation d'information : Stop Times">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <Label layoutX="14.0" layoutY="89.0" text="Trip Id">
+      <Label layoutX="24.0" layoutY="124.0" text="Trip Id">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="139.0" layoutY="85.0" />
-      <Label layoutX="14.0" layoutY="122.0" text="Arrival Time">
+      <TextField layoutX="149.0" layoutY="119.0" />
+      <Label layoutX="24.0" layoutY="176.0" text="Arrival Time">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="139.0" layoutY="118.0" />
-      <Label layoutX="15.0" layoutY="155.0" prefHeight="17.0" prefWidth="118.0" text="Stop Sequence">
+      <TextField layoutX="149.0" layoutY="172.0" />
+      <Label layoutX="24.0" layoutY="233.0" prefHeight="17.0" prefWidth="118.0" text="Stop Sequence">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="139.0" layoutY="151.0" />
-      <Label layoutX="326.0" layoutY="89.0" text="Stop Id">
+      <TextField layoutX="149.0" layoutY="224.0" />
+      <Label layoutX="388.0" layoutY="124.0" text="Stop Id">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="449.0" layoutY="85.0" />
-      <Label layoutX="326.0" layoutY="122.0" text="Departure Time">
+      <TextField layoutX="509.0" layoutY="119.0" />
+      <Label layoutX="386.0" layoutY="176.0" text="Departure Time">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="449.0" layoutY="118.0" />
-      <Label layoutX="326.0" layoutY="155.0" text="Stop Headsign">
+      <TextField layoutX="509.0" layoutY="172.0" />
+      <Label layoutX="389.0" layoutY="228.0" text="Stop Headsign">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="449.0" layoutY="151.0" />
-      <Label layoutX="126.0" layoutY="187.0" prefHeight="17.0" prefWidth="174.0" text="Shape Distance Traveled">
+      <TextField layoutX="511.0" layoutY="220.0" />
+      <Label layoutX="176.0" layoutY="273.0" prefHeight="17.0" prefWidth="174.0" text="Shape Distance Traveled">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="323.0" layoutY="183.0" />
-      <Button layoutX="219.0" layoutY="218.0" mnemonicParsing="false" styleClass="btncenter" text="Confirmer" />
-      <Button layoutX="373.0" layoutY="218.0" mnemonicParsing="false" styleClass="btncenter" text="Clear" />
+      <TextField layoutX="373.0" layoutY="269.0" />
+      <Button layoutX="196.0" layoutY="325.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="95.0" styleClass="btncenter" text="Confirmer" />
+      <Button layoutX="446.0" layoutY="325.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="102.0" styleClass="btncenter" text="Clear" />
    </children>
 </Pane>
