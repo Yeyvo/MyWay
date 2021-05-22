@@ -18,7 +18,7 @@
             <Font name="Arial Black" size="22.0" />
          </font>
       </Button>
-      <Button layoutX="164.0" layoutY="224.0" mnemonicParsing="false" text="Utiliser l'application">
+      <Button fx:id="btnUseApp" layoutX="164.0" layoutY="224.0" mnemonicParsing="false" text="Utiliser l'application">
          <font>
             <Font name="Arial Black" size="22.0" />
          </font>
