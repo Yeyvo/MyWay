@@ -6,7 +6,7 @@ import javafx.fxml.FXML;
 import javafx.stage.Stage;
 import ma.myway.client.network.Client;
 import ma.myway.client.ui.Main;
-import ma.myway.client.ui.model.Agency;
+import ma.myway.graph.data.Agency;
 
 public class ShowSceneController {
 
@@ -424,29 +424,41 @@ public class ShowSceneController {
 	@FXML
 	private javafx.scene.control.TextField tripShortNameField;
 	
+	@FXML
+	private javafx.scene.control.TextField tripHeadSignField;
+	
 	
 	@FXML
 	private void confirmAjoutTrips() {
-		String fromStopId = fromStopIdField.getText();
-		String toStopId = toStopIdField.getText();
-		String transferType = transferTypeField.getText();
-		String minTransferTime = minTransferTimeField.getText();
+		String fromStopId = tripIdField.getText();
+		String toStopId = serviceIdField.getText();
+		String transferType = routesIdField.getText();
+		String minTransferTime = directionIdField.getText();
+		String shapeId = shapeIdField.getText();
+		String tripHeadSign = tripHeadSignField.getText();
+		String tripShortName = tripShortNameField.getText();
 	}
 	
 	@FXML
 	private void confirmModifTrips() {
-		String fromStopId = fromStopIdField.getText();
-		String toStopId = toStopIdField.getText();
-		String transferType = transferTypeField.getText();
-		String minTransferTime = minTransferTimeField.getText();
+		String fromStopId = tripIdField.getText();
+		String toStopId = serviceIdField.getText();
+		String transferType = routesIdField.getText();
+		String minTransferTime = directionIdField.getText();
+		String shapeId = shapeIdField.getText();
+		String tripHeadSign = tripHeadSignField.getText();
+		String tripShortName = tripShortNameField.getText();
 	}
 	
 	@FXML
 	private void confirmSupprTrips() {
-		String fromStopId = fromStopIdField.getText();
-		String toStopId = toStopIdField.getText();
-		String transferType = transferTypeField.getText();
-		String minTransferTime = minTransferTimeField.getText();
+		String fromStopId = tripIdField.getText();
+		String toStopId = serviceIdField.getText();
+		String transferType = routesIdField.getText();
+		String minTransferTime = directionIdField.getText();
+		String shapeId = shapeIdField.getText();
+		String tripHeadSign = tripHeadSignField.getText();
+		String tripShortName = tripShortNameField.getText();
 	}
 	
 	/*
