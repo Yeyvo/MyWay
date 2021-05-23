@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import java.io.StringReader;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -22,9 +23,12 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import ma.myway.client.ui.Main;
 import ma.myway.graph.data.Agency;
+import ma.myway.graph.data.CalendarExpComp;
+import ma.myway.graph.data.ServiceComp;
 import ma.myway.graph.data.Stop;
 import ma.myway.graph.data.Stop_Trip;
 import ma.myway.graph.data.Transfert;
+import ma.myway.graph.data.TripsComp;
 
 public class Client {
 
@@ -351,11 +355,11 @@ public class Client {
 	}
 	
 	/* Calendar / Services */
-	public static boolean addCalendar(Stop_Trip stoptrip) {
+	public static boolean addCalendar(ServiceComp cal) {
 
 		try {
-			WRITE("addStopTimes");
-			objectOutputStream.writeObject(stoptrip);
+			WRITE("addCalendar");
+			objectOutputStream.writeObject(cal);
 
 			return (boolean) READ();
 
@@ -366,11 +370,11 @@ public class Client {
 		return false;
 	}
 
-	public static boolean editCalendar(Stop_Trip stoptrip) {
+	public static boolean editCalendar(ServiceComp cal) {
 
 		try {
-			WRITE("editStopTimes");
-			objectOutputStream.writeObject(stoptrip);
+			WRITE("editCalendar");
+			objectOutputStream.writeObject(cal);
 
 			return (boolean) READ();
 
@@ -381,10 +385,10 @@ public class Client {
 		return false;
 	}
 
-	public static boolean removeCalendar(Stop_Trip stoptrip) {
+	public static boolean removeCalendar(String id) {
 
 		try {
-			WRITE("removeStopTimes");
+			WRITE("removeCalendar");
 
 			return (boolean) READ();
 
@@ -393,6 +397,140 @@ public class Client {
 		}
 
 		return false;
+	}
+	
+	public static Set<ServiceComp> showCalendar() {
+		Set<ServiceComp> lst = null;
+		try {
+			WRITE("showCalendar");
+			lst = (Set<ServiceComp>) READ();
+			return lst;
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return lst;
+	}
+	
+	/* TRIPS */
+	
+	public static boolean addTrips(TripsComp trip) {
+
+		try {
+			WRITE("addTrips");
+			objectOutputStream.writeObject(trip);
+
+			return (boolean) READ();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+
+	public static boolean editTrips(TripsComp trip) {
+
+		try {
+			WRITE("editTrips");
+			objectOutputStream.writeObject(trip);
+
+			return (boolean) READ();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+
+	public static boolean removeTrips(TripsComp trip) {
+
+		try {
+			WRITE("removeTrips");
+
+			return (boolean) READ();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+	
+	public static Set<TripsComp> showTrips() {
+		Set<TripsComp> lst = null;
+		try {
+			WRITE("showTrips");
+			lst = (Set<TripsComp>) READ();
+			return lst;
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return lst;
+	}
+	
+	/* CALENDARDATES / CalendarExpComp */
+	
+	public static boolean addCalendarDates(CalendarExpComp cald) {
+
+		try {
+			WRITE("addCalendarDates");
+			objectOutputStream.writeObject(cald);
+
+			return (boolean) READ();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+
+	public static boolean editCalendarDates(CalendarExpComp cald) {
+
+		try {
+			WRITE("editCalendarDates");
+			objectOutputStream.writeObject(cald);
+
+			return (boolean) READ();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+
+	public static boolean removeCalendarDates(String id,Date date) {
+
+		try {
+			WRITE("removeCalendarDates");
+
+			return (boolean) READ();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+	
+	public static Set<CalendarExpComp> showCalendarDates() {
+		Set<CalendarExpComp> lst = null;
+		try {
+			WRITE("showCalendarDates");
+			lst = (Set<CalendarExpComp>) READ();
+			return lst;
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return lst;
 	}
 
 

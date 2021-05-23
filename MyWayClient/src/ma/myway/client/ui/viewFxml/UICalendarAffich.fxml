@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="422.0" prefWidth="755.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="422.0" prefWidth="755.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ma.myway.client.ui.viewFxml.ShowSceneController">
    <children>
       <Button layoutX="264.0" layoutY="363.0" mnemonicParsing="false" styleClass="btncenter" text="Charger les données">
          <font>
@@ -31,7 +31,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Label layoutX="234.0" layoutY="29.0" text="Affichage d'informations : CALENDAR" styleClass="desc">
+      <Label layoutX="234.0" layoutY="29.0" styleClass="desc" text="Affichage d'informations : CALENDAR">
          <font>
             <Font name="Arial Black" size="14.0" />
          </font>

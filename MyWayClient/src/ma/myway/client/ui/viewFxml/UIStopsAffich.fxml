@@ -17,19 +17,17 @@
       <TableView layoutX="36.0" layoutY="71.0" prefHeight="300.0" prefWidth="765.0">
          <columns>
             <TableColumn prefWidth="75.0" text="Id" />
-            <TableColumn prefWidth="75.0" text="Code" />
             <TableColumn prefWidth="75.0" text="Name" />
             <TableColumn prefWidth="75.0" text="Description" />
             <TableColumn prefWidth="75.0" text="Latitude" />
             <TableColumn prefWidth="75.0" text="Longitude" />
             <TableColumn prefWidth="75.0" text="Location Type" />
-            <TableColumn prefWidth="75.0" text="Parent Station" />
          </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Label layoutX="284.0" layoutY="32.0" text="Affichage d'informations : STOPS" styleClass="desc">
+      <Label layoutX="284.0" layoutY="32.0" styleClass="desc" text="Affichage d'informations : STOPS">
          <font>
             <Font name="Arial Black" size="14.0" />
          </font>
