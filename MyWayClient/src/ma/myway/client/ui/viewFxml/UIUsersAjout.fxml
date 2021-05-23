@@ -6,19 +6,13 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="231.0" prefWidth="631.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ma.myway.client.ui.viewFxml.ShowSceneController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="269.0" prefWidth="631.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ma.myway.client.ui.viewFxml.ShowSceneController">
    <children>
       <Label layoutX="224.0" layoutY="28.0" styleClass="desc" text="Ajout d'information : USERS">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <Label layoutX="25.0" layoutY="83.0" text="Id">
-         <font>
-            <Font name="Arial Black" size="12.0" />
-         </font>
-      </Label>
-      <TextField fx:id="usersIdField" layoutX="122.0" layoutY="83.0" />
       <Label layoutX="25.0" layoutY="129.0" text="Username">
          <font>
             <Font name="Arial Black" size="12.0" />
@@ -31,7 +25,13 @@
          </font>
       </Label>
       <TextField fx:id="usersPasswordField" layoutX="443.0" layoutY="125.0" />
-      <Button layoutX="168.0" layoutY="180.0" mnemonicParsing="false" onAction="#confirmAjoutUsers" prefHeight="25.0" prefWidth="104.0" styleClass="btncenter" text="Confirmer" />
-      <Button layoutX="371.0" layoutY="180.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="104.0" styleClass="btncenter" text="Clear" />
+      <Button layoutX="168.0" layoutY="223.0" mnemonicParsing="false" onAction="#confirmAjoutUsers" prefHeight="25.0" prefWidth="104.0" styleClass="btncenter" text="Confirmer" />
+      <Button layoutX="371.0" layoutY="223.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="104.0" styleClass="btncenter" text="Clear" />
+      <Label layoutX="201.0" layoutY="182.0" text="Permission">
+         <font>
+            <Font name="Arial Black" size="12.0" />
+         </font>
+      </Label>
+      <TextField fx:id="usersPermissionField" layoutX="317.0" layoutY="178.0" />
    </children>
 </Pane>

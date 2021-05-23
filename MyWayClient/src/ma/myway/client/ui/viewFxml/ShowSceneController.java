@@ -267,9 +267,9 @@ public class ShowSceneController {
 	private void confirmAjoutUsers() {
 		String usersUsername = usersUsernameField.getText();
 		String usersPassword = usersPasswordField.getText();
-		User user = new User(usersUsername, usersPassword);
+		String usersPermission = usersPermissionField.getText();
 		
-		if (!Client.addUser(user)) {
+		if (!Client.addUser(usersUsername,usersPassword,usersPermission)) {
 			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
 			alert.show();
 		}

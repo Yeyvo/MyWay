@@ -535,11 +535,10 @@ public class Client {
 	}
 
 	/* USERS */
-	public static boolean addUser(User user) {
+	public static boolean addUser(String username,String userPassword,String userPermission) {
 
 		try {
 			WRITE("addUser");
-			objectOutputStream.writeObject(user);
 
 			return (boolean) READ();
 

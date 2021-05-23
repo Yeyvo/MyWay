@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="218.0" prefWidth="631.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ma.myway.client.ui.viewFxml.ShowSceneController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="269.0" prefWidth="631.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ma.myway.client.ui.viewFxml.ShowSceneController">
    <children>
       <Label layoutX="208.0" layoutY="34.0" styleClass="desc" text="Supprimer d'information : USERS">
          <font>
@@ -19,7 +19,7 @@
          </font>
       </Label>
       <TextField fx:id="usersIdField" layoutX="128.0" layoutY="85.0" />
-      <Button layoutX="174.0" layoutY="180.0" mnemonicParsing="false" onAction="#confirmSupprUsers" prefHeight="25.0" prefWidth="104.0" styleClass="btncenter" text="Confirmer" />
-      <Button layoutX="377.0" layoutY="180.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="104.0" styleClass="btncenter" text="Clear" />
+      <Button layoutX="174.0" layoutY="218.0" mnemonicParsing="false" onAction="#confirmSupprUsers" prefHeight="25.0" prefWidth="104.0" styleClass="btncenter" text="Confirmer" />
+      <Button layoutX="377.0" layoutY="218.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="104.0" styleClass="btncenter" text="Clear" />
    </children>
 </Pane>
