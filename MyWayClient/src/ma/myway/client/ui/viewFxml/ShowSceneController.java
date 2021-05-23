@@ -4,7 +4,9 @@ import java.io.IOException;
 
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
+import ma.myway.client.network.Client;
 import ma.myway.client.ui.Main;
+import ma.myway.client.ui.model.Agency;
 
 public class ShowSceneController {
 
@@ -129,7 +131,9 @@ public class ShowSceneController {
 		stage.close();
 		main.showMenuAdmin();
 	}
-
+	
+	
+	//gestion agency
 	@FXML
 	private javafx.scene.control.TextField agencyIdField;
 	
@@ -156,7 +160,63 @@ public class ShowSceneController {
 		String agencyLangage = agencyLangageField.getText();
 		String agencyURL = agencyURLField.getText();
 		String agencyPhone = agencyPhoneField.getText();
+		Agency agency = new Agency(agencyId,agencyName,agencyTimeZone,agencyURL);
+		Client.addAgency(agency);
 	}
+	
+	@FXML
+	private void confirmModifAgency() {
+		String agencyId = agencyIdField.getText();
+		String agencyName = agencyNameField.getText();
+		String agencyTimeZone = agencyTimeZoneField.getText();
+		String agencyLangage = agencyLangageField.getText();
+		String agencyURL = agencyURLField.getText();
+		String agencyPhone = agencyPhoneField.getText();
+		Agency agency = new Agency(agencyId,agencyName,agencyTimeZone,agencyURL);
+		Client.editAgency(agency);
+	}
+	
+	@FXML
+	private void confirmSupprAgency() {
+		String agencyId = agencyIdField.getText();
+		Client.removeAgency(agencyId);
+	}
+	
+	//gestion User
+	@FXML
+	private javafx.scene.control.TextField usersIdField;
+	
+	@FXML
+	private javafx.scene.control.TextField usersUsernameField;
+	
+	@FXML
+	private javafx.scene.control.TextField usersPasswordField;
+	
+	@FXML
+	private javafx.scene.control.TextField usersDateCreationField;
+	
+	@FXML
+	private void confirmAjoutUsers() {
+		String usersId = usersIdField.getText();
+		String usersUsername = usersUsernameField.getText();
+		String usersPassword = usersPasswordField.getText();
+		String usersDateCreation = usersDateCreationField.getText();
+	}
+	
+	@FXML
+	private void confirmModifUsers() {
+		String usersId = usersIdField.getText();
+		String usersUsername = usersUsernameField.getText();
+		String usersPassword = usersPasswordField.getText();
+		String usersDateCreation = usersDateCreationField.getText();
+	}
+	
+	@FXML
+	private void confirmSupprUsers() {
+		String usersId = usersIdField.getText();
+	}
+	
+	//gestion Routes
 
 	/*
 	 * @FXML private void initialize() {

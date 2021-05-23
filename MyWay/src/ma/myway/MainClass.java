@@ -50,14 +50,14 @@ public class MainClass {
 		Graph g = null;
 		Graph.setGraph(g);
 		File f = new File("graph.bin");
-		if (!f.exists() && !f.isDirectory()) {
+		/*if (!f.exists() && !f.isDirectory()) {
 			g = graphGeneration(StartTime);
 			Graph.saveGraph(g);
 			
 		} else if (f.exists() && !f.isDirectory()) {
 			System.out.println("Exist");
 			g = Graph.getGraph();
-		}
+		}*/
 		long endTime = System.currentTimeMillis();
 		double timeElapsed = endTime - StartTime;
 		Logger.getLogger("BASE").info("Execution time in seconds   : " + timeElapsed / 1000 + " seconde ");
