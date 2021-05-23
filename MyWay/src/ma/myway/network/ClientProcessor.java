@@ -57,7 +57,7 @@ public class ClientProcessor implements Runnable {
 
 				bos = new BufferedOutputStream(client.getOutputStream());
 				buffWriter = new BufferedWriter(new OutputStreamWriter(bos, StandardCharsets.UTF_8));
-				
+				objectOutputStream = new ObjectOutputStream(client.getOutputStream());
 				
 				reader = new BufferedInputStream(client.getInputStream());
 				buffReader = new BufferedReader(new InputStreamReader(reader, StandardCharsets.UTF_8));
@@ -262,6 +262,17 @@ public class ClientProcessor implements Runnable {
 
 
 	private String read(int i, Boolean isconfirmation) throws IOException {
+		
+//		String response = buffReader.readLine();
+//		
+//		Logger.getLogger("SERVER").info("\tdata : " + response);
+//		
+		String response = Testread(i, isconfirmation);
+				
+		return response;
+	}
+	
+	private String Testread(int i, Boolean isconfirmation) throws IOException {
 
 		String response = buffReader.readLine();
 
@@ -271,16 +282,22 @@ public class ClientProcessor implements Runnable {
 	}
 
 	private String READ() throws IOException {
-		String data = read(-1, false);
+//		String data = read(-1, false);
+		String data = (String) Testread(-1, false);
 
 		return data;
 	}
 
 	private void WRITE(String str) throws IOException {
+		
+//		buffWriter.write(str);
+//		buffWriter.newLine();
+//		buffWriter.flush();
+		testWRITE(str);
+	}
+	private void testWRITE(String str) throws IOException {
 
-		buffWriter.write(str);
-		buffWriter.newLine();
-		buffWriter.flush();
+		objectOutputStream.writeObject(str);
 
 	}
 

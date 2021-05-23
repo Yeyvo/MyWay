@@ -7,6 +7,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -40,6 +41,8 @@ public class Client {
 	
 	private static BufferedInputStream reader = null;
 	private static BufferedReader buffReader = null;
+	private static ObjectInputStream objectInputStream = null;
+
 
 	public Client(String host, int port) {
 		try {
@@ -47,9 +50,11 @@ public class Client {
 			reader = new BufferedInputStream(client.getInputStream());
 			buffReader = new BufferedReader(new InputStreamReader(reader, StandardCharsets.UTF_8));
 
-			writer = new PrintWriter(client.getOutputStream(), true);
-			bos = new BufferedOutputStream(client.getOutputStream());
-			buffWriter = new BufferedWriter(new OutputStreamWriter(bos, StandardCharsets.UTF_8));
+//			writer = new PrintWriter(client.getOutputStream(), true);
+//			bos = new BufferedOutputStream(client.getOutputStream());
+//			buffWriter = new BufferedWriter(new OutputStreamWriter(bos, StandardCharsets.UTF_8));
+			
+			objectInputStream = new ObjectInputStream(client.getInputStream());
 			objectOutputStream = new ObjectOutputStream(client.getOutputStream());
 
 		} catch (UnknownHostException e) {
@@ -209,19 +214,40 @@ public class Client {
 	}
 
 	private static String READ(boolean isjson) throws IOException {
-		String data = read(isjson);
+//		String data = read(isjson);
+		String data = TestREAD (isjson);
+		
+		return data;
+	}
+	
+	
+	private static String TestREAD(boolean isjson) throws IOException {
+		String data = null;
+		try {
+			data = (String) objectInputStream.readObject();
+		} catch (ClassNotFoundException | IOException e) {
+			e.printStackTrace();
+		}
 
 		return data;
 	}
 
 	private static void WRITE(String str) throws IOException {
+//		buffWriter.write(str);
+//		buffWriter.newLine();
+//		buffWriter.flush();
+		Testwrite(str);
+	}
+	
+	private static void Testwrite(String str) throws IOException {
 		buffWriter.write(str);
 		buffWriter.newLine();
 		buffWriter.flush();
 	}
 	
 	
-	private static String read(int i) throws IOException {
+	
+	/*private static String read(int i) throws IOException {
 		String response = "";
 		int stream;
 		byte[] b;
@@ -257,4 +283,6 @@ public class Client {
 			e.printStackTrace();
 		}
 	}
+	
+	*/
 }
