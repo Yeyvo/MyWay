@@ -1,6 +1,8 @@
 package ma.myway.client.ui.model;
 
-public class Agency {
+import java.io.Serializable;
+
+public class Agency implements Serializable{
 
 	private String agency_id;
 	private String agency_name;
