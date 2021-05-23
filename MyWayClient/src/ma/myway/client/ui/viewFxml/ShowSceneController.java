@@ -1,12 +1,15 @@
 package ma.myway.client.ui.viewFxml;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
 import ma.myway.client.network.Client;
 import ma.myway.client.ui.Main;
 import ma.myway.graph.data.Agency;
+import ma.myway.graph.data.Stop;
+import ma.myway.graph.data.Transfert;
 
 public class ShowSceneController {
 
@@ -131,70 +134,69 @@ public class ShowSceneController {
 		stage.close();
 		main.showMenuAdmin();
 	}
-	
-	
-	//gestion agency
+
+	// gestion agency
 	@FXML
 	private javafx.scene.control.TextField agencyIdField;
-	
+
 	@FXML
 	private javafx.scene.control.TextField agencyNameField;
-	
+
 	@FXML
 	private javafx.scene.control.TextField agencyTimeZoneField;
-	
+
 	@FXML
 	private javafx.scene.control.TextField agencyLangageField;
-	
+
 	@FXML
 	private javafx.scene.control.TextField agencyURLField;
-	
+
 	@FXML
 	private javafx.scene.control.TextField agencyPhoneField;
-	
+
 	@FXML
 	private void confirmAjoutAgency() {
 		String agencyId = agencyIdField.getText();
 		String agencyName = agencyNameField.getText();
 		String agencyTimeZone = agencyTimeZoneField.getText();
-		String agencyLangage = agencyLangageField.getText();
+//		String agencyLangage = agencyLangageField.getText();
 		String agencyURL = agencyURLField.getText();
-		String agencyPhone = agencyPhoneField.getText();
-		Agency agency = new Agency(agencyId,agencyName,agencyTimeZone,agencyURL);
+//		String agencyPhone = agencyPhoneField.getText();
+		Agency agency = new Agency(agencyId, agencyName, agencyTimeZone, agencyURL);
 		Client.addAgency(agency);
 	}
-	
+
 	@FXML
 	private void confirmModifAgency() {
 		String agencyId = agencyIdField.getText();
 		String agencyName = agencyNameField.getText();
 		String agencyTimeZone = agencyTimeZoneField.getText();
-		String agencyLangage = agencyLangageField.getText();
+//		String agencyLangage = agencyLangageField.getText();
 		String agencyURL = agencyURLField.getText();
-		String agencyPhone = agencyPhoneField.getText();
-		Agency agency = new Agency(agencyId,agencyName,agencyTimeZone,agencyURL);
+//		String agencyPhone = agencyPhoneField.getText();
+		Agency agency = new Agency(agencyId, agencyName, agencyTimeZone, agencyURL);
 		Client.editAgency(agency);
 	}
-	
+
 	@FXML
 	private void confirmSupprAgency() {
 		String agencyId = agencyIdField.getText();
 		Client.removeAgency(agencyId);
 	}
-	
-	//gestion User
+
+	// gestion User
 	@FXML
 	private javafx.scene.control.TextField usersIdField;
-	
+
 	@FXML
 	private javafx.scene.control.TextField usersUsernameField;
-	
+
 	@FXML
 	private javafx.scene.control.TextField usersPasswordField;
-	
+
 	@FXML
 	private javafx.scene.control.TextField usersDateCreationField;
-	
+
 	@FXML
 	private void confirmAjoutUsers() {
 		String usersId = usersIdField.getText();
@@ -202,7 +204,7 @@ public class ShowSceneController {
 		String usersPassword = usersPasswordField.getText();
 		String usersDateCreation = usersDateCreationField.getText();
 	}
-	
+
 	@FXML
 	private void confirmModifUsers() {
 		String usersId = usersIdField.getText();
@@ -210,28 +212,28 @@ public class ShowSceneController {
 		String usersPassword = usersPasswordField.getText();
 		String usersDateCreation = usersDateCreationField.getText();
 	}
-	
+
 	@FXML
 	private void confirmSupprUsers() {
 		String usersId = usersIdField.getText();
 	}
-	
-	//gestion Routes
+
+	// gestion Routes
 	@FXML
 	private javafx.scene.control.TextField routesIdField;
-	
+
 	@FXML
 	private javafx.scene.control.TextField routesShortNameField;
-	
+
 	@FXML
 	private javafx.scene.control.TextField routesLongNameField;
-	
+
 	@FXML
 	private javafx.scene.control.TextField routesDescriptionField;
-	
+
 	@FXML
 	private javafx.scene.control.TextField routesTypeField;
-	
+
 	@FXML
 	private void confirmAjoutRoutes() {
 		String agencyId = agencyIdField.getText();
@@ -240,8 +242,9 @@ public class ShowSceneController {
 		String routesLongName = routesLongNameField.getText();
 		String routesDescription = routesDescriptionField.getText();
 		String routesType = routesTypeField.getText();
+
 	}
-	
+
 	@FXML
 	private void confirmModifRoutes() {
 		String agencyId = agencyIdField.getText();
@@ -251,183 +254,210 @@ public class ShowSceneController {
 		String routesDescription = routesDescriptionField.getText();
 		String routesType = routesTypeField.getText();
 	}
-	
+
 	@FXML
 	private void confirmSupprRoutes() {
 		String routesId = routesIdField.getText();
 	}
-	
-	//gestion stops
-	
+
+	// gestion stops
+
 	@FXML
 	private javafx.scene.control.TextField stopIdField;
-	
+
 	@FXML
 	private javafx.scene.control.TextField stopCodeField;
-	
+
 	@FXML
 	private javafx.scene.control.TextField stopNameField;
-	
+
 	@FXML
 	private javafx.scene.control.TextField stopDescriptionField;
-	
+
 	@FXML
 	private javafx.scene.control.TextField stopLongitudeField;
-	
+
 	@FXML
 	private javafx.scene.control.TextField stopLatitudeField;
-	
+
 	@FXML
 	private javafx.scene.control.TextField locationTypeField;
-	
+
 	@FXML
 	private javafx.scene.control.TextField parentStationField;
-	
+
 	@FXML
 	private void confirmAjoutStops() {
 		String stopId = stopIdField.getText();
 		String stopCode = stopCodeField.getText();
 		String stopName = stopNameField.getText();
 		String stopDescription = stopDescriptionField.getText();
-		String stopLongitude = stopLongitudeField.getText();
-		String stopLatitude= stopLatitudeField.getText();
-		String locationType = locationTypeField.getText();
+		String stopLongitudeString = stopLongitudeField.getText();
+		String stopLatitudeString = stopLatitudeField.getText();
+		String locationTypeString = locationTypeField.getText();
 		String parentStation = parentStationField.getText();
+		
+		double stopLongitude = Double.parseDouble(stopLongitudeString);
+		double stopLatitude = Double.parseDouble(stopLatitudeString);
+		int locationType = Integer.parseInt(locationTypeString);
+		
+		Stop stop = new Stop(stopId,stopName, stopDescription, stopLatitude, stopLongitude, locationType);
+		Client.addStops(stop);
 	}
-	
+
 	@FXML
 	private void confirmModifStops() {
 		String stopId = stopIdField.getText();
 		String stopCode = stopCodeField.getText();
 		String stopName = stopNameField.getText();
 		String stopDescription = stopDescriptionField.getText();
-		String stopLongitude = stopLongitudeField.getText();
-		String stopLatitude= stopLatitudeField.getText();
-		String locationType = locationTypeField.getText();
+		String stopLongitudeString = stopLongitudeField.getText();
+		String stopLatitudeString = stopLatitudeField.getText();
+		String locationTypeString = locationTypeField.getText();
 		String parentStation = parentStationField.getText();
+		
+		double stopLongitude = Double.parseDouble(stopLongitudeString);
+		double stopLatitude = Double.parseDouble(stopLatitudeString);
+		int locationType = Integer.parseInt(locationTypeString);
+		
+		Stop stop = new Stop(stopId,stopName, stopDescription, stopLatitude, stopLongitude, locationType);
+		Client.editStops(stop);
 	}
-	
+
 	@FXML
 	private void confirmSupprStops() {
 		String stopId = stopIdField.getText();
 		String stopCode = stopCodeField.getText();
 		String stopName = stopNameField.getText();
 		String stopDescription = stopDescriptionField.getText();
-		String stopLongitude = stopLongitudeField.getText();
-		String stopLatitude= stopLatitudeField.getText();
-		String locationType = locationTypeField.getText();
+		String stopLongitudeString = stopLongitudeField.getText();
+		String stopLatitudeString = stopLatitudeField.getText();
+		String locationTypeString = locationTypeField.getText();
 		String parentStation = parentStationField.getText();
+		
+		double stopLongitude = Double.parseDouble(stopLongitudeString);
+		double stopLatitude = Double.parseDouble(stopLatitudeString);
+		int locationType = Integer.parseInt(locationTypeString);
+		
+		Stop stop = new Stop(stopId,stopName, stopDescription, stopLatitude, stopLongitude, locationType);
+		Client.removeStops(stop);
 	}
-	
-	//gestion StopTimes
-	
+
+	// gestion StopTimes
+
 	@FXML
 	private javafx.scene.control.TextField tripIdField;
-	
+
 	@FXML
-	private javafx.scene.control.TextField arrivalTimeField;
-	
+	private javafx.scene.control.DatePicker arrivalTimeField;
+
 	@FXML
-	private javafx.scene.control.TextField departureTimeField;
-	
+	private javafx.scene.control.DatePicker departureTimeField;
+
 	@FXML
 	private javafx.scene.control.TextField stopSequenceField;
-	
+
 	@FXML
 	private javafx.scene.control.TextField stopHeadsignField;
-	
+
 	@FXML
 	private javafx.scene.control.TextField shapeDistanceTravelledField;
-	
-	
+
 	@FXML
 	private void confirmAjoutStopTimes() {
 		String stopId = stopIdField.getText();
 		String tripId = tripIdField.getText();
-		String arrivalTime = arrivalTimeField.getText();
-		String departureTime = departureTimeField.getText();
+		LocalDate arrivalTime = arrivalTimeField.getValue();
+		LocalDate departureTime = departureTimeField.getValue();
 		String stopSequence = stopSequenceField.getText();
-		String stopHeadsign= stopHeadsignField.getText();
+		String stopHeadsign = stopHeadsignField.getText();
 		String shapeDistanceTravelled = shapeDistanceTravelledField.getText();
 	}
-	
+
 	@FXML
 	private void confirmModifStopTimes() {
 		String stopId = stopIdField.getText();
 		String tripId = tripIdField.getText();
-		String arrivalTime = arrivalTimeField.getText();
-		String departureTime = departureTimeField.getText();
+		LocalDate arrivalTime = arrivalTimeField.getValue();
+		LocalDate departureTime = departureTimeField.getValue();
 		String stopSequence = stopSequenceField.getText();
-		String stopHeadsign= stopHeadsignField.getText();
+		String stopHeadsign = stopHeadsignField.getText();
 		String shapeDistanceTravelled = shapeDistanceTravelledField.getText();
 	}
-	
+
 	@FXML
 	private void confirmSupprStopTimes() {
 		String stopId = stopIdField.getText();
 		String tripId = tripIdField.getText();
-		String arrivalTime = arrivalTimeField.getText();
-		String departureTime = departureTimeField.getText();
+		LocalDate arrivalTime = arrivalTimeField.getValue();
+		LocalDate departureTime = departureTimeField.getValue();
 		String stopSequence = stopSequenceField.getText();
-		String stopHeadsign= stopHeadsignField.getText();
+		String stopHeadsign = stopHeadsignField.getText();
 		String shapeDistanceTravelled = shapeDistanceTravelledField.getText();
 	}
-	
-	//gestion Transfers
+
+	// gestion Transfers
 	@FXML
 	private javafx.scene.control.TextField fromStopIdField;
-	
+
 	@FXML
 	private javafx.scene.control.TextField toStopIdField;
-	
+
 	@FXML
-	private javafx.scene.control.TextField transferTypeField;
-	
+	private javafx.scene.control.ChoiceBox transferTypeField;
+
 	@FXML
 	private javafx.scene.control.TextField minTransferTimeField;
-	
-	
+
 	@FXML
 	private void confirmAjoutTransfers() {
 		String fromStopId = fromStopIdField.getText();
 		String toStopId = toStopIdField.getText();
-		String transferType = transferTypeField.getText();
-		String minTransferTime = minTransferTimeField.getText();
+		int transferType = (int)transferTypeField.getValue();
+		String minTransferTimeString = minTransferTimeField.getText();
+		int minTransferTime = Integer.parseInt(minTransferTimeString);
+		Transfert trans = new Transfert(fromStopId, toStopId, transferType, minTransferTime);
+		Client.addTransfers(trans);
 	}
-	
+
 	@FXML
 	private void confirmModifTransfers() {
 		String fromStopId = fromStopIdField.getText();
 		String toStopId = toStopIdField.getText();
-		String transferType = transferTypeField.getText();
-		String minTransferTime = minTransferTimeField.getText();
+		int transferType = (int)transferTypeField.getValue();
+		String minTransferTimeString = minTransferTimeField.getText();
+		int minTransferTime = Integer.parseInt(minTransferTimeString);
+		Transfert trans = new Transfert(fromStopId, toStopId, transferType, minTransferTime);
+		Client.editTransfers(trans);
 	}
-	
+
 	@FXML
 	private void confirmSupprTransfers() {
 		String fromStopId = fromStopIdField.getText();
 		String toStopId = toStopIdField.getText();
-		String transferType = transferTypeField.getText();
-		String minTransferTime = minTransferTimeField.getText();
+		int transferType = (int)transferTypeField.getValue();
+		String minTransferTimeString = minTransferTimeField.getText();
+		int minTransferTime = Integer.parseInt(minTransferTimeString);
+		Transfert trans = new Transfert(fromStopId, toStopId, transferType, minTransferTime);
+		Client.removeTransfers(trans);
 	}
-	
-	//gestion Trips
+
+	// gestion Trips
 	@FXML
 	private javafx.scene.control.TextField serviceIdField;
-	
+
 	@FXML
 	private javafx.scene.control.TextField directionIdField;
-	
+
 	@FXML
 	private javafx.scene.control.TextField shapeIdField;
-	
+
 	@FXML
 	private javafx.scene.control.TextField tripShortNameField;
-	
+
 	@FXML
 	private javafx.scene.control.TextField tripHeadSignField;
-	
-	
+
 	@FXML
 	private void confirmAjoutTrips() {
 		String fromStopId = tripIdField.getText();
@@ -438,7 +468,7 @@ public class ShowSceneController {
 		String tripHeadSign = tripHeadSignField.getText();
 		String tripShortName = tripShortNameField.getText();
 	}
-	
+
 	@FXML
 	private void confirmModifTrips() {
 		String fromStopId = tripIdField.getText();
@@ -449,7 +479,7 @@ public class ShowSceneController {
 		String tripHeadSign = tripHeadSignField.getText();
 		String tripShortName = tripShortNameField.getText();
 	}
-	
+
 	@FXML
 	private void confirmSupprTrips() {
 		String fromStopId = tripIdField.getText();
@@ -460,7 +490,153 @@ public class ShowSceneController {
 		String tripHeadSign = tripHeadSignField.getText();
 		String tripShortName = tripShortNameField.getText();
 	}
-	
+
+	// gestion Calendar
+
+	@FXML
+	private javafx.scene.control.DatePicker startDateField;
+
+	@FXML
+	private javafx.scene.control.DatePicker endDateField;
+
+	@FXML
+	private javafx.scene.control.CheckBox mondayBox;
+
+	@FXML
+	private javafx.scene.control.CheckBox tuesdayBox;
+
+	@FXML
+	private javafx.scene.control.CheckBox wednesdayBox;
+
+	@FXML
+	private javafx.scene.control.CheckBox thursdayBox;
+
+	@FXML
+	private javafx.scene.control.CheckBox fridayBox;
+
+	@FXML
+	private javafx.scene.control.CheckBox saturdayBox;
+
+	@FXML
+	private javafx.scene.control.CheckBox sundayBox;
+
+	@FXML
+	private void confirmAjoutCalendar() {
+		String serviceId = serviceIdField.getText();
+		LocalDate startDate = startDateField.getValue();
+		LocalDate endDate = endDateField.getValue();
+		int monday, tuesday, wednesday, thursday, friday, saturday, sunday;
+		if(mondayBox.isSelected())
+			monday = 1;
+		else
+			monday = 0;
+		
+		if(tuesdayBox.isSelected())
+			tuesday = 1;
+		else
+			tuesday = 0;
+		
+		if(wednesdayBox.isSelected())
+			wednesday = 1;
+		else
+			wednesday = 0;
+		
+		if(thursdayBox.isSelected())
+			thursday = 1;
+		else
+			thursday = 0;
+		
+		if(fridayBox.isSelected())
+			friday = 1;
+		else
+			friday = 0;
+		
+		if(saturdayBox.isSelected())
+			saturday = 1;
+		else
+			saturday = 0;
+		
+		if(sundayBox.isSelected())
+			sunday = 1;
+		else
+			sunday = 0;
+
+	}
+
+	@FXML
+	private void confirmModifCalendar() {
+		String serviceId = serviceIdField.getText();
+		LocalDate startDate = startDateField.getValue();
+		LocalDate endDate = endDateField.getValue();
+		int monday, tuesday, wednesday, thursday, friday, saturday, sunday;
+		if(mondayBox.isSelected())
+			monday = 1;
+		else
+			monday = 0;
+		
+		if(tuesdayBox.isSelected())
+			tuesday = 1;
+		else
+			tuesday = 0;
+		
+		if(wednesdayBox.isSelected())
+			wednesday = 1;
+		else
+			wednesday = 0;
+		
+		if(thursdayBox.isSelected())
+			thursday = 1;
+		else
+			thursday = 0;
+		
+		if(fridayBox.isSelected())
+			friday = 1;
+		else
+			friday = 0;
+		
+		if(saturdayBox.isSelected())
+			saturday = 1;
+		else
+			saturday = 0;
+		
+		if(sundayBox.isSelected())
+			sunday = 1;
+		else
+			sunday = 0;
+	}
+
+	@FXML
+	private void confirmSupprCalendar() {
+		String serviceId = serviceIdField.getText();
+	}
+
+	// gestion CalendarDates
+
+	@FXML
+	private javafx.scene.control.TextField dateField;
+
+	@FXML
+	private javafx.scene.control.TextField exceptionTypeField;
+
+	@FXML
+	private void confirmAjoutCalendarDates() {
+		String serviceId = serviceIdField.getText();
+		String date = dateField.getText();
+		String exceptionType = exceptionTypeField.getText();
+	}
+
+	@FXML
+	private void confirmModifCalendarDates() {
+		String serviceId = serviceIdField.getText();
+		String date = dateField.getText();
+		String exceptionType = exceptionTypeField.getText();
+	}
+
+	@FXML
+	private void confirmSupprCalendarDates() {
+		String serviceId = serviceIdField.getText();
+		String date = dateField.getText();
+	}
 	/*
 	 * @FXML private void initialize() {
 	 * OptionBox.setValue("Choisissez une option"); OptionBox.setItems(OptionList);

@@ -6,15 +6,12 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -28,21 +25,21 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import ma.myway.client.ui.Main;
 import ma.myway.graph.data.Agency;
+import ma.myway.graph.data.Service;
+import ma.myway.graph.data.Transfert;
 
 public class Client {
 
 	private static Socket client = null;
-	
+
 	private static PrintWriter writer = null;
 	private static BufferedOutputStream bos = null;
 	private static BufferedWriter buffWriter = null;
 	private static ObjectOutputStream objectOutputStream = null;
 
-	
 	private static BufferedInputStream reader = null;
 	private static BufferedReader buffReader = null;
 	private static ObjectInputStream objectInputStream = null;
-
 
 	public Client(String host, int port) {
 		try {
@@ -53,7 +50,7 @@ public class Client {
 //			writer = new PrintWriter(client.getOutputStream(), true);
 //			bos = new BufferedOutputStream(client.getOutputStream());
 //			buffWriter = new BufferedWriter(new OutputStreamWriter(bos, StandardCharsets.UTF_8));
-			
+
 			objectInputStream = new ObjectInputStream(client.getInputStream());
 			objectOutputStream = new ObjectOutputStream(client.getOutputStream());
 
@@ -67,7 +64,6 @@ public class Client {
 	public static Map<String, String> GetStops() {
 		Map<String, String> stopMap = new HashMap<>();
 		String stopnames = null, stopid = null;
-
 
 		try {
 			WRITE("GETSTOPS");
@@ -87,13 +83,12 @@ public class Client {
 		StringTokenizer idtok = new StringTokenizer(stopid, "#");
 		while (nametok.hasMoreElements() && idtok.hasMoreElements()) {
 			stopMap.put(nametok.nextElement().toString(), idtok.nextElement().toString());
-			//stopMap.put(idtok.nextElement().toString(), nametok.nextElement().toString());
+			// stopMap.put(idtok.nextElement().toString(),
+			// nametok.nextElement().toString());
 		}
 
 		return stopMap;
 	}
-
-
 
 	public static String chem(String src, String dep) {
 
@@ -120,26 +115,26 @@ public class Client {
 			e.printStackTrace();
 		}
 		return path;
-	}	
+	}
 
 	/* AGENCY */
 	public static boolean addAgency(Agency agency) {
-		
+
 		try {
 			WRITE("addAgency");
 			objectOutputStream.writeObject(agency);
-			
+
 			return Boolean.getBoolean((String) READ(false));
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		return false;
 	}
-	
+
 	public static boolean editAgency(Agency agency) {
-		
+
 		try {
 			WRITE("editAgency");
 			objectOutputStream.writeObject(agency);
@@ -149,12 +144,12 @@ public class Client {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		return false;
 	}
-	
+
 	public static boolean removeAgency(String id) {
-		
+
 		try {
 			WRITE("removeAgency " + id);
 
@@ -163,10 +158,102 @@ public class Client {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
+		return false;
+	}
+
+	/* STOPS */
+	public static boolean addStops(ma.myway.graph.data.Stop stop) {
+
+		try {
+			WRITE("addStops");
+			objectOutputStream.writeObject(stop);
+
+			return Boolean.getBoolean((String) READ(false));
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+
+	public static boolean editStops(ma.myway.graph.data.Stop stop) {
+
+		try {
+			WRITE("editStops");
+			objectOutputStream.writeObject(stop);
+
+			return Boolean.getBoolean((String) READ(false));
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+
+	public static boolean removeStops(ma.myway.graph.data.Stop stop) {
+
+		try {
+			WRITE("removeStops");
+
+			return Boolean.getBoolean((String) READ(false));
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+
+	/* TRANSFERS */
+	public static boolean addTransfers(Transfert trans) {
+
+		try {
+			WRITE("addTransfert");
+			objectOutputStream.writeObject(trans);
+
+			return Boolean.getBoolean((String) READ(false));
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+
+	public static boolean editTransfers(Transfert trans) {
+
+		try {
+			WRITE("editTransfert");
+			objectOutputStream.writeObject(trans);
+
+			return Boolean.getBoolean((String) READ(false));
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+
+	public static boolean removeTransfers(Transfert trans) {
+
+		try {
+			WRITE("removeTransfert");
+
+			return Boolean.getBoolean((String) READ(false));
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		return false;
 	}
 	
+	
+
 //	public static boolean showAgency() {
 //		
 //		try {
@@ -180,12 +267,9 @@ public class Client {
 //		
 //		return false;
 //	}
-	
-	/*CALENDAR*/
 
-	
-	
-	
+	/* CALENDAR */
+
 	public static boolean conn(String username, String password) {
 		try {
 			WRITE("CONN " + username + " " + password);
@@ -212,7 +296,7 @@ public class Client {
 
 		return response;
 	}
-	
+
 	private static void WRITE(String str) throws IOException {
 		objectOutputStream.writeObject(str);
 	}
@@ -220,7 +304,7 @@ public class Client {
 	private static Object READ(boolean isjson) throws IOException {
 		Object data = null;
 		try {
-			data =  objectInputStream.readObject();
+			data = objectInputStream.readObject();
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
 		}
@@ -234,7 +318,7 @@ public class Client {
 //		return data;
 //	}
 //	
-	
+
 //	private static String TestREAD(boolean isjson) throws IOException {
 //		String data = null;
 //		try {
@@ -252,52 +336,32 @@ public class Client {
 //		buffWriter.flush();
 //		objectOutputStream.writeObject(str);
 //	}
-	
+
 //	private static void Testwrite(String str) throws IOException {
 ////		buffWriter.write(str);
 ////		buffWriter.newLine();
 ////		buffWriter.flush();
 //		objectOutputStream.writeObject(str);
 //	}
-	
-	
-	
-	/*private static String read(int i) throws IOException {
-		String response = "";
-		int stream;
-		byte[] b;
 
-		if (i < 0) {
-			b = new byte[1024];
-		} else {
-			b = new byte[i];
-		}
-		stream = reader.read(b);
-		response = new String(b, 0, stream);
-
-		writer.write("received");
-		writer.flush();
-
-		return response;
-	}
-
-	public static void close() {
-
-		try {
-			WRITE("CLOSE");
-
-			Logger.getLogger("CLIENT").info(read(-1));
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		try {
-			reader.close();
-			writer.close();
-			client.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	*/
+	/*
+	 * private static String read(int i) throws IOException { String response = "";
+	 * int stream; byte[] b;
+	 * 
+	 * if (i < 0) { b = new byte[1024]; } else { b = new byte[i]; } stream =
+	 * reader.read(b); response = new String(b, 0, stream);
+	 * 
+	 * writer.write("received"); writer.flush();
+	 * 
+	 * return response; }
+	 * 
+	 * public static void close() {
+	 * 
+	 * try { WRITE("CLOSE");
+	 * 
+	 * Logger.getLogger("CLIENT").info(read(-1)); } catch (IOException e1) {
+	 * e1.printStackTrace(); } try { reader.close(); writer.close(); client.close();
+	 * } catch (IOException e) { e.printStackTrace(); } }
+	 * 
+	 */
 }
