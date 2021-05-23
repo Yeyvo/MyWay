@@ -213,15 +213,15 @@ public class ShowSceneController {
 	
 	@FXML
 	private void confirmShowAgency() {
-		Set<Agency> allAgency = Client.showAgency();
-//		agencyIdColumn.setCellValueFactory(new PropertyValueFactory("id"));
-//		agencyNameColumn.setCellValueFactory(new PropertyValueFactory("Name"));
-//		agencyURLColumn.setCellValueFactory(new PropertyValueFactory("URL"));
-//		agencyTimeZoneColumn.setCellValueFactory(new PropertyValueFactory("String"));
+		Set<Agency> data = Client.showAgency();
+		agencyIdColumn.setCellValueFactory(new PropertyValueFactory("agency_id"));
+		agencyNameColumn.setCellValueFactory(new PropertyValueFactory("agency_name"));
+		agencyURLColumn.setCellValueFactory(new PropertyValueFactory("agency_url"));
+		agencyTimeZoneColumn.setCellValueFactory(new PropertyValueFactory("agency_timezone"));
 		
-		System.out.println(allAgency);
+//		System.out.println(allAgency);
 //		agencyAllTable.setItems(null);
-//		agencyAllTable.getItems().addAll(allAgency);
+		agencyAllTable.getItems().addAll(data);
 	}
 
 	// gestion User

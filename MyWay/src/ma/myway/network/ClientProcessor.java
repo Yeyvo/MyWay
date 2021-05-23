@@ -17,6 +17,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
@@ -183,7 +184,8 @@ public class ClientProcessor implements Runnable {
 					WRITE(res);
 
 				}else if (response.toUpperCase().startsWith("SHOWAGENCY")) {
-					
+					Set<Agency> data = DAOFactory.getAgencyDAO().all();
+					WRITE(data);
 				}
 				
 				/* STOPS */
@@ -219,7 +221,8 @@ public class ClientProcessor implements Runnable {
 					}
 					WRITE(res);
 				}else if (response.toUpperCase().startsWith("SHOWSTOPS")) {
-					
+					Set<Stop> data = DAOFactory.getStopDAO().all();
+					WRITE(data);
 				}
 				/* TRANSFERS */
 				else if (response.toUpperCase().startsWith("ADDTRANSFERT")) {
@@ -254,7 +257,8 @@ public class ClientProcessor implements Runnable {
 					}
 					WRITE(res);
 				}else if (response.toUpperCase().startsWith("SHOWTRANSFERS")) {
-					
+					Set<Transfert> data = DAOFactory.getTransfertDAO().all();
+					WRITE(data);
 				}
 				
 				
