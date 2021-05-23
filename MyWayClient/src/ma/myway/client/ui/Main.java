@@ -15,6 +15,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.FileHandler;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
@@ -31,6 +32,7 @@ import ma.myway.client.network.Client;
 import ma.myway.client.ui.model.SceneName;
 import ma.myway.client.ui.view.UIBase;
 import ma.myway.client.ui.view.UILogging;
+import ma.myway.graph.data.Agency;
 
 public class Main extends Application {
 
@@ -93,6 +95,7 @@ public class Main extends Application {
 
 		client = new Client("127.0.0.1", 9325);
 		launch(args);
+		
 
 	}
 

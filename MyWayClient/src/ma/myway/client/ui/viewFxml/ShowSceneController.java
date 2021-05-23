@@ -2,10 +2,12 @@ package ma.myway.client.ui.viewFxml;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Set;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import ma.myway.client.network.Client;
 import ma.myway.client.ui.Main;
@@ -154,6 +156,21 @@ public class ShowSceneController {
 
 	@FXML
 	private javafx.scene.control.TextField agencyPhoneField;
+	
+	@FXML
+	private javafx.scene.control.TableView agencyAllTable;
+	
+	@FXML
+	private javafx.scene.control.TableColumn agencyIdColumn;
+	
+	@FXML
+	private javafx.scene.control.TableColumn agencyNameColumn;
+	
+	@FXML
+	private javafx.scene.control.TableColumn agencyURLColumn;
+	
+	@FXML
+	private javafx.scene.control.TableColumn agencyTimeZoneColumn;
 
 	@FXML
 	private void confirmAjoutAgency() {
@@ -192,6 +209,19 @@ public class ShowSceneController {
 			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
 			alert.show();
 		}
+	}
+	
+	@FXML
+	private void confirmShowAgency() {
+		Set<Agency> allAgency = Client.showAgency();
+//		agencyIdColumn.setCellValueFactory(new PropertyValueFactory("id"));
+//		agencyNameColumn.setCellValueFactory(new PropertyValueFactory("Name"));
+//		agencyURLColumn.setCellValueFactory(new PropertyValueFactory("URL"));
+//		agencyTimeZoneColumn.setCellValueFactory(new PropertyValueFactory("String"));
+		
+		System.out.println(allAgency);
+//		agencyAllTable.setItems(null);
+//		agencyAllTable.getItems().addAll(allAgency);
 	}
 
 	// gestion User
