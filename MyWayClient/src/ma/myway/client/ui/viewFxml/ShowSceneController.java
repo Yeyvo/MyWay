@@ -131,18 +131,32 @@ public class ShowSceneController {
 	}
 
 	@FXML
-	private javafx.scene.control.Button btnConfirAjoutAgency;
-
-
+	private javafx.scene.control.TextField agencyIdField;
+	
 	@FXML
-	private javafx.scene.control.Button btnConfirModifAgency;
-
+	private javafx.scene.control.TextField agencyNameField;
+	
 	@FXML
-	private javafx.scene.control.Button btnConfirSupprAgency;
-
+	private javafx.scene.control.TextField agencyTimeZoneField;
+	
 	@FXML
-	private javafx.scene.control.Button btnLoadAgencyData;
-
+	private javafx.scene.control.TextField agencyLangageField;
+	
+	@FXML
+	private javafx.scene.control.TextField agencyURLField;
+	
+	@FXML
+	private javafx.scene.control.TextField agencyPhoneField;
+	
+	@FXML
+	private void confirmAjoutAgency() {
+		String agencyId = agencyIdField.getText();
+		String agencyName = agencyNameField.getText();
+		String agencyTimeZone = agencyTimeZoneField.getText();
+		String agencyLangage = agencyLangageField.getText();
+		String agencyURL = agencyURLField.getText();
+		String agencyPhone = agencyPhoneField.getText();
+	}
 
 	/*
 	 * @FXML private void initialize() {

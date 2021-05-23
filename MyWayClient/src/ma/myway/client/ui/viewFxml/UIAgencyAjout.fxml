@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="332.0" prefWidth="677.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="332.0" prefWidth="677.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ma.myway.client.ui.viewFxml.ShowSceneController">
    <children>
       <Label layoutX="242.0" layoutY="56.0" styleClass="desc" text="Ajout d'information : AGENCY">
          <font>
@@ -18,38 +18,38 @@
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="132.0" layoutY="105.0" />
+      <TextField fx:id="agencyIdField" layoutX="132.0" layoutY="105.0" />
       <Label layoutX="34.0" layoutY="157.0" text="Agency Name">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="132.0" layoutY="153.0" />
+      <TextField fx:id="agencyNameField" layoutX="132.0" layoutY="153.0" />
       <Label layoutX="34.0" layoutY="200.0" text="Agency URL">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="132.0" layoutY="196.0" />
+      <TextField fx:id="agencyURLField" layoutX="132.0" layoutY="196.0" />
       <Label layoutX="362.0" layoutY="109.0" text="Agency TimeZone">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="490.0" layoutY="105.0" />
+      <TextField fx:id="agencyTimeZoneField" layoutX="490.0" layoutY="105.0" />
       <Label layoutX="362.0" layoutY="157.0" text="Agency Langage">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="490.0" layoutY="153.0" />
+      <TextField fx:id="agencyLangageField" layoutX="490.0" layoutY="153.0" />
       <Label layoutX="362.0" layoutY="200.0" text="Agency Phone">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="490.0" layoutY="196.0" />
-      <Button fx:id="btnConfirAjoutAgency" layoutX="193.0" layoutY="261.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0" styleClass="btncenter" text="Confirmer" />
+      <TextField fx:id="agencyPhoneField" layoutX="490.0" layoutY="196.0" />
+      <Button layoutX="193.0" layoutY="261.0" mnemonicParsing="false" onAction="#confirmAjoutAgency" prefHeight="25.0" prefWidth="91.0" styleClass="btncenter" text="Confirmer" />
       <Button fx:id="ClearAjoutAgency" layoutX="376.0" layoutY="261.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0" styleClass="btncenter" text="Clear" />
    </children>
 </Pane>
