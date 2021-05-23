@@ -1,7 +1,10 @@
 package ma.myway.client.ui.viewFxml;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.Set;
 
 import javafx.fxml.FXML;
@@ -13,6 +16,7 @@ import ma.myway.client.network.Client;
 import ma.myway.client.ui.Main;
 import ma.myway.graph.data.Agency;
 import ma.myway.graph.data.Stop;
+import ma.myway.graph.data.Stop_Trip;
 import ma.myway.graph.data.Transfert;
 
 public class ShowSceneController {
@@ -156,19 +160,19 @@ public class ShowSceneController {
 
 	@FXML
 	private javafx.scene.control.TextField agencyPhoneField;
-	
+
 	@FXML
 	private javafx.scene.control.TableView agencyAllTable;
-	
+
 	@FXML
 	private javafx.scene.control.TableColumn agencyIdColumn;
-	
+
 	@FXML
 	private javafx.scene.control.TableColumn agencyNameColumn;
-	
+
 	@FXML
 	private javafx.scene.control.TableColumn agencyURLColumn;
-	
+
 	@FXML
 	private javafx.scene.control.TableColumn agencyTimeZoneColumn;
 
@@ -181,7 +185,7 @@ public class ShowSceneController {
 		String agencyURL = agencyURLField.getText();
 //		String agencyPhone = agencyPhoneField.getText();
 		Agency agency = new Agency(agencyId, agencyName, agencyTimeZone, agencyURL);
-		if(!Client.addAgency(agency)) {
+		if (!Client.addAgency(agency)) {
 			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
 			alert.show();
 		}
@@ -196,7 +200,7 @@ public class ShowSceneController {
 		String agencyURL = agencyURLField.getText();
 //		String agencyPhone = agencyPhoneField.getText();
 		Agency agency = new Agency(agencyId, agencyName, agencyTimeZone, agencyURL);
-		if(!Client.editAgency(agency)) {
+		if (!Client.editAgency(agency)) {
 			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
 			alert.show();
 		}
@@ -205,12 +209,12 @@ public class ShowSceneController {
 	@FXML
 	private void confirmSupprAgency() {
 		String agencyId = agencyIdField.getText();
-		if(!Client.removeAgency(new Agency(agencyId,"","",""))) {
+		if (!Client.removeAgency(new Agency(agencyId, "", "", ""))) {
 			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
 			alert.show();
 		}
 	}
-	
+
 	@FXML
 	private void confirmShowAgency() {
 		Set<Agency> data = Client.showAgency();
@@ -218,7 +222,9 @@ public class ShowSceneController {
 		agencyNameColumn.setCellValueFactory(new PropertyValueFactory("agency_name"));
 		agencyURLColumn.setCellValueFactory(new PropertyValueFactory("agency_url"));
 		agencyTimeZoneColumn.setCellValueFactory(new PropertyValueFactory("agency_timezone"));
-		
+
+//		System.out.println(allAgency);
+//		agencyAllTable.setItems(null);
 		agencyAllTable.getItems().addAll(data);
 	}
 
@@ -334,13 +340,13 @@ public class ShowSceneController {
 		String stopLatitudeString = stopLatitudeField.getText();
 		String locationTypeString = locationTypeField.getText();
 		String parentStation = parentStationField.getText();
-		
+
 		double stopLongitude = Double.parseDouble(stopLongitudeString);
 		double stopLatitude = Double.parseDouble(stopLatitudeString);
 		int locationType = Integer.parseInt(locationTypeString);
-		
-		Stop stop = new Stop(stopId,stopName, stopDescription, stopLatitude, stopLongitude, locationType);
-		if(!Client.addStops(stop)) {
+
+		Stop stop = new Stop(stopId, stopName, stopDescription, stopLatitude, stopLongitude, locationType);
+		if (!Client.addStops(stop)) {
 			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
 			alert.show();
 		}
@@ -356,13 +362,13 @@ public class ShowSceneController {
 		String stopLatitudeString = stopLatitudeField.getText();
 		String locationTypeString = locationTypeField.getText();
 		String parentStation = parentStationField.getText();
-		
+
 		double stopLongitude = Double.parseDouble(stopLongitudeString);
 		double stopLatitude = Double.parseDouble(stopLatitudeString);
 		int locationType = Integer.parseInt(locationTypeString);
-		
-		Stop stop = new Stop(stopId,stopName, stopDescription, stopLatitude, stopLongitude, locationType);
-		if(!Client.editStops(stop)) {
+
+		Stop stop = new Stop(stopId, stopName, stopDescription, stopLatitude, stopLongitude, locationType);
+		if (!Client.editStops(stop)) {
 			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
 			alert.show();
 		}
@@ -378,13 +384,13 @@ public class ShowSceneController {
 		String stopLatitudeString = stopLatitudeField.getText();
 		String locationTypeString = locationTypeField.getText();
 		String parentStation = parentStationField.getText();
-		
+
 		double stopLongitude = Double.parseDouble(stopLongitudeString);
 		double stopLatitude = Double.parseDouble(stopLatitudeString);
 		int locationType = Integer.parseInt(locationTypeString);
-		
-		Stop stop = new Stop(stopId,stopName, stopDescription, stopLatitude, stopLongitude, locationType);
-		if(!Client.removeStops(stop)) {
+
+		Stop stop = new Stop(stopId, stopName, stopDescription, stopLatitude, stopLongitude, locationType);
+		if (!Client.removeStops(stop)) {
 			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
 			alert.show();
 		}
@@ -414,33 +420,101 @@ public class ShowSceneController {
 	private void confirmAjoutStopTimes() {
 		String stopId = stopIdField.getText();
 		String tripId = tripIdField.getText();
-		LocalDate arrivalTime = arrivalTimeField.getValue();
-		LocalDate departureTime = departureTimeField.getValue();
-		String stopSequence = stopSequenceField.getText();
+		LocalDate arrivalTimeLocal = arrivalTimeField.getValue();
+		LocalDate departureTimeLocal = departureTimeField.getValue();
+		String stopSequenceString = stopSequenceField.getText();
 		String stopHeadsign = stopHeadsignField.getText();
 		String shapeDistanceTravelled = shapeDistanceTravelledField.getText();
+		Instant instant = Instant.from(arrivalTimeLocal.atStartOfDay(ZoneId.systemDefault()));
+		Date date = Date.from(instant);
+		Date arrivalTime = date;
+		instant = Instant.from(departureTimeLocal.atStartOfDay(ZoneId.systemDefault()));
+		date = Date.from(instant);
+		Date departureTime = date;
+		int stopSequence = Integer.parseInt(stopSequenceString);
+		Stop_Trip stpt = new Stop_Trip(tripId, stopId, arrivalTime, departureTime, stopSequence);
+		if (!Client.addStopTimes(stpt)) {
+			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
+			alert.show();
+		}
 	}
 
 	@FXML
 	private void confirmModifStopTimes() {
 		String stopId = stopIdField.getText();
 		String tripId = tripIdField.getText();
-		LocalDate arrivalTime = arrivalTimeField.getValue();
-		LocalDate departureTime = departureTimeField.getValue();
-		String stopSequence = stopSequenceField.getText();
+		LocalDate arrivalTimeLocal = arrivalTimeField.getValue();
+		LocalDate departureTimeLocal = departureTimeField.getValue();
+		String stopSequenceString = stopSequenceField.getText();
 		String stopHeadsign = stopHeadsignField.getText();
 		String shapeDistanceTravelled = shapeDistanceTravelledField.getText();
+		Instant instant = Instant.from(arrivalTimeLocal.atStartOfDay(ZoneId.systemDefault()));
+		Date date = Date.from(instant);
+		Date arrivalTime = date;
+		instant = Instant.from(departureTimeLocal.atStartOfDay(ZoneId.systemDefault()));
+		date = Date.from(instant);
+		Date departureTime = date;
+		int stopSequence = Integer.parseInt(stopSequenceString);
+		Stop_Trip stpt = new Stop_Trip(tripId, stopId, arrivalTime, departureTime, stopSequence);
+		if (!Client.editStopTimes(stpt)) {
+			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
+			alert.show();
+		}
 	}
 
 	@FXML
 	private void confirmSupprStopTimes() {
 		String stopId = stopIdField.getText();
 		String tripId = tripIdField.getText();
-		LocalDate arrivalTime = arrivalTimeField.getValue();
-		LocalDate departureTime = departureTimeField.getValue();
-		String stopSequence = stopSequenceField.getText();
+		LocalDate arrivalTimeLocal = arrivalTimeField.getValue();
+		LocalDate departureTimeLocal = departureTimeField.getValue();
+		String stopSequenceString = stopSequenceField.getText();
 		String stopHeadsign = stopHeadsignField.getText();
 		String shapeDistanceTravelled = shapeDistanceTravelledField.getText();
+		Instant instant = Instant.from(arrivalTimeLocal.atStartOfDay(ZoneId.systemDefault()));
+		Date date = Date.from(instant);
+		Date arrivalTime = date;
+		instant = Instant.from(departureTimeLocal.atStartOfDay(ZoneId.systemDefault()));
+		date = Date.from(instant);
+		Date departureTime = date;
+		int stopSequence = Integer.parseInt(stopSequenceString);
+		Stop_Trip stpt = new Stop_Trip(tripId, stopId, arrivalTime, departureTime, stopSequence);
+		if (!Client.removeStopTimes(stpt)) {
+			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
+			alert.show();
+		}
+	}
+
+	@FXML
+	private javafx.scene.control.TableView stopTimesAllTable;
+
+	@FXML
+	private javafx.scene.control.TableColumn stopTimesTripIdColumn;
+
+	@FXML
+	private javafx.scene.control.TableColumn stopTimesDepartureTimeColumn;
+
+	@FXML
+	private javafx.scene.control.TableColumn stopTimesArrivalTimeColumn;
+
+	@FXML
+	private javafx.scene.control.TableColumn stopTimesStopIdColumn;
+
+	@FXML
+	private javafx.scene.control.TableColumn stopTimesSequenceColumn;
+
+	@FXML
+	private void confirmShowStopTimes() {
+		Set<Stop_Trip> data = Client.showStopTimes();
+		stopTimesTripIdColumn.setCellValueFactory(new PropertyValueFactory("trip_id"));
+		stopTimesDepartureTimeColumn.setCellValueFactory(new PropertyValueFactory("departure_time"));
+		stopTimesArrivalTimeColumn.setCellValueFactory(new PropertyValueFactory("arrival_time"));
+		stopTimesStopIdColumn.setCellValueFactory(new PropertyValueFactory("stop_id"));
+		stopTimesSequenceColumn.setCellValueFactory(new PropertyValueFactory("stop_sequence"));
+
+//		System.out.println(allAgency);
+//		agencyAllTable.setItems(null);
+		stopTimesAllTable.getItems().addAll(data);
 	}
 
 	// gestion Transfers
@@ -460,11 +534,11 @@ public class ShowSceneController {
 	private void confirmAjoutTransfers() {
 		String fromStopId = fromStopIdField.getText();
 		String toStopId = toStopIdField.getText();
-		int transferType = (int)transferTypeField.getValue();
+		int transferType = (int) transferTypeField.getValue();
 		String minTransferTimeString = minTransferTimeField.getText();
 		int minTransferTime = Integer.parseInt(minTransferTimeString);
 		Transfert trans = new Transfert(fromStopId, toStopId, transferType, minTransferTime);
-		if(!Client.addTransfers(trans)) {
+		if (!Client.addTransfers(trans)) {
 			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
 			alert.show();
 		}
@@ -474,11 +548,11 @@ public class ShowSceneController {
 	private void confirmModifTransfers() {
 		String fromStopId = fromStopIdField.getText();
 		String toStopId = toStopIdField.getText();
-		int transferType = (int)transferTypeField.getValue();
+		int transferType = (int) transferTypeField.getValue();
 		String minTransferTimeString = minTransferTimeField.getText();
 		int minTransferTime = Integer.parseInt(minTransferTimeString);
 		Transfert trans = new Transfert(fromStopId, toStopId, transferType, minTransferTime);
-		if(!Client.editTransfers(trans)) {
+		if (!Client.editTransfers(trans)) {
 			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
 			alert.show();
 		}
@@ -488,11 +562,11 @@ public class ShowSceneController {
 	private void confirmSupprTransfers() {
 		String fromStopId = fromStopIdField.getText();
 		String toStopId = toStopIdField.getText();
-		int transferType = (int)transferTypeField.getValue();
+		int transferType = (int) transferTypeField.getValue();
 		String minTransferTimeString = minTransferTimeField.getText();
 		int minTransferTime = Integer.parseInt(minTransferTimeString);
 		Transfert trans = new Transfert(fromStopId, toStopId, transferType, minTransferTime);
-		if(!Client.removeTransfers(trans)) {
+		if (!Client.removeTransfers(trans)) {
 			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
 			alert.show();
 		}
@@ -582,37 +656,37 @@ public class ShowSceneController {
 		LocalDate startDate = startDateField.getValue();
 		LocalDate endDate = endDateField.getValue();
 		int monday, tuesday, wednesday, thursday, friday, saturday, sunday;
-		if(mondayBox.isSelected())
+		if (mondayBox.isSelected())
 			monday = 1;
 		else
 			monday = 0;
-		
-		if(tuesdayBox.isSelected())
+
+		if (tuesdayBox.isSelected())
 			tuesday = 1;
 		else
 			tuesday = 0;
-		
-		if(wednesdayBox.isSelected())
+
+		if (wednesdayBox.isSelected())
 			wednesday = 1;
 		else
 			wednesday = 0;
-		
-		if(thursdayBox.isSelected())
+
+		if (thursdayBox.isSelected())
 			thursday = 1;
 		else
 			thursday = 0;
-		
-		if(fridayBox.isSelected())
+
+		if (fridayBox.isSelected())
 			friday = 1;
 		else
 			friday = 0;
-		
-		if(saturdayBox.isSelected())
+
+		if (saturdayBox.isSelected())
 			saturday = 1;
 		else
 			saturday = 0;
-		
-		if(sundayBox.isSelected())
+
+		if (sundayBox.isSelected())
 			sunday = 1;
 		else
 			sunday = 0;
@@ -625,37 +699,37 @@ public class ShowSceneController {
 		LocalDate startDate = startDateField.getValue();
 		LocalDate endDate = endDateField.getValue();
 		int monday, tuesday, wednesday, thursday, friday, saturday, sunday;
-		if(mondayBox.isSelected())
+		if (mondayBox.isSelected())
 			monday = 1;
 		else
 			monday = 0;
-		
-		if(tuesdayBox.isSelected())
+
+		if (tuesdayBox.isSelected())
 			tuesday = 1;
 		else
 			tuesday = 0;
-		
-		if(wednesdayBox.isSelected())
+
+		if (wednesdayBox.isSelected())
 			wednesday = 1;
 		else
 			wednesday = 0;
-		
-		if(thursdayBox.isSelected())
+
+		if (thursdayBox.isSelected())
 			thursday = 1;
 		else
 			thursday = 0;
-		
-		if(fridayBox.isSelected())
+
+		if (fridayBox.isSelected())
 			friday = 1;
 		else
 			friday = 0;
-		
-		if(saturdayBox.isSelected())
+
+		if (saturdayBox.isSelected())
 			saturday = 1;
 		else
 			saturday = 0;
-		
-		if(sundayBox.isSelected())
+
+		if (sundayBox.isSelected())
 			sunday = 1;
 		else
 			sunday = 0;

@@ -9,7 +9,6 @@ import java.io.StringReader;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -24,6 +23,7 @@ import javafx.scene.control.Alert.AlertType;
 import ma.myway.client.ui.Main;
 import ma.myway.graph.data.Agency;
 import ma.myway.graph.data.Stop;
+import ma.myway.graph.data.Stop_Trip;
 import ma.myway.graph.data.Transfert;
 
 public class Client {
@@ -221,7 +221,7 @@ public class Client {
 	public static Set<Stop> showStops() {
 		Set<Stop> lst = null;
 		try {
-			WRITE("showAgency");
+			WRITE("showStops");
 			lst = (Set<Stop>) READ();
 			return lst;
 
@@ -280,8 +280,112 @@ public class Client {
 	public static Set<Transfert> showTransfers() {
 		Set<Transfert> lst = null;
 		try {
-			WRITE("showAgency");
+			WRITE("showTransfert");
 			lst = (Set<Transfert>) READ();
+			return lst;
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return lst;
+	}
+	
+	/* StopTrip / StopTimes */
+	public static boolean addStopTimes(Stop_Trip stoptrip) {
+
+		try {
+			WRITE("addStopTimes");
+			objectOutputStream.writeObject(stoptrip);
+
+			return (boolean) READ();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+
+	public static boolean editStopTimes(Stop_Trip stoptrip) {
+
+		try {
+			WRITE("editStopTimes");
+			objectOutputStream.writeObject(stoptrip);
+
+			return (boolean) READ();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+
+	public static boolean removeStopTimes(Stop_Trip stoptrip) {
+
+		try {
+			WRITE("removeStopTimes");
+
+			return (boolean) READ();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+	
+	/* Calendar / Services */
+	public static boolean addCalendar(Stop_Trip stoptrip) {
+
+		try {
+			WRITE("addStopTimes");
+			objectOutputStream.writeObject(stoptrip);
+
+			return (boolean) READ();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+
+	public static boolean editCalendar(Stop_Trip stoptrip) {
+
+		try {
+			WRITE("editStopTimes");
+			objectOutputStream.writeObject(stoptrip);
+
+			return (boolean) READ();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+
+	public static boolean removeCalendar(Stop_Trip stoptrip) {
+
+		try {
+			WRITE("removeStopTimes");
+
+			return (boolean) READ();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+
+	public static Set<Stop_Trip> showStopTimes() {
+		Set<Stop_Trip> lst = null;
+		try {
+			WRITE("showStopTimes");
+			lst = (Set<Stop_Trip>) READ();
 			return lst;
 
 		} catch (IOException e) {
