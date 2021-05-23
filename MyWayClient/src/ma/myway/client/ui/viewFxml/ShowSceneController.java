@@ -217,7 +217,238 @@ public class ShowSceneController {
 	}
 	
 	//gestion Routes
-
+	@FXML
+	private javafx.scene.control.TextField routesIdField;
+	
+	@FXML
+	private javafx.scene.control.TextField routesShortNameField;
+	
+	@FXML
+	private javafx.scene.control.TextField routesLongNameField;
+	
+	@FXML
+	private javafx.scene.control.TextField routesDescriptionField;
+	
+	@FXML
+	private javafx.scene.control.TextField routesTypeField;
+	
+	@FXML
+	private void confirmAjoutRoutes() {
+		String agencyId = agencyIdField.getText();
+		String routesId = routesIdField.getText();
+		String routesShortName = routesShortNameField.getText();
+		String routesLongName = routesLongNameField.getText();
+		String routesDescription = routesDescriptionField.getText();
+		String routesType = routesTypeField.getText();
+	}
+	
+	@FXML
+	private void confirmModifRoutes() {
+		String agencyId = agencyIdField.getText();
+		String routesId = routesIdField.getText();
+		String routesShortName = routesShortNameField.getText();
+		String routesLongName = routesLongNameField.getText();
+		String routesDescription = routesDescriptionField.getText();
+		String routesType = routesTypeField.getText();
+	}
+	
+	@FXML
+	private void confirmSupprRoutes() {
+		String routesId = routesIdField.getText();
+	}
+	
+	//gestion stops
+	
+	@FXML
+	private javafx.scene.control.TextField stopIdField;
+	
+	@FXML
+	private javafx.scene.control.TextField stopCodeField;
+	
+	@FXML
+	private javafx.scene.control.TextField stopNameField;
+	
+	@FXML
+	private javafx.scene.control.TextField stopDescriptionField;
+	
+	@FXML
+	private javafx.scene.control.TextField stopLongitudeField;
+	
+	@FXML
+	private javafx.scene.control.TextField stopLatitudeField;
+	
+	@FXML
+	private javafx.scene.control.TextField locationTypeField;
+	
+	@FXML
+	private javafx.scene.control.TextField parentStationField;
+	
+	@FXML
+	private void confirmAjoutStops() {
+		String stopId = stopIdField.getText();
+		String stopCode = stopCodeField.getText();
+		String stopName = stopNameField.getText();
+		String stopDescription = stopDescriptionField.getText();
+		String stopLongitude = stopLongitudeField.getText();
+		String stopLatitude= stopLatitudeField.getText();
+		String locationType = locationTypeField.getText();
+		String parentStation = parentStationField.getText();
+	}
+	
+	@FXML
+	private void confirmModifStops() {
+		String stopId = stopIdField.getText();
+		String stopCode = stopCodeField.getText();
+		String stopName = stopNameField.getText();
+		String stopDescription = stopDescriptionField.getText();
+		String stopLongitude = stopLongitudeField.getText();
+		String stopLatitude= stopLatitudeField.getText();
+		String locationType = locationTypeField.getText();
+		String parentStation = parentStationField.getText();
+	}
+	
+	@FXML
+	private void confirmSupprStops() {
+		String stopId = stopIdField.getText();
+		String stopCode = stopCodeField.getText();
+		String stopName = stopNameField.getText();
+		String stopDescription = stopDescriptionField.getText();
+		String stopLongitude = stopLongitudeField.getText();
+		String stopLatitude= stopLatitudeField.getText();
+		String locationType = locationTypeField.getText();
+		String parentStation = parentStationField.getText();
+	}
+	
+	//gestion StopTimes
+	
+	@FXML
+	private javafx.scene.control.TextField tripIdField;
+	
+	@FXML
+	private javafx.scene.control.TextField arrivalTimeField;
+	
+	@FXML
+	private javafx.scene.control.TextField departureTimeField;
+	
+	@FXML
+	private javafx.scene.control.TextField stopSequenceField;
+	
+	@FXML
+	private javafx.scene.control.TextField stopHeadsignField;
+	
+	@FXML
+	private javafx.scene.control.TextField shapeDistanceTravelledField;
+	
+	
+	@FXML
+	private void confirmAjoutStopTimes() {
+		String stopId = stopIdField.getText();
+		String tripId = tripIdField.getText();
+		String arrivalTime = arrivalTimeField.getText();
+		String departureTime = departureTimeField.getText();
+		String stopSequence = stopSequenceField.getText();
+		String stopHeadsign= stopHeadsignField.getText();
+		String shapeDistanceTravelled = shapeDistanceTravelledField.getText();
+	}
+	
+	@FXML
+	private void confirmModifStopTimes() {
+		String stopId = stopIdField.getText();
+		String tripId = tripIdField.getText();
+		String arrivalTime = arrivalTimeField.getText();
+		String departureTime = departureTimeField.getText();
+		String stopSequence = stopSequenceField.getText();
+		String stopHeadsign= stopHeadsignField.getText();
+		String shapeDistanceTravelled = shapeDistanceTravelledField.getText();
+	}
+	
+	@FXML
+	private void confirmSupprStopTimes() {
+		String stopId = stopIdField.getText();
+		String tripId = tripIdField.getText();
+		String arrivalTime = arrivalTimeField.getText();
+		String departureTime = departureTimeField.getText();
+		String stopSequence = stopSequenceField.getText();
+		String stopHeadsign= stopHeadsignField.getText();
+		String shapeDistanceTravelled = shapeDistanceTravelledField.getText();
+	}
+	
+	//gestion Transfers
+	@FXML
+	private javafx.scene.control.TextField fromStopIdField;
+	
+	@FXML
+	private javafx.scene.control.TextField toStopIdField;
+	
+	@FXML
+	private javafx.scene.control.TextField transferTypeField;
+	
+	@FXML
+	private javafx.scene.control.TextField minTransferTimeField;
+	
+	
+	@FXML
+	private void confirmAjoutTransfers() {
+		String fromStopId = fromStopIdField.getText();
+		String toStopId = toStopIdField.getText();
+		String transferType = transferTypeField.getText();
+		String minTransferTime = minTransferTimeField.getText();
+	}
+	
+	@FXML
+	private void confirmModifTransfers() {
+		String fromStopId = fromStopIdField.getText();
+		String toStopId = toStopIdField.getText();
+		String transferType = transferTypeField.getText();
+		String minTransferTime = minTransferTimeField.getText();
+	}
+	
+	@FXML
+	private void confirmSupprTransfers() {
+		String fromStopId = fromStopIdField.getText();
+		String toStopId = toStopIdField.getText();
+		String transferType = transferTypeField.getText();
+		String minTransferTime = minTransferTimeField.getText();
+	}
+	
+	//gestion Trips
+	@FXML
+	private javafx.scene.control.TextField serviceIdField;
+	
+	@FXML
+	private javafx.scene.control.TextField directionIdField;
+	
+	@FXML
+	private javafx.scene.control.TextField shapeIdField;
+	
+	@FXML
+	private javafx.scene.control.TextField tripShortNameField;
+	
+	
+	@FXML
+	private void confirmAjoutTrips() {
+		String fromStopId = fromStopIdField.getText();
+		String toStopId = toStopIdField.getText();
+		String transferType = transferTypeField.getText();
+		String minTransferTime = minTransferTimeField.getText();
+	}
+	
+	@FXML
+	private void confirmModifTrips() {
+		String fromStopId = fromStopIdField.getText();
+		String toStopId = toStopIdField.getText();
+		String transferType = transferTypeField.getText();
+		String minTransferTime = minTransferTimeField.getText();
+	}
+	
+	@FXML
+	private void confirmSupprTrips() {
+		String fromStopId = fromStopIdField.getText();
+		String toStopId = toStopIdField.getText();
+		String transferType = transferTypeField.getText();
+		String minTransferTime = minTransferTimeField.getText();
+	}
+	
 	/*
 	 * @FXML private void initialize() {
 	 * OptionBox.setValue("Choisissez une option"); OptionBox.setItems(OptionList);
