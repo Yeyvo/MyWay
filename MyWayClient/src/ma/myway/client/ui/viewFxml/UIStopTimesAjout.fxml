@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="382.0" prefWidth="745.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="382.0" prefWidth="745.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ma.myway.client.ui.viewFxml.ShowSceneController">
    <children>
       <Label layoutX="266.0" layoutY="60.0" styleClass="desc" text="Ajout d'information : Stop Times">
          <font>
@@ -19,7 +19,7 @@
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="149.0" layoutY="119.0" />
+      <TextField fx:id="tripIdField" layoutX="149.0" layoutY="119.0" />
       <Label layoutX="24.0" layoutY="176.0" text="Arrival Time">
          <font>
             <Font name="Arial Black" size="12.0" />
@@ -30,13 +30,13 @@
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="149.0" layoutY="224.0" />
+      <TextField fx:id="stopSequenceField" layoutX="149.0" layoutY="224.0" />
       <Label layoutX="388.0" layoutY="124.0" text="Stop Id">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="509.0" layoutY="119.0" />
+      <TextField fx:id="stopIdField" layoutX="509.0" layoutY="119.0" />
       <Label layoutX="386.0" layoutY="176.0" text="Departure Time">
          <font>
             <Font name="Arial Black" size="12.0" />
@@ -47,16 +47,16 @@
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="511.0" layoutY="220.0" />
+      <TextField fx:id="stopHeadsignField" layoutX="511.0" layoutY="220.0" />
       <Label layoutX="176.0" layoutY="273.0" prefHeight="17.0" prefWidth="174.0" text="Shape Distance Traveled">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="373.0" layoutY="269.0" />
-      <Button layoutX="196.0" layoutY="325.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="95.0" styleClass="btncenter" text="Confirmer" />
+      <TextField fx:id="shapeDistanceTravelledField" layoutX="373.0" layoutY="269.0" />
+      <Button layoutX="196.0" layoutY="325.0" mnemonicParsing="false" onAction="#confirmAjoutStopTimes" prefHeight="25.0" prefWidth="95.0" styleClass="btncenter" text="Confirmer" />
       <Button layoutX="446.0" layoutY="325.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="102.0" styleClass="btncenter" text="Clear" />
-      <DatePicker layoutX="149.0" layoutY="172.0" prefHeight="25.0" prefWidth="149.0" />
-      <DatePicker layoutX="511.0" layoutY="172.0" prefHeight="25.0" prefWidth="149.0" />
+      <DatePicker fx:id="arrivalTimeField" layoutX="149.0" layoutY="172.0" prefHeight="25.0" prefWidth="149.0" />
+      <DatePicker fx:id="departureTimeField" layoutX="511.0" layoutY="172.0" prefHeight="25.0" prefWidth="149.0" />
    </children>
 </Pane>

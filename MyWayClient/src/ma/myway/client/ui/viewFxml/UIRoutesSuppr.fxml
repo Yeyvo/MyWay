@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="301.0" prefWidth="630.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="301.0" prefWidth="630.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ma.myway.client.ui.viewFxml.ShowSceneController">
    <children>
       <Label layoutX="207.0" layoutY="29.0" styleClass="desc" text="Suppression d'information : ROUTES">
          <font>
@@ -18,8 +18,8 @@
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="139.0" layoutY="85.0" />
-      <Button layoutX="213.0" layoutY="254.0" mnemonicParsing="false" styleClass="btncenter" text="Confirmer" />
+      <TextField fx:id="routesIdField" layoutX="139.0" layoutY="85.0" />
+      <Button layoutX="213.0" layoutY="254.0" mnemonicParsing="false" onAction="#confirmSupprRoutes" styleClass="btncenter" text="Confirmer" />
       <Button layoutX="357.0" layoutY="254.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="69.0" styleClass="btncenter" text="Clear" />
    </children>
 </Pane>

@@ -6,9 +6,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="391.0" prefWidth="706.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="391.0" prefWidth="706.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ma.myway.client.ui.viewFxml.ShowSceneController">
    <children>
-      <Label layoutX="262.0" layoutY="62.0" text="Ajout d'information : STOPS" styleClass="desc">
+      <Label layoutX="262.0" layoutY="62.0" styleClass="desc" text="Ajout d'information : STOPS">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
@@ -18,50 +18,50 @@
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="144.0" layoutY="135.0" />
+      <TextField fx:id="stopIdField" layoutX="144.0" layoutY="135.0" />
       <Label layoutX="43.0" layoutY="177.0" text="Stop Name">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="144.0" layoutY="173.0" />
+      <TextField fx:id="stopNameField" layoutX="144.0" layoutY="173.0" />
       <Label layoutX="44.0" layoutY="219.0" prefHeight="17.0" prefWidth="109.0" text="Stop longitude">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="144.0" layoutY="215.0" />
+      <TextField fx:id="stopLongitudeField" layoutX="144.0" layoutY="215.0" />
       <Label layoutX="381.0" layoutY="139.0" text="Stop Code">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="496.0" layoutY="135.0" />
+      <TextField fx:id="stopCodeField" layoutX="496.0" layoutY="135.0" />
       <Label layoutX="381.0" layoutY="177.0" text="Stop Description">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="496.0" layoutY="173.0" />
+      <TextField fx:id="stopDescriptionField" layoutX="496.0" layoutY="173.0" />
       <Label layoutX="381.0" layoutY="219.0" text="Stop Latitude">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="496.0" layoutY="215.0" />
+      <TextField fx:id="stopLatitudeField" layoutX="496.0" layoutY="215.0" />
       <Label layoutX="44.0" layoutY="261.0" prefHeight="17.0" prefWidth="109.0" text="Location Type">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="144.0" layoutY="257.0" />
+      <TextField fx:id="locationTypeField" layoutX="144.0" layoutY="257.0" />
       <Label layoutX="382.0" layoutY="261.0" text="Parent Station">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="495.0" layoutY="257.0" />
-      <Button layoutX="165.0" layoutY="319.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="109.0" styleClass="btncenter" text="Confirmer" />
+      <TextField fx:id="parentStationField" layoutX="495.0" layoutY="257.0" />
+      <Button layoutX="165.0" layoutY="319.0" mnemonicParsing="false" onAction="#confirmAjoutStops" prefHeight="25.0" prefWidth="109.0" styleClass="btncenter" text="Confirmer" />
       <Button layoutX="434.0" layoutY="319.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="109.0" styleClass="btncenter" text="Clear" />
    </children>
 </Pane>

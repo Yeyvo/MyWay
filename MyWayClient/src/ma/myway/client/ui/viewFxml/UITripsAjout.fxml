@@ -6,9 +6,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="361.0" prefWidth="673.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="361.0" prefWidth="673.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ma.myway.client.ui.viewFxml.ShowSceneController">
    <children>
-      <Label layoutX="250.0" layoutY="39.0" text="Ajout d'information : TRIPS" styleClass="desc">
+      <Label layoutX="250.0" layoutY="39.0" styleClass="desc" text="Ajout d'information : TRIPS">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
@@ -18,44 +18,44 @@
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="149.0" layoutY="106.0" />
+      <TextField fx:id="tripIdField" layoutX="149.0" layoutY="106.0" />
       <Label layoutX="57.0" layoutY="155.0" text="Route Id">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="149.0" layoutY="151.0" />
+      <TextField fx:id="routesIdField" layoutX="149.0" layoutY="151.0" />
       <Label layoutX="243.0" layoutY="200.0" prefHeight="17.0" prefWidth="92.0" text="Shape Id">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="339.0" layoutY="195.0" />
+      <TextField fx:id="shapeIdField" layoutX="339.0" layoutY="195.0" />
       <Label layoutX="380.0" layoutY="110.0" text="Service Id">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="487.0" layoutY="106.0" />
+      <TextField fx:id="serviceIdField" layoutX="487.0" layoutY="106.0" />
       <Label layoutX="380.0" layoutY="155.0" text="Direction Id">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="487.0" layoutY="151.0" />
+      <TextField fx:id="directionIdField" layoutX="487.0" layoutY="151.0" />
       <Label layoutX="364.0" layoutY="245.0" text="Trip Short Name">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="487.0" layoutY="241.0" />
+      <TextField fx:id="tripShortNameField" layoutX="487.0" layoutY="241.0" />
       <Label layoutX="40.0" layoutY="245.0" prefHeight="17.0" prefWidth="109.0" text="Trip HeadSign">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="149.0" layoutY="241.0" />
-      <Button layoutX="168.0" layoutY="308.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="86.0" styleClass="btncenter" text="Confirmer" />
+      <TextField fx:id="tripHeadSignField" layoutX="149.0" layoutY="241.0" />
+      <Button layoutX="168.0" layoutY="308.0" mnemonicParsing="false" onAction="#confirmAjoutTrips" prefHeight="25.0" prefWidth="86.0" styleClass="btncenter" text="Confirmer" />
       <Button layoutX="428.0" layoutY="308.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="86.0" styleClass="btncenter" text="Clear" />
    </children>
 </Pane>

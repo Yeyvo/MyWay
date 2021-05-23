@@ -6,14 +6,14 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="631.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="631.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ma.myway.client.ui.viewFxml.ShowSceneController">
    <children>
       <Label layoutX="86.0" layoutY="104.0" text="Service Id">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="168.0" layoutY="100.0" />
+      <TextField fx:id="serviceIdField" layoutX="168.0" layoutY="100.0" />
       <Label layoutX="187.0" layoutY="150.0" text="Exception Type">
          <font>
             <Font name="Arial Black" size="12.0" />
@@ -26,9 +26,9 @@
          </font>
       </Label>
       <TextField layoutX="402.0" layoutY="100.0" />
-      <Button layoutX="209.0" layoutY="190.0" mnemonicParsing="false" styleClass="btncenter" text="Confirmer" />
+      <Button layoutX="209.0" layoutY="190.0" mnemonicParsing="false" onAction="#confirmModifCalendarDates" styleClass="btncenter" text="Confirmer" />
       <Button layoutX="369.0" layoutY="190.0" mnemonicParsing="false" styleClass="btncenter" text="Clear" />
-      <Label layoutX="192.0" layoutY="28.0" text="Modification d'information : Calendar Dates"  styleClass="desc">
+      <Label layoutX="192.0" layoutY="28.0" styleClass="desc" text="Modification d'information : Calendar Dates">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>

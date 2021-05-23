@@ -6,9 +6,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="301.0" prefWidth="630.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="301.0" prefWidth="630.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ma.myway.client.ui.viewFxml.ShowSceneController">
    <children>
-      <Label layoutX="219.0" layoutY="31.0" text="Ajout d'information : ROUTES"  styleClass="desc">
+      <Label layoutX="219.0" layoutY="31.0" styleClass="desc" text="Ajout d'information : ROUTES">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
@@ -18,38 +18,38 @@
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="139.0" layoutY="85.0" />
+      <TextField fx:id="routesIdField" layoutX="139.0" layoutY="85.0" />
       <Label layoutX="14.0" layoutY="128.0" text="Route Short Name">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="139.0" layoutY="124.0" />
+      <TextField fx:id="routesShortNameField" layoutX="139.0" layoutY="124.0" />
       <Label layoutX="188.0" layoutY="171.0" prefHeight="17.0" prefWidth="120.0" text="Route Description">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="314.0" layoutY="167.0" />
+      <TextField fx:id="routesDescriptionField" layoutX="314.0" layoutY="167.0" />
       <Label layoutX="326.0" layoutY="89.0" text="Agency Id">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="449.0" layoutY="85.0" />
+      <TextField fx:id="agencyIdField" layoutX="449.0" layoutY="85.0" />
       <Label layoutX="326.0" layoutY="128.0" prefWidth="117.0" text="Route Long Name">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="449.0" layoutY="124.0" />
+      <TextField fx:id="routesLongNameField" layoutX="449.0" layoutY="124.0" />
       <Label layoutX="190.0" layoutY="210.0" text="Route Type">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="313.0" layoutY="206.0" />
-      <Button layoutX="213.0" layoutY="254.0" mnemonicParsing="false" styleClass="btncenter" text="Confirmer" />
+      <TextField fx:id="routesTypeField" layoutX="313.0" layoutY="206.0" />
+      <Button layoutX="213.0" layoutY="254.0" mnemonicParsing="false" onAction="#confirmAjoutRoutes" styleClass="btncenter" text="Confirmer" />
       <Button layoutX="357.0" layoutY="254.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="69.0" styleClass="btncenter" text="Clear" />
    </children>
 </Pane>

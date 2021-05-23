@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="242.0" prefWidth="696.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="242.0" prefWidth="696.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ma.myway.client.ui.viewFxml.ShowSceneController">
    <children>
       <Label layoutX="225.0" layoutY="41.0" styleClass="desc" text="Modification d'information : TRANSFERS">
          <font>
@@ -19,7 +19,7 @@
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="138.0" layoutY="95.0" />
+      <TextField fx:id="fromStopIdField" layoutX="138.0" layoutY="95.0" />
       <Label layoutX="24.0" layoutY="147.0" text="Transfer Type">
          <font>
             <Font name="Arial Black" size="12.0" />
@@ -30,15 +30,15 @@
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="507.0" layoutY="95.0" />
+      <TextField fx:id="toStopIdField" layoutX="507.0" layoutY="95.0" />
       <Label layoutX="373.0" layoutY="147.0" text="Min Transfer Time">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField layoutX="507.0" layoutY="143.0" />
-      <Button layoutX="196.0" layoutY="194.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0" styleClass="btncenter" text="Confirmer" />
+      <TextField fx:id="minTransferTimeField" layoutX="507.0" layoutY="143.0" />
+      <Button layoutX="196.0" layoutY="194.0" mnemonicParsing="false" onAction="#confirmModifTransfers" prefHeight="25.0" prefWidth="91.0" styleClass="btncenter" text="Confirmer" />
       <Button layoutX="416.0" layoutY="194.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0" styleClass="btncenter" text="Clear" />
-      <ChoiceBox layoutX="138.0" layoutY="143.0" prefHeight="25.0" prefWidth="149.0" />
+      <ChoiceBox fx:id="transferTypeField" layoutX="138.0" layoutY="143.0" prefHeight="25.0" prefWidth="149.0" />
    </children>
 </Pane>
