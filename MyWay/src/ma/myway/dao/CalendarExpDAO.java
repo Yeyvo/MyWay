@@ -6,10 +6,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import ma.myway.graph.data.CalendarExp;
+import ma.myway.graph.data.CalendarExpComp;
 
 public class CalendarExpDAO extends DAO<CalendarExp> {
 
@@ -17,9 +19,22 @@ public class CalendarExpDAO extends DAO<CalendarExp> {
 		super(conn);
 	}
 
-	@Override
-	@Deprecated
-	public boolean create(CalendarExp obj) {
+	public boolean create(String service_id, Date date,int exception_type) {
+		Statement stmt = null;
+		try {
+			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+			int result = stmt.executeUpdate("INSERT INTO calendar_dates VALUES('" + service_id + "','" + date + "','" + exception_type + "')");
+			System.out.println(result + " Row affected ! ");
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 		return false;
 	}
 
@@ -94,9 +109,41 @@ public class CalendarExpDAO extends DAO<CalendarExp> {
 		return (false);
 	}
 
+
+	public Set<CalendarExpComp> allSet() {
+		Set<CalendarExpComp> set_CalendarExp = new HashSet<>();
+		Statement stmt = null;
+		try {
+			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+			ResultSet result = stmt.executeQuery("SELECT * FROM calendar_dates");
+			while (result.next()) {
+				set_CalendarExp.add(new CalendarExpComp(result.getString(1), result.getDate(2), result.getInt(3)));
+			}
+			result.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return set_CalendarExp;
+	}
+
+	@Override
+	@Deprecated
+	public boolean create(CalendarExp obj) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 	@Override
 	@Deprecated
 	public Set<CalendarExp> all() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 }

@@ -5,10 +5,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import ma.myway.graph.data.CalendarExpComp;
 import ma.myway.graph.data.Service;
+import ma.myway.graph.data.ServiceComp;
 
 public class ServiceDAO extends DAO<Service> {
 
@@ -99,11 +102,28 @@ public class ServiceDAO extends DAO<Service> {
 		return false;
 	}
 
-	@Override
-	@Deprecated
-	public Set<Service> all() {
-		// TODO Auto-generated method stub
-		return null;
+	
+	public Set<ServiceComp> allSet() {
+		Set<ServiceComp> data = new HashSet<>();
+		Statement stmt = null;
+		try {
+			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+			ResultSet result = stmt.executeQuery("SELECT * FROM calendar_dates");
+			while (result.next()) {
+				data.add(new ServiceComp(result.getString(1), result.getInt(2), result.getInt(3), result.getInt(4), result.getInt(5), result.getInt(6), result.getInt(7), result.getInt(8), result.getDate(9), result.getDate(10)));
+			}
+			result.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return data;
 	}
 
 	@Override
@@ -136,6 +156,12 @@ public class ServiceDAO extends DAO<Service> {
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	@Override
+	@Deprecated
+	public Set<Service> all() {
+		return null;
 	}
 
 }

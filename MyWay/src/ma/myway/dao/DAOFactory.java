@@ -9,11 +9,11 @@ import ma.myway.graph.data.Transfert;
 public class DAOFactory {
 	protected static final Connection conn = BddConnection.getInstance();
 
-	public static DAO<Stop> getStopDAO() {
+	public static StopDAO getStopDAO() {
 		return new StopDAO(conn);
 	}
 
-	public static DAO<Agency> getAgencyDAO() {
+	public static AgencyDAO getAgencyDAO() {
 		return new AgencyDAO(conn);
 	}
 
@@ -29,7 +29,7 @@ public class DAOFactory {
 		return new StopTripDAO(conn);
 	}
 
-	public static DAO<Transfert> getTransfertDAO() {
+	public static TransfertDAO getTransfertDAO() {
 		return new TransfertDAO(conn);
 	}
 
@@ -40,7 +40,5 @@ public class DAOFactory {
 	public static UserDAO getUserDAO() {
 		return new UserDAO(conn);
 	}
-
-	// Trips DAO missing ?
 
 }

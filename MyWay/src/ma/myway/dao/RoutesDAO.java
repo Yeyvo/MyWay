@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import ma.myway.graph.data.Route_Service;
 import ma.myway.graph.data.Service_Direction;
+import ma.myway.graph.data.TripsComp;
 import ma.myway.graph.data.Trips_Directions;
 
 public class RoutesDAO extends DAO<Route_Service> {
@@ -52,7 +53,31 @@ public class RoutesDAO extends DAO<Route_Service> {
 		res.put("0", "0");
 		return res;
 	}
-
+	
+	public Set<TripsComp> allSet() {
+		Set<TripsComp> data = new HashSet<>();
+		Statement stmt = null;
+		try {
+			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+			ResultSet result = stmt.executeQuery("SELECT route_id,service_id,trip_id,direction_id FROM trips");
+			while (result.next()) {
+				
+				data.add(new TripsComp(result.getString(1),result.getString(2),result.getString(3),result.getString(4),result.getString(5),result.getString(6),result.getString(7)));
+				
+			}
+			result.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return data;
+	}
 	/*
 	 * retrieving all Route_services data from DataBase
 	 */

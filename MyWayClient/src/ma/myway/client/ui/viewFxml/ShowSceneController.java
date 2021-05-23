@@ -219,8 +219,6 @@ public class ShowSceneController {
 		agencyURLColumn.setCellValueFactory(new PropertyValueFactory("agency_url"));
 		agencyTimeZoneColumn.setCellValueFactory(new PropertyValueFactory("agency_timezone"));
 		
-//		System.out.println(allAgency);
-//		agencyAllTable.setItems(null);
 		agencyAllTable.getItems().addAll(data);
 	}
 
