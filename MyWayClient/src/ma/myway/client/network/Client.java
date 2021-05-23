@@ -240,9 +240,10 @@ public class Client {
 	}
 	
 	private static void Testwrite(String str) throws IOException {
-		buffWriter.write(str);
-		buffWriter.newLine();
-		buffWriter.flush();
+//		buffWriter.write(str);
+//		buffWriter.newLine();
+//		buffWriter.flush();
+		objectOutputStream.writeObject(str);
 	}
 	
 	
