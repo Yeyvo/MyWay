@@ -336,6 +336,20 @@ public class Client {
 		return false;
 	}
 	
+	public static Set<Stop_Trip> showStopTimes() {
+		Set<Stop_Trip> lst = null;
+		try {
+			WRITE("showStopTimes");
+			lst = (Set<Stop_Trip>) READ();
+			return lst;
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return lst;
+	}
+	
 	/* Calendar / Services */
 	public static boolean addCalendar(Stop_Trip stoptrip) {
 
@@ -381,19 +395,6 @@ public class Client {
 		return false;
 	}
 
-	public static Set<Stop_Trip> showStopTimes() {
-		Set<Stop_Trip> lst = null;
-		try {
-			WRITE("showStopTimes");
-			lst = (Set<Stop_Trip>) READ();
-			return lst;
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return lst;
-	}
 
 	public static boolean conn(String username, String password) {
 		try {
