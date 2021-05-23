@@ -7,24 +7,24 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ma.myway.client.ui.viewFxml.ShowSceneController">
    <children>
-      <Button layoutX="187.0" layoutY="346.0" mnemonicParsing="false" styleClass="btncenter" text="Charger les données">
+      <Button layoutX="187.0" layoutY="346.0" mnemonicParsing="false" onAction="#confirmShowCalendarDates" styleClass="btncenter" text="Charger les données">
          <font>
             <Font name="Arial Black" size="18.0" />
          </font>
       </Button>
-      <TableView layoutX="39.0" layoutY="67.0" prefHeight="259.0" prefWidth="523.0">
+      <TableView fx:id="calendarDatesAllTable" layoutX="39.0" layoutY="67.0" prefHeight="259.0" prefWidth="523.0">
          <columns>
-            <TableColumn prefWidth="75.0" text="Service Id" />
-            <TableColumn prefWidth="75.0" text="Date" />
-            <TableColumn prefWidth="75.0" text="Exception Type" />
+            <TableColumn fx:id="calendarDatesServiceIdColumn" prefWidth="75.0" text="Service Id" />
+            <TableColumn fx:id="calendarDatesDateColumn" prefWidth="75.0" text="Date" />
+            <TableColumn fx:id="calendarDatesExceptionTypeColumn" prefWidth="75.0" text="Exception Type" />
          </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Label layoutX="141.0" layoutY="28.0" text="Affichage d'informations : Calendar Dates" styleClass="desc">
+      <Label layoutX="141.0" layoutY="28.0" styleClass="desc" text="Affichage d'informations : Calendar Dates">
          <font>
             <Font name="Arial Black" size="14.0" />
          </font>

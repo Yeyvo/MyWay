@@ -21,6 +21,7 @@ import ma.myway.graph.data.Stop;
 import ma.myway.graph.data.Stop_Trip;
 import ma.myway.graph.data.Transfert;
 import ma.myway.graph.data.TripsComp;
+import ma.myway.users.User;
 
 public class ShowSceneController {
 
@@ -237,29 +238,80 @@ public class ShowSceneController {
 
 	@FXML
 	private javafx.scene.control.TextField usersPasswordField;
+	
+	@FXML
+	private javafx.scene.control.TextField usersPermissionField;
 
 	@FXML
-	private javafx.scene.control.TextField usersDateCreationField;
+	private javafx.scene.control.DatePicker usersDateCreationField;
+	
+	@FXML
+	private javafx.scene.control.TableView usersAllTable;
+
+	@FXML
+	private javafx.scene.control.TableColumn usersIdColumn;
+
+	@FXML
+	private javafx.scene.control.TableColumn usersUserNameColumn;
+
+	@FXML
+	private javafx.scene.control.TableColumn usersPasswordColumn;
+
+	@FXML
+	private javafx.scene.control.TableColumn usersPermissionColumn;
+	
+	@FXML
+	private javafx.scene.control.TableColumn usersDateCreationColumn;
 
 	@FXML
 	private void confirmAjoutUsers() {
-		String usersId = usersIdField.getText();
 		String usersUsername = usersUsernameField.getText();
 		String usersPassword = usersPasswordField.getText();
-		String usersDateCreation = usersDateCreationField.getText();
+		User user = new User(usersUsername, usersPassword);
+		
+		if (!Client.addUser(user)) {
+			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
+			alert.show();
+		}
 	}
 
 	@FXML
 	private void confirmModifUsers() {
-		String usersId = usersIdField.getText();
+		String usersIdString = usersIdField.getText();
 		String usersUsername = usersUsernameField.getText();
 		String usersPassword = usersPasswordField.getText();
-		String usersDateCreation = usersDateCreationField.getText();
+		LocalDate usersDateCreationLocal = usersDateCreationField.getValue();
+		String usersPermission = usersPermissionField.getText();
+		int usersId = Integer.parseInt(usersIdString);
+		Instant instant = Instant.from(usersDateCreationLocal.atStartOfDay(ZoneId.systemDefault()));
+		Date usersDateCreation = Date.from(instant);
+		User user = new User(usersId,usersUsername, usersPassword, usersDateCreation, usersPermission);
+		
+		if (!Client.editUser(user)) {
+			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
+			alert.show();
+		}
 	}
 
 	@FXML
 	private void confirmSupprUsers() {
 		String usersId = usersIdField.getText();
+		
+		if (!Client.removeUser(usersId)) {
+			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
+			alert.show();
+		}
+	}
+	
+	@FXML
+	private void confirmShowUser() {
+		Set<User> data = Client.showUser();
+		usersIdColumn.setCellValueFactory(new PropertyValueFactory("id"));
+		usersUserNameColumn.setCellValueFactory(new PropertyValueFactory("name"));
+		usersPasswordColumn.setCellValueFactory(new PropertyValueFactory("password"));
+		usersPermissionColumn.setCellValueFactory(new PropertyValueFactory("perm"));
+		usersDateCreationColumn.setCellValueFactory(new PropertyValueFactory("creation"));
+		usersAllTable.getItems().addAll(data);
 	}
 
 	// gestion Routes
@@ -565,6 +617,22 @@ public class ShowSceneController {
 
 	@FXML
 	private javafx.scene.control.TextField minTransferTimeField;
+	
+	@FXML
+	private javafx.scene.control.TableView transfersAllTable;
+
+	@FXML
+	private javafx.scene.control.TableColumn transfersFromStopIdColumn;
+
+	@FXML
+	private javafx.scene.control.TableColumn transfersToStopIdColumn;
+
+	@FXML
+	private javafx.scene.control.TableColumn transfersTypeColumn;
+
+	@FXML
+	private javafx.scene.control.TableColumn transfersTimeColumn;
+
 
 	@FXML
 	private void confirmAjoutTransfers() {
@@ -610,13 +678,12 @@ public class ShowSceneController {
 	
 	@FXML
 	private void confirmShowTransfers() {
-		Set<Stop_Trip> data = Client.showStopTimes();
-		stopTimesTripIdColumn.setCellValueFactory(new PropertyValueFactory("trip_id"));
-		stopTimesDepartureTimeColumn.setCellValueFactory(new PropertyValueFactory("departure_time"));
-		stopTimesArrivalTimeColumn.setCellValueFactory(new PropertyValueFactory("arrival_time"));
-		stopTimesStopIdColumn.setCellValueFactory(new PropertyValueFactory("stop_id"));
-		stopTimesSequenceColumn.setCellValueFactory(new PropertyValueFactory("stop_sequence"));
-		stopTimesAllTable.getItems().addAll(data);
+		Set<Transfert> data = Client.showTransfers();
+		transfersFromStopIdColumn.setCellValueFactory(new PropertyValueFactory("src_stop_id"));
+		transfersToStopIdColumn.setCellValueFactory(new PropertyValueFactory("dest_stop_id"));
+		transfersTypeColumn.setCellValueFactory(new PropertyValueFactory("transfert_type"));
+		transfersTimeColumn.setCellValueFactory(new PropertyValueFactory("transfert_time"));
+		transfersAllTable.getItems().addAll(data);
 	}
 
 	// gestion Trips
@@ -634,6 +701,30 @@ public class ShowSceneController {
 
 	@FXML
 	private javafx.scene.control.TextField tripHeadSignField;
+	
+	@FXML
+	private javafx.scene.control.TableView tripsAllTable;
+
+	@FXML
+	private javafx.scene.control.TableColumn tripsRouteIdColumn;
+
+	@FXML
+	private javafx.scene.control.TableColumn tripsServiceIdColumn;
+
+	@FXML
+	private javafx.scene.control.TableColumn tripsTripIdColumn;
+
+	@FXML
+	private javafx.scene.control.TableColumn tripsHeadSignColumn;
+	
+	@FXML
+	private javafx.scene.control.TableColumn tripsShortNameColumn;
+	
+	@FXML
+	private javafx.scene.control.TableColumn tripsDirectionIdColumn;
+	
+	@FXML
+	private javafx.scene.control.TableColumn tripsShapeIdColumn;
 	
 
 	@FXML
@@ -690,12 +781,14 @@ public class ShowSceneController {
 	@FXML
 	private void confirmShowTrips() {
 		Set<TripsComp> data = Client.showTrips();
-		stopTimesTripIdColumn.setCellValueFactory(new PropertyValueFactory("trip_id"));
-		stopTimesDepartureTimeColumn.setCellValueFactory(new PropertyValueFactory("departure_time"));
-		stopTimesArrivalTimeColumn.setCellValueFactory(new PropertyValueFactory("arrival_time"));
-		stopTimesStopIdColumn.setCellValueFactory(new PropertyValueFactory("stop_id"));
-		stopTimesSequenceColumn.setCellValueFactory(new PropertyValueFactory("stop_sequence"));
-		stopTimesAllTable.getItems().addAll(data);
+		tripsRouteIdColumn.setCellValueFactory(new PropertyValueFactory("route_id"));
+		tripsServiceIdColumn.setCellValueFactory(new PropertyValueFactory("service_id"));
+		tripsTripIdColumn.setCellValueFactory(new PropertyValueFactory("trip_id"));
+		tripsHeadSignColumn.setCellValueFactory(new PropertyValueFactory("trip_headsign"));
+		tripsShortNameColumn.setCellValueFactory(new PropertyValueFactory("trip_short_name"));
+		tripsDirectionIdColumn.setCellValueFactory(new PropertyValueFactory("direction_id"));
+		tripsShapeIdColumn.setCellValueFactory(new PropertyValueFactory("shape_id"));
+		tripsAllTable.getItems().addAll(data);
 	}
 
 	// gestion Calendar
@@ -911,6 +1004,9 @@ public class ShowSceneController {
 	@FXML
 	private javafx.scene.control.TableView calendarDatesAllTable;
 
+	
+	
+	
 	@FXML
 	private void confirmAjoutCalendarDates() {
 		String serviceId = serviceIdField.getText();
@@ -964,6 +1060,7 @@ public class ShowSceneController {
 		calendarDatesExceptionTypeColumn.setCellValueFactory(new PropertyValueFactory("type"));
 		calendarDatesAllTable.getItems().addAll(data);
 	}
+	
 	/*
 	 * @FXML private void initialize() {
 	 * OptionBox.setValue("Choisissez une option"); OptionBox.setItems(OptionList);

@@ -29,6 +29,7 @@ import ma.myway.graph.data.Stop;
 import ma.myway.graph.data.Stop_Trip;
 import ma.myway.graph.data.Transfert;
 import ma.myway.graph.data.TripsComp;
+import ma.myway.users.User;
 
 public class Client {
 
@@ -533,7 +534,65 @@ public class Client {
 		return lst;
 	}
 
+	/* USERS */
+	public static boolean addUser(User user) {
 
+		try {
+			WRITE("addUser");
+			objectOutputStream.writeObject(user);
+
+			return (boolean) READ();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+
+	public static boolean editUser(User user) {
+
+		try {
+			WRITE("editUser");
+			objectOutputStream.writeObject(user);
+
+			return (boolean) READ();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+
+	public static boolean removeUser(String id) {
+
+		try {
+			WRITE("removeUser");
+
+			return (boolean) READ();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+	
+	public static Set<User> showUser() {
+		Set<User> lst = null;
+		try {
+			WRITE("showUser");
+			lst = (Set<User>) READ();
+			return lst;
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return lst;
+	}
+	
 	public static boolean conn(String username, String password) {
 		try {
 			WRITE("CONN " + username + " " + password);
