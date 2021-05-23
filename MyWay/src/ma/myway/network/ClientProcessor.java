@@ -28,6 +28,7 @@ import ma.myway.graph.Graph;
 import ma.myway.graph.Node;
 import ma.myway.graph.data.Agency;
 import ma.myway.graph.data.Stop;
+import ma.myway.graph.data.Transfert;
 import ma.myway.users.User;
 
 public class ClientProcessor implements Runnable {
@@ -145,18 +146,116 @@ public class ClientProcessor implements Runnable {
 
 
 				}
+				
+				/* AGENCY */
 				else if (response.toUpperCase().startsWith("ADDAGENCY")) {
 					boolean res = false;
 					try {
-						Agency agg = (Agency) objectInputStream.readObject();
-						res = DAOFactory.getAgencyDAO().create(agg);
+						Agency data = (Agency) objectInputStream.readObject();
+						res = DAOFactory.getAgencyDAO().create(data);
+						System.out.println("->>" + res);
 					} catch (ClassNotFoundException e) {
 						e.printStackTrace();
 					}
-					WRITE(String.valueOf(res));
+					System.out.println(res);
+					WRITE(res);
+					
+				}
+				else if (response.toUpperCase().startsWith("EDITAGENCY")) {
+					boolean res = false;
+					try {
+						Agency data = (Agency) objectInputStream.readObject();
+						res = DAOFactory.getAgencyDAO().update(data, data);
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+					WRITE(res);
+					
+				}
+				else if (response.toUpperCase().startsWith("REMOVEAGENCY")) {
+					boolean res = false;
+					try {
+						Agency data = (Agency) objectInputStream.readObject();
+						res = DAOFactory.getAgencyDAO().delete(data);
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+					WRITE(res);
 
+				}else if (response.toUpperCase().startsWith("SHOWAGENCY")) {
+					
 				}
 				
+				/* STOPS */
+				else if (response.toUpperCase().startsWith("ADDSTOPS")) {
+					boolean res = false;
+					try {
+						Stop data = (Stop) objectInputStream.readObject();
+						res = DAOFactory.getStopDAO().create(data);
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+					WRITE(res);
+					
+				}
+				else if (response.toUpperCase().startsWith("EDITSTOPS")) {
+					boolean res = false;
+					try {
+						Stop data = (Stop) objectInputStream.readObject();
+						res = DAOFactory.getStopDAO().update(data, data);
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+					WRITE(res);
+					
+				}
+				else if (response.toUpperCase().startsWith("REMOVESTOPS")) {
+					boolean res = false;
+					try {
+						Stop data = (Stop) objectInputStream.readObject();
+						res = DAOFactory.getStopDAO().delete(data);
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+					WRITE(res);
+				}else if (response.toUpperCase().startsWith("SHOWSTOPS")) {
+					
+				}
+				/* TRANSFERS */
+				else if (response.toUpperCase().startsWith("ADDTRANSFERT")) {
+					boolean res = false;
+					try {
+						Transfert data = (Transfert) objectInputStream.readObject();
+						res = DAOFactory.getTransfertDAO().create(data);
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+					WRITE(res);
+					
+				}
+				else if (response.toUpperCase().startsWith("EDITTRANSFERS")) {
+					boolean res = false;
+					try {
+						Transfert data = (Transfert) objectInputStream.readObject();
+						res = DAOFactory.getTransfertDAO().update(data, data);
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+					WRITE(res);
+					
+				}
+				else if (response.toUpperCase().startsWith("REMOVETRANSFERS")) {
+					boolean res = false;
+					try {
+						Transfert data = (Transfert) objectInputStream.readObject();
+						res = DAOFactory.getTransfertDAO().delete(data);
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+					WRITE(res);
+				}else if (response.toUpperCase().startsWith("SHOWTRANSFERS")) {
+					
+				}
 				
 				
 				
@@ -303,17 +402,16 @@ public class ClientProcessor implements Runnable {
 		return data;
 	}
 
-	private void WRITE(String str) throws IOException {
-		
+	private void WRITE(Object str) throws IOException {
+		objectOutputStream.writeObject(str);
+	}
+//	private void WRITE(String str) throws IOException {
+//		
 //		buffWriter.write(str);
 //		buffWriter.newLine();
 //		buffWriter.flush();
-		testWRITE(str);
-	}
-	private void testWRITE(String str) throws IOException {
+//
+//	}
 
-		objectOutputStream.writeObject(str);
-
-	}
 
 }

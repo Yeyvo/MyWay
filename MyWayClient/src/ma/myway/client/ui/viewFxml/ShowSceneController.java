@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.time.LocalDate;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import ma.myway.client.network.Client;
 import ma.myway.client.ui.Main;
@@ -28,7 +30,6 @@ public class ShowSceneController {
 	@FXML
 	private void showAjout() throws IOException {
 		main.showAjouterScene();
-		;
 	}
 
 	@FXML
@@ -163,7 +164,10 @@ public class ShowSceneController {
 		String agencyURL = agencyURLField.getText();
 //		String agencyPhone = agencyPhoneField.getText();
 		Agency agency = new Agency(agencyId, agencyName, agencyTimeZone, agencyURL);
-		Client.addAgency(agency);
+		if(!Client.addAgency(agency)) {
+			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
+			alert.show();
+		}
 	}
 
 	@FXML
@@ -175,13 +179,19 @@ public class ShowSceneController {
 		String agencyURL = agencyURLField.getText();
 //		String agencyPhone = agencyPhoneField.getText();
 		Agency agency = new Agency(agencyId, agencyName, agencyTimeZone, agencyURL);
-		Client.editAgency(agency);
+		if(!Client.editAgency(agency)) {
+			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
+			alert.show();
+		}
 	}
 
 	@FXML
 	private void confirmSupprAgency() {
 		String agencyId = agencyIdField.getText();
-		Client.removeAgency(agencyId);
+		if(!Client.removeAgency(new Agency(agencyId,"","",""))) {
+			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
+			alert.show();
+		}
 	}
 
 	// gestion User
@@ -302,7 +312,10 @@ public class ShowSceneController {
 		int locationType = Integer.parseInt(locationTypeString);
 		
 		Stop stop = new Stop(stopId,stopName, stopDescription, stopLatitude, stopLongitude, locationType);
-		Client.addStops(stop);
+		if(!Client.addStops(stop)) {
+			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
+			alert.show();
+		}
 	}
 
 	@FXML
@@ -321,7 +334,10 @@ public class ShowSceneController {
 		int locationType = Integer.parseInt(locationTypeString);
 		
 		Stop stop = new Stop(stopId,stopName, stopDescription, stopLatitude, stopLongitude, locationType);
-		Client.editStops(stop);
+		if(!Client.editStops(stop)) {
+			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
+			alert.show();
+		}
 	}
 
 	@FXML
@@ -340,7 +356,10 @@ public class ShowSceneController {
 		int locationType = Integer.parseInt(locationTypeString);
 		
 		Stop stop = new Stop(stopId,stopName, stopDescription, stopLatitude, stopLongitude, locationType);
-		Client.removeStops(stop);
+		if(!Client.removeStops(stop)) {
+			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
+			alert.show();
+		}
 	}
 
 	// gestion StopTimes
@@ -417,7 +436,10 @@ public class ShowSceneController {
 		String minTransferTimeString = minTransferTimeField.getText();
 		int minTransferTime = Integer.parseInt(minTransferTimeString);
 		Transfert trans = new Transfert(fromStopId, toStopId, transferType, minTransferTime);
-		Client.addTransfers(trans);
+		if(!Client.addTransfers(trans)) {
+			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
+			alert.show();
+		}
 	}
 
 	@FXML
@@ -428,7 +450,10 @@ public class ShowSceneController {
 		String minTransferTimeString = minTransferTimeField.getText();
 		int minTransferTime = Integer.parseInt(minTransferTimeString);
 		Transfert trans = new Transfert(fromStopId, toStopId, transferType, minTransferTime);
-		Client.editTransfers(trans);
+		if(!Client.editTransfers(trans)) {
+			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
+			alert.show();
+		}
 	}
 
 	@FXML
@@ -439,7 +464,10 @@ public class ShowSceneController {
 		String minTransferTimeString = minTransferTimeField.getText();
 		int minTransferTime = Integer.parseInt(minTransferTimeString);
 		Transfert trans = new Transfert(fromStopId, toStopId, transferType, minTransferTime);
-		Client.removeTransfers(trans);
+		if(!Client.removeTransfers(trans)) {
+			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
+			alert.show();
+		}
 	}
 
 	// gestion Trips
