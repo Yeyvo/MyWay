@@ -23,7 +23,7 @@ public class UserDAO extends DAO<User> {
 			ResultSet result = stmt.executeQuery("SELECT max(user_id) FROM users");
 			result.next();
 			boolean result1 = stmt.execute("ALTER TABLE users AUTO_INCREMENT = " + result.getInt(1));
-			int result2 = stmt.executeUpdate("INSERT INTO users(username,password) VALUES(" + obj.toString() + ")");
+			int result2 = stmt.executeUpdate("INSERT INTO users(username,password,permission) VALUES(" + obj.toString() + ")");
 			System.out.println(result2 + " Row affected ! ");
 			return true;
 		} catch (SQLException e) {
@@ -80,7 +80,7 @@ public class UserDAO extends DAO<User> {
 			while (result.next()) {
 				set_users.add(new User(result.getInt("user_id"),
 						result.getString("username").toLowerCase().replaceAll("é", "e").replaceAll("è", "e"),
-						result.getString("password").toLowerCase(), result.getDate("dateCreation")));
+						result.getString("password").toLowerCase(), result.getDate("dateCreation"), result.getString("permission")));
 			}
 			result.close();
 		} catch (SQLException e) {
@@ -109,7 +109,7 @@ public class UserDAO extends DAO<User> {
 		Statement stmt = null;
 		try {
 			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-			int result = stmt.executeUpdate("DELETE FROM users WHERE username = '" + obj.getName() + "'");
+			int result = stmt.executeUpdate("DELETE FROM users WHERE user_id  = '" + obj.getId() + "'");
 			System.out.println(result + " Row affected !");
 			return (true);
 		} catch (SQLException e) {

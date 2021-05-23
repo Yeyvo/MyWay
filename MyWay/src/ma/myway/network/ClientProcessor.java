@@ -29,6 +29,7 @@ import ma.myway.graph.Graph;
 import ma.myway.graph.Node;
 import ma.myway.graph.data.Agency;
 import ma.myway.graph.data.Stop;
+import ma.myway.graph.data.Stop_Trip;
 import ma.myway.graph.data.Transfert;
 import ma.myway.users.User;
 
@@ -262,6 +263,42 @@ public class ClientProcessor implements Runnable {
 				}
 				
 				
+				/* StopTrip / StopTimes */
+				else if (response.toUpperCase().startsWith("ADDSTOPTIMES")) {
+					boolean res = false;
+					try {
+						Stop_Trip data = (Stop_Trip) objectInputStream.readObject();
+						res = DAOFactory.getStopTripDAO().create(data);
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+					WRITE(res);
+					
+				}
+				else if (response.toUpperCase().startsWith("EDITSTOPTIMES")) {
+					boolean res = false;
+					try {
+						Stop_Trip data = (Stop_Trip) objectInputStream.readObject();
+						res = DAOFactory.getStopTripDAO().update(data, data);
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+					WRITE(res);
+					
+				}
+				else if (response.toUpperCase().startsWith("REMOVESTOPTIMES")) {
+					boolean res = false;
+					try {
+						Stop_Trip data = (Stop_Trip) objectInputStream.readObject();
+						res = DAOFactory.getStopTripDAO().delete(data);
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+					WRITE(res);
+				}else if (response.toUpperCase().startsWith("SHOWSTOPTIMES")) {
+					Set<Stop_Trip> data = DAOFactory.getStopTripDAO().all();
+					WRITE(data);
+				}
 				
 				
 				

@@ -134,11 +134,15 @@ UPDATE routes set MT='RER' where route_type='2';
 UPDATE routes set MT='TRAM' where route_type='0';
 */
 
+DROP TABLE IF EXISTS users;
+
 CREATE TABLE users(
-user_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-username varchar(60) NOT NULL UNIQUE,
-password varchar(255) NOT NULL,
-dateCreation DATETIME DEFAULT CURRENT_TIMESTAMP
+	user_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	username varchar(60) NOT NULL UNIQUE,
+	password varchar(255) NOT NULL,
+	dateCreation DATETIME DEFAULT CURRENT_TIMESTAMP,
+	permission VARCHAR(5) CHECK ( permission IN ('admin','user') )
 );
 
-INSERT into users(username,password) VALUES ("admin","admin");
+INSERT into users(username,password,permission) VALUES ("admin","admin","admin");
+INSERT into users(username,password,permission) VALUES ("user","user","user");
