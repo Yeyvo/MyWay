@@ -52,17 +52,26 @@ public class ClientProcessor implements Runnable {
 	public void run() {
 		Logger.getLogger("SERVER").info("Starting the processing of the client connection " + client.isClosed());
 		boolean closeConnection = false;
+		try {
+			objectOutputStream = new ObjectOutputStream(client.getOutputStream());
+			objectInputStream = new ObjectInputStream(client.getInputStream());
+
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
 		while (!client.isClosed()) {
 			try {
 
-				bos = new BufferedOutputStream(client.getOutputStream());
-				buffWriter = new BufferedWriter(new OutputStreamWriter(bos, StandardCharsets.UTF_8));
-				objectOutputStream = new ObjectOutputStream(client.getOutputStream());
+//				bos = new BufferedOutputStream(client.getOutputStream());
+//				buffWriter = new BufferedWriter(new OutputStreamWriter(bos, StandardCharsets.UTF_8));
+//				objectOutputStream = new ObjectOutputStream(client.getOutputStream());
 				
-				reader = new BufferedInputStream(client.getInputStream());
-				buffReader = new BufferedReader(new InputStreamReader(reader, StandardCharsets.UTF_8));
-				objectInputStream = new ObjectInputStream(client.getInputStream());
-				String response = READ();
+//				reader = new BufferedInputStream(client.getInputStream());
+//				buffReader = new BufferedReader(new InputStreamReader(reader, StandardCharsets.UTF_8));
+//				objectInputStream = new ObjectInputStream(client.getInputStream());
+				String read = READ();
+				String response = read == null ? "" : read;
 
 				InetSocketAddress remote = (InetSocketAddress) client.getRemoteSocketAddress();
 				String debug = "Thread : " + Thread.currentThread().getName() + ". ";

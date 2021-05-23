@@ -47,8 +47,8 @@ public class Client {
 	public Client(String host, int port) {
 		try {
 			client = new Socket(host, port);
-			reader = new BufferedInputStream(client.getInputStream());
-			buffReader = new BufferedReader(new InputStreamReader(reader, StandardCharsets.UTF_8));
+//			reader = new BufferedInputStream(client.getInputStream());
+//			buffReader = new BufferedReader(new InputStreamReader(reader, StandardCharsets.UTF_8));
 
 //			writer = new PrintWriter(client.getOutputStream(), true);
 //			bos = new BufferedOutputStream(client.getOutputStream());
