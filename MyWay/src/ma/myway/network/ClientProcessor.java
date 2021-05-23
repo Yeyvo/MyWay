@@ -6,6 +6,8 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.net.InetSocketAddress;
@@ -19,20 +21,28 @@ import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
 import com.google.gson.stream.JsonWriter;
+
 import ma.myway.dao.DAOFactory;
 import ma.myway.graph.Edge;
 import ma.myway.graph.Graph;
 import ma.myway.graph.Node;
+import ma.myway.graph.data.Agency;
 import ma.myway.graph.data.Stop;
 import ma.myway.users.User;
 
 public class ClientProcessor implements Runnable {
 
 	private Socket client = null;
+	
+	
 	private BufferedOutputStream bos = null;
 	private BufferedWriter buffWriter = null;
+	private ObjectOutputStream objectOutputStream = null;
+	
+	
 	private BufferedInputStream reader = null;
 	private BufferedReader buffReader = null;
+	private ObjectInputStream objectInputStream = null;
 
 	public ClientProcessor(Socket client) {
 		this.client = client;
@@ -47,9 +57,11 @@ public class ClientProcessor implements Runnable {
 
 				bos = new BufferedOutputStream(client.getOutputStream());
 				buffWriter = new BufferedWriter(new OutputStreamWriter(bos, StandardCharsets.UTF_8));
-
+				
+				
 				reader = new BufferedInputStream(client.getInputStream());
 				buffReader = new BufferedReader(new InputStreamReader(reader, StandardCharsets.UTF_8));
+				objectInputStream = new ObjectInputStream(client.getInputStream());
 				String response = READ();
 
 				InetSocketAddress remote = (InetSocketAddress) client.getRemoteSocketAddress();
@@ -123,7 +135,70 @@ public class ClientProcessor implements Runnable {
 					Logger.getLogger("BASE").info(Strop_id);
 
 
-				} else {
+				}
+				else if (response.toUpperCase().startsWith("ADDAGENCY")) {
+					boolean res = false;
+					try {
+						Agency agg = (Agency) objectInputStream.readObject();
+						res = DAOFactory.getAgencyDAO().create(agg);
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+					WRITE(String.valueOf(res));
+
+				}
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				else {
 					toSend = "UNKOWN Command ";
 					WRITE(toSend);
 				}

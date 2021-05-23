@@ -7,6 +7,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringReader;
@@ -25,26 +26,31 @@ import com.google.gson.stream.JsonReader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import ma.myway.client.ui.Main;
+import ma.myway.client.ui.model.Agency;
 
 public class Client {
 
 	private static Socket client = null;
+	
 	private static PrintWriter writer = null;
 	private static BufferedOutputStream bos = null;
 	private static BufferedWriter buffWriter = null;
+	private static ObjectOutputStream objectOutputStream = null;
+
+	
 	private static BufferedInputStream reader = null;
 	private static BufferedReader buffReader = null;
-	int confirmationAgency = 0;
 
 	public Client(String host, int port) {
 		try {
 			client = new Socket(host, port);
-			writer = new PrintWriter(client.getOutputStream(), true);
 			reader = new BufferedInputStream(client.getInputStream());
 			buffReader = new BufferedReader(new InputStreamReader(reader, StandardCharsets.UTF_8));
 
+			writer = new PrintWriter(client.getOutputStream(), true);
 			bos = new BufferedOutputStream(client.getOutputStream());
 			buffWriter = new BufferedWriter(new OutputStreamWriter(bos, StandardCharsets.UTF_8));
+			objectOutputStream = new ObjectOutputStream(client.getOutputStream());
 
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -82,42 +88,7 @@ public class Client {
 		return stopMap;
 	}
 
-	private static String read(int i) throws IOException {
-		String response = "";
-		int stream;
-		byte[] b;
 
-		if (i < 0) {
-			b = new byte[1024];
-		} else {
-			b = new byte[i];
-		}
-		stream = reader.read(b);
-		response = new String(b, 0, stream);
-
-		writer.write("received");
-		writer.flush();
-
-		return response;
-	}
-
-	public static void close() {
-
-		try {
-			WRITE("CLOSE");
-
-			Logger.getLogger("CLIENT").info(read(-1));
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		try {
-			reader.close();
-			writer.close();
-			client.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
 
 	public static String chem(String src, String dep) {
 
@@ -144,9 +115,72 @@ public class Client {
 			e.printStackTrace();
 		}
 		return path;
+	}	
+
+	/* AGENCY */
+	public static boolean addAgency(Agency agency) {
+		
+		try {
+			WRITE("addAgency");
+			objectOutputStream.writeObject(agency);
+			
+			return Boolean.parseBoolean(READ(false));
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return false;
 	}
+	
+	public static boolean editAgency(Agency agency) {
+		
+		try {
+			WRITE("editAgency");
+			objectOutputStream.writeObject(agency);
 
+			return Boolean.parseBoolean(READ(false));
 
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+	
+	public static boolean removeAgency(String id) {
+		
+		try {
+			WRITE("removeAgency " + id);
+
+			return Boolean.parseBoolean(READ(false));
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+	
+//	public static boolean showAgency() {
+//		
+//		try {
+//			WRITE("showAgency ");
+//
+//			return Boolean.parseBoolean(READ(false));
+//
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//		
+//		return false;
+//	}
+	
+	/*CALENDAR*/
+
+	
+	
+	
 	public static boolean conn(String username, String password) {
 		try {
 			WRITE("CONN " + username + " " + password);
@@ -186,9 +220,41 @@ public class Client {
 		buffWriter.flush();
 	}
 	
-	public void ConfirmAgency(int i) {
-		confirmationAgency = i;
+	
+	private static String read(int i) throws IOException {
+		String response = "";
+		int stream;
+		byte[] b;
+
+		if (i < 0) {
+			b = new byte[1024];
+		} else {
+			b = new byte[i];
+		}
+		stream = reader.read(b);
+		response = new String(b, 0, stream);
+
+		writer.write("received");
+		writer.flush();
+
+		return response;
 	}
 
+	public static void close() {
 
+		try {
+			WRITE("CLOSE");
+
+			Logger.getLogger("CLIENT").info(read(-1));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		try {
+			reader.close();
+			writer.close();
+			client.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }
