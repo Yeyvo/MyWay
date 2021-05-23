@@ -89,12 +89,12 @@ public class ClientProcessor implements Runnable {
 					long b = System.currentTimeMillis();
 					Logger.getLogger("BASE").info("path found  time : " + -(a - b) / 1000);
 					toSend = JsonParse(path, Graph.getGraph().getNodebyID(src));
-					int lines = 0;
-					for (char data : toSend.toCharArray()) {
-						if (data == '\n' || data == '\r')
-							lines++;
-					}
-					WRITE(String.valueOf(lines));
+//					int lines = 0;
+//					for (char data : toSend.toCharArray()) {
+//						if (data == '\n' || data == '\r')
+//							lines++;
+//					}
+//					WRITE(String.valueOf(lines));
 					WRITE(toSend);
 
 				} else if (response.toUpperCase().startsWith("CLOSE")) {
@@ -274,7 +274,13 @@ public class ClientProcessor implements Runnable {
 	
 	private String Testread(int i, Boolean isconfirmation) throws IOException {
 
-		String response = buffReader.readLine();
+		String response = null;
+		try {
+			response = (String) objectInputStream.readObject();
+		} catch (ClassNotFoundException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		Logger.getLogger("SERVER").info("\tdata : " + response);
 

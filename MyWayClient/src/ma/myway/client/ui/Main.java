@@ -22,7 +22,6 @@ import java.util.logging.Logger;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
@@ -30,8 +29,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import ma.myway.client.network.Client;
 import ma.myway.client.ui.model.SceneName;
-import ma.myway.client.ui.view.UIBase;
-import ma.myway.client.ui.view.UILogging;
+import ma.myway.graph.data.Agency;
 
 public class Main extends Application {
 
@@ -99,7 +97,7 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		scenes.put(SceneName.BASE, new UIBase().getScene());
+		/*scenes.put(SceneName.BASE, new UIBase().getScene());
 		scenes.put(SceneName.LOGING, new UILogging(primaryStage).getScene());
 		scenes.put(SceneName.ADMIN, returnSceneAdmin());
 		scenes.put(SceneName.ADMINWELC, returnSceneAdminWelc());
@@ -108,7 +106,8 @@ public class Main extends Application {
 		primaryStage.setScene(scenes.get(SceneName.LOGING));
 		primaryStage.setTitle("MyWay");
 		primaryStage.show();
-		primaryStage.setResizable(false);
+		primaryStage.setResizable(false);*/
+		Client.addAgency(new Agency("999", "dfhgjhg,", "pfff", "atay"));
 	}
 
 	public static Map<SceneName, Scene> getScenes() {

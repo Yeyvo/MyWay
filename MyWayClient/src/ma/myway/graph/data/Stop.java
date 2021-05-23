@@ -1,9 +1,8 @@
-package ma.myway.client.ui.model;
+package ma.myway.graph.data;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-
 
 /**
  * C'est la classe representant chaque <b>station</b> du reseau de transport.
@@ -18,7 +17,6 @@ import java.io.Serializable;
  * <ul>
  * </p>
  * 
- * @see Node
  */
 public class Stop implements Serializable {
 

@@ -1,4 +1,4 @@
-package ma.myway.client.ui.model;
+package ma.myway.graph.data;
 
 import java.util.List;
 

@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-import ma.myway.graph.Node;
-
 /**
  * C'est la classe representant chaque <b>station</b> du reseau de transport.
  * <p>
@@ -19,7 +17,6 @@ import ma.myway.graph.Node;
  * <ul>
  * </p>
  * 
- * @see Node
  */
 public class Stop implements Serializable {
 

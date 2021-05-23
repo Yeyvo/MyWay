@@ -27,7 +27,7 @@ import com.google.gson.stream.JsonReader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import ma.myway.client.ui.Main;
-import ma.myway.client.ui.model.Agency;
+import ma.myway.graph.data.Agency;
 
 public class Client {
 
@@ -71,11 +71,11 @@ public class Client {
 
 		try {
 			WRITE("GETSTOPS");
-			stopnames = READ(false);
+			stopnames = (String) READ(false);
 			System.out.println("stopnames");
 			Logger.getLogger("CLIENT").info(stopnames);
 
-			stopid = READ(false);
+			stopid = (String) READ(false);
 			System.out.println("stopid");
 
 			Logger.getLogger("CLIENT").info(stopid);
@@ -101,7 +101,7 @@ public class Client {
 		try {
 			WRITE("CHEM " + src + " " + dep);
 
-			path = READ(true);
+			path = (String) READ(false);
 
 			Logger.getLogger("CLIENT").info(path);
 			PrintWriter pathjsonwriter = new PrintWriter(new File(Main.path + "test.json"));
@@ -129,7 +129,7 @@ public class Client {
 			WRITE("addAgency");
 			objectOutputStream.writeObject(agency);
 			
-			return Boolean.parseBoolean(READ(false));
+			return Boolean.getBoolean((String) READ(false));
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -144,7 +144,7 @@ public class Client {
 			WRITE("editAgency");
 			objectOutputStream.writeObject(agency);
 
-			return Boolean.parseBoolean(READ(false));
+			return Boolean.getBoolean((String) READ(false));
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -158,7 +158,7 @@ public class Client {
 		try {
 			WRITE("removeAgency " + id);
 
-			return Boolean.parseBoolean(READ(false));
+			return Boolean.getBoolean((String) READ(false));
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -190,7 +190,7 @@ public class Client {
 		try {
 			WRITE("CONN " + username + " " + password);
 
-			return Boolean.parseBoolean(READ(false));
+			return Boolean.getBoolean((String) READ(false));
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -212,39 +212,53 @@ public class Client {
 
 		return response;
 	}
-
-	private static String READ(boolean isjson) throws IOException {
-//		String data = read(isjson);
-		String data = TestREAD (isjson);
-		
-		return data;
+	
+	private static void WRITE(String str) throws IOException {
+		objectOutputStream.writeObject(str);
 	}
-	
-	
-	private static String TestREAD(boolean isjson) throws IOException {
-		String data = null;
+
+	private static Object READ(boolean isjson) throws IOException {
+		Object data = null;
 		try {
-			data = (String) objectInputStream.readObject();
+			data =  objectInputStream.readObject();
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
 		}
 
 		return data;
 	}
-
-	private static void WRITE(String str) throws IOException {
-//		buffWriter.write(str);
-//		buffWriter.newLine();
-//		buffWriter.flush();
-		Testwrite(str);
-	}
+//	private static String READ(boolean isjson) throws IOException {
+////		String data = read(isjson);
+//		String data = TestREAD (isjson);
+//		
+//		return data;
+//	}
+//	
 	
-	private static void Testwrite(String str) throws IOException {
+//	private static String TestREAD(boolean isjson) throws IOException {
+//		String data = null;
+//		try {
+//			data = (String) objectInputStream.readObject();
+//		} catch (ClassNotFoundException | IOException e) {
+//			e.printStackTrace();
+//		}
+//
+//		return data;
+//	}
+
+//	private static void WRITE(String str) throws IOException {
 //		buffWriter.write(str);
 //		buffWriter.newLine();
 //		buffWriter.flush();
-		objectOutputStream.writeObject(str);
-	}
+//		objectOutputStream.writeObject(str);
+//	}
+	
+//	private static void Testwrite(String str) throws IOException {
+////		buffWriter.write(str);
+////		buffWriter.newLine();
+////		buffWriter.flush();
+//		objectOutputStream.writeObject(str);
+//	}
 	
 	
 	
