@@ -212,7 +212,7 @@ public class Main extends Application {
 			primary.show();
 			primary.setResizable(false);
 		} else {
-			 openBase();
+			 openBase(primary);
 		}
 		return scene;
 	}
@@ -612,6 +612,13 @@ public class Main extends Application {
 		stage.show();
 	}
 
+	public static void openBase(Stage stage) {
+		stage.setScene(scenes.get(SceneName.BASE));
+		stage.getIcons().add(new Image("img/logo.png"));
+		stage.setTitle("MyWay");
+		stage.show();
+		
+	}
 	public static void openBase() {
 		Stage stage = new Stage();
 		stage.setScene(scenes.get(SceneName.BASE));

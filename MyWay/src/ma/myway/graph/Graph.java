@@ -297,6 +297,40 @@ public class Graph implements Serializable {
 	 * @param source
 	 */
 	public void dijkstra(Node source, LocalDate localDate) { // done
+//		pq = new FibonacciHeap<Node>();
+//
+//		HashMap<Node, FibonacciHeap.Entry<Node>> entries = new HashMap<Node, FibonacciHeap.Entry<Node>>();
+//
+//		source.setDistance(0.0);
+//
+//		for (Node node : nodes.values()) {
+//			entries.put(node, pq.enqueue(node, node.getDistance()));
+//		}
+//
+//		Node min = pq.dequeueMin().mElem;
+//		Map<String, String> tripDate = Trip_Date(Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+//		do {
+//			List<Edge> neighboors = edges.get(min.getStop().getStop_id());
+//			if (neighboors != null) {
+//				for (Edge edge : neighboors) {
+//					if (tripDate.containsKey(edge.getTrip_id())) {
+//						double weight = edge.getWeight();
+//						double newLen = edge.getSrc().getDistance() + weight;
+//						if (newLen < edge.getDest().getDistance()) {
+//							pq.decreaseKey(entries.get(edge.getDest()), newLen);
+//							edge.getDest().setDistance(newLen);
+//							edge.getDest().setPredecessor(edge);
+//						}
+//					}
+//				}
+//			}
+//			try {
+//				min = pq.dequeueMin().mElem;
+//			} catch (Exception e) {
+//				min = null;
+//			}
+//		} while (min != null);
+		
 		pq = new FibonacciHeap<Node>();
 
 		HashMap<Node, FibonacciHeap.Entry<Node>> entries = new HashMap<Node, FibonacciHeap.Entry<Node>>();
@@ -308,12 +342,12 @@ public class Graph implements Serializable {
 		}
 
 		Node min = pq.dequeueMin().mElem;
-		Map<String, String> tripDate = Trip_Date(Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+
 		do {
 			List<Edge> neighboors = edges.get(min.getStop().getStop_id());
 			if (neighboors != null) {
 				for (Edge edge : neighboors) {
-					if (tripDate.containsKey(edge.getTrip_id())) {
+					if(Trip_Date(Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant())).containsKey(edge.getTrip_id())){
 						double weight = edge.getWeight();
 						double newLen = edge.getSrc().getDistance() + weight;
 						if (newLen < edge.getDest().getDistance()) {
