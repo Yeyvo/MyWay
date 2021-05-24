@@ -43,8 +43,8 @@ public class Main extends Application {
 	public static Client client = null;
 	public static String path = System.getProperty("user.home") + "\\AppData\\Roaming\\WebClient\\";
 	private ClassLoader classLoader = getClass().getClassLoader();
-	public static User user = new User("","","");
-
+	public static User user ;
+	static Stage primary ;
 	public static void main(String[] args) {
 		Logger loggerServer = Logger.getLogger("CLIENT");
 		try {
@@ -105,7 +105,7 @@ public class Main extends Application {
 		scenes.put(SceneName.LOGING, new UILogging(primaryStage).getScene());
 		scenes.put(SceneName.ADMIN, returnSceneAdmin());
 //		scenes.put(SceneName.ADMINWELC, returnSceneAdminWelc());
-
+		primary = primaryStage;
 		primaryStage.getIcons().add(new Image("img/logo.png"));
 		primaryStage.setScene(scenes.get(SceneName.LOGING));
 		primaryStage.setTitle("MyWay");
@@ -205,6 +205,12 @@ public class Main extends Application {
 		Scene scene = null;
 		if(user.getPerm().equals("admin")) {
 			scene = returnSceneAdmin();
+			
+			primary.getIcons().add(new Image("img/logo.png"));
+			primary.setScene(returnSceneAdmin());
+			primary.setTitle("MyWay");
+			primary.show();
+			primary.setResizable(false);
 		} else {
 			 openBase();
 		}
@@ -619,8 +625,8 @@ public class Main extends Application {
 		return user;
 	}
 
-	public static void setUser(User user) {
-		user = user;
+	public static void setUser(User usera) {
+		user = usera;
 	}
 	
 	
