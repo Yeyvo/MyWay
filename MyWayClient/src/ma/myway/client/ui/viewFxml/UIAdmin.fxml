@@ -30,14 +30,14 @@
                   <Insets bottom="5.0" top="10.0" />
                </VBox.margin>
             </Button>
-            <Button maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setRoutes" styleClass="btn" text="Routes">
+  <!--        <Button maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setRoutes" styleClass="btn" text="Routes">
                <font>
                   <Font name="Arial Black" size="12.0" />
                </font>
                <VBox.margin>
                   <Insets bottom="5.0" top="10.0" />
                </VBox.margin>
-            </Button>
+            </Button>-->
             <Button maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setTrips" styleClass="btn" text="Trips">
                <font>
                   <Font name="Arial Black" size="12.0" />
@@ -160,11 +160,15 @@
                <children>
                   <Pane prefHeight="55.0" prefWidth="152.0" VBox.vgrow="ALWAYS">
                      <children>
-                        <ImageView fitHeight="43.0" fitWidth="43.0" layoutX="49.0" layoutY="4.0">
-                           <image>
-                              <Image url="@../../../../../../ressources/img/logo.png" />
-                           </image>
-                        </ImageView>
+                        <Button layoutX="-2.0" mnemonicParsing="false" onAction="#openBase" prefHeight="53.0" prefWidth="156.0" styleClass="back-transparent">
+                           <graphic>
+                              <ImageView fitHeight="47.0" fitWidth="47.0">
+                                 <image>
+                                    <Image url="@../../../../../../ressources/img/logo.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
                      </children>
                   </Pane>
                </children>

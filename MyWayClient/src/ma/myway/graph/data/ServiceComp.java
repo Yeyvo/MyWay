@@ -1,17 +1,17 @@
 package ma.myway.graph.data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 public class ServiceComp implements Serializable {
 
 	String service_id;
 	int monday, tuesday, wednesday, thursday, friday, saturday, sunday;
-	Date start_date;
-	Date end_date;
+	LocalDate start_date;
+	LocalDate end_date;
 
 	public ServiceComp(String service_id, int monday, int tuesday, int wednesday, int thursday, int friday,
-			int saturday, int sunday, Date start_date, Date end_date) {
+			int saturday, int sunday, LocalDate start_date, LocalDate end_date) {
 		this.service_id = service_id;
 		this.monday = monday;
 		this.tuesday = tuesday;
@@ -88,20 +88,31 @@ public class ServiceComp implements Serializable {
 		this.sunday = sunday;
 	}
 
-	public Date getStart_date() {
+	public LocalDate getStart_date() {
 		return start_date;
 	}
 
-	public void setStart_date(Date start_date) {
+	public void setStart_date(LocalDate start_date) {
 		this.start_date = start_date;
 	}
 
-	public Date getEnd_date() {
+	public LocalDate getEnd_date() {
 		return end_date;
 	}
 
-	public void setEnd_date(Date end_date) {
+	public void setEnd_date(LocalDate end_date) {
 		this.end_date = end_date;
+	}
+
+	@Override
+	public String toString() {
+//		String str = "";
+//		str += ("'"+service_id + "',");
+//		for (int jr : dates) {
+//			str += (jr + ",");
+//		}
+		return "'" + service_id + "'," + monday + "," + tuesday + "," + wednesday + "," + thursday + "," + friday + ","
+				+ saturday + "," + sunday + ",'" + start_date.toString() + "','" + end_date.toString() + "'";
 	}
 
 }

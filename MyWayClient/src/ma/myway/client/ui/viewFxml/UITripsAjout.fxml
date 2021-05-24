@@ -13,48 +13,36 @@
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <Label layoutX="57.0" layoutY="110.0" text="Trip Id">
+      <Label layoutX="57.0" layoutY="130.0" text="Trip Id">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField fx:id="tripIdField" layoutX="149.0" layoutY="106.0" />
-      <Label layoutX="57.0" layoutY="155.0" text="Route Id">
+      <TextField fx:id="tripIdField" layoutX="149.0" layoutY="126.0" />
+      <Label layoutX="57.0" layoutY="175.0" text="Route Id">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField fx:id="routesIdField" layoutX="149.0" layoutY="151.0" />
-      <Label layoutX="243.0" layoutY="200.0" prefHeight="17.0" prefWidth="92.0" text="Shape Id">
+      <TextField fx:id="routesIdField" layoutX="149.0" layoutY="171.0" />
+      <Label layoutX="380.0" layoutY="130.0" text="Service Id">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField fx:id="shapeIdField" layoutX="339.0" layoutY="195.0" />
-      <Label layoutX="380.0" layoutY="110.0" text="Service Id">
+      <TextField fx:id="serviceIdField" layoutX="487.0" layoutY="126.0" />
+      <Label layoutX="380.0" layoutY="175.0" text="Direction Id">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField fx:id="serviceIdField" layoutX="487.0" layoutY="106.0" />
-      <Label layoutX="380.0" layoutY="155.0" text="Direction Id">
+      <TextField fx:id="directionIdField" layoutX="487.0" layoutY="171.0" />
+      <Label layoutX="226.0" layoutY="223.0" text="Trip Short Name">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField fx:id="directionIdField" layoutX="487.0" layoutY="151.0" />
-      <Label layoutX="364.0" layoutY="245.0" text="Trip Short Name">
-         <font>
-            <Font name="Arial Black" size="12.0" />
-         </font>
-      </Label>
-      <TextField fx:id="tripShortNameField" layoutX="487.0" layoutY="241.0" />
-      <Label layoutX="40.0" layoutY="245.0" prefHeight="17.0" prefWidth="109.0" text="Trip HeadSign">
-         <font>
-            <Font name="Arial Black" size="12.0" />
-         </font>
-      </Label>
-      <TextField fx:id="tripHeadSignField" layoutX="149.0" layoutY="241.0" />
+      <TextField fx:id="tripShortNameField" layoutX="349.0" layoutY="219.0" />
       <Button layoutX="168.0" layoutY="308.0" mnemonicParsing="false" onAction="#confirmAjoutTrips" prefHeight="25.0" prefWidth="86.0" styleClass="btncenter" text="Confirmer" />
       <Button layoutX="428.0" layoutY="308.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="86.0" styleClass="btncenter" text="Clear" />
    </children>

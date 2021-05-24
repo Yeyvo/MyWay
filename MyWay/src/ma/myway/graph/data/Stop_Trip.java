@@ -87,7 +87,7 @@ public class Stop_Trip implements Comparable<Stop_Trip>, Serializable {
 
 	@Override
 	public String toString() {
-		return trip_id + "," + arrival_time + "," + departure_time + "," + stop_id + "," + stop_sequence + ",null,null";
+		return "'" + trip_id + "'," + arrival_time + "," + departure_time + ",'" + stop_id + "'," + stop_sequence + ",null,null";
 	}
 
 	public static long calculateWeight(Stop_Trip stop_Trip, Stop_Trip next) {

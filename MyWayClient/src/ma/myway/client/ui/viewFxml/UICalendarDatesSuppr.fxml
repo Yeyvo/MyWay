@@ -27,6 +27,6 @@
       </Label>
       <Button layoutX="210.0" layoutY="193.0" mnemonicParsing="false" onAction="#confirmSupprCalendarDates" styleClass="btncenter" text="Confirmer" />
       <Button layoutX="370.0" layoutY="193.0" mnemonicParsing="false" styleClass="btncenter" text="Clear" />
-      <DatePicker layoutX="406.0" layoutY="103.0" />
+      <DatePicker fx:id="dateField" layoutX="406.0" layoutY="103.0" />
    </children>
 </Pane>

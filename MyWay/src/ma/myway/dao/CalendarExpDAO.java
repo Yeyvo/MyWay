@@ -37,6 +37,24 @@ public class CalendarExpDAO extends DAO<CalendarExp> {
 		}
 		return false;
 	}
+	public boolean createComp(CalendarExpComp obj) {
+		Statement stmt = null;
+		try {
+			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+			int result = stmt.executeUpdate("INSERT INTO calendar_dates VALUES("+obj.toString()+")");
+			System.out.println(result + " Row affected ! ");
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
 
 	@Override
 	@Deprecated
@@ -95,6 +113,24 @@ public class CalendarExpDAO extends DAO<CalendarExp> {
 		}
 		return (false);
 	}
+	public boolean deleteComp(CalendarExpComp obj) {// fait
+		Statement stmt = null;
+		try {
+			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+			int result = stmt.executeUpdate("DELETE FROM calendar_dates WHERE service_id = " + obj.getService_id() +" and dateC = '" + obj.getAdded().toString()+"'");
+			System.out.println(result + " Row affected !");
+			return (true);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return (false);
+	}
 
 	public boolean update(CalendarExp obj) {
 		Statement stmt = null;
@@ -108,6 +144,17 @@ public class CalendarExpDAO extends DAO<CalendarExp> {
 		}
 		return (false);
 	}
+	
+	public boolean updateComp(CalendarExpComp oldobj, CalendarExpComp newobj) {
+		try {
+			deleteComp(oldobj);
+			createComp(newobj);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 
 
 	public Set<CalendarExpComp> allSet() {
@@ -117,7 +164,7 @@ public class CalendarExpDAO extends DAO<CalendarExp> {
 			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
 			ResultSet result = stmt.executeQuery("SELECT * FROM calendar_dates");
 			while (result.next()) {
-				set_CalendarExp.add(new CalendarExpComp(result.getString(1), result.getDate(2), result.getInt(3)));
+				set_CalendarExp.add(new CalendarExpComp(result.getString(1), result.getDate(2).toLocalDate(), result.getInt(3)));
 			}
 			result.close();
 		} catch (SQLException e) {

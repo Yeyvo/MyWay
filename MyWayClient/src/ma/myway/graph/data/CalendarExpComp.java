@@ -1,15 +1,17 @@
 package ma.myway.graph.data;
 
+import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-public class CalendarExpComp {
+public class CalendarExpComp implements Serializable{
 	private String service_id;
-	private Date added;
+	private LocalDate added;
 	private int type;
 
-	public CalendarExpComp(String service_id, Date added, int type) {
+	public CalendarExpComp(String service_id, LocalDate added, int type) {
 		this.service_id = service_id;
 		this.added = added;
 		this.type = type;
@@ -23,11 +25,11 @@ public class CalendarExpComp {
 		this.service_id = service_id;
 	}
 
-	public Date getAdded() {
+	public LocalDate getAdded() {
 		return added;
 	}
 
-	public void setAdded(Date added) {
+	public void setAdded(LocalDate added) {
 		this.added = added;
 	}
 
@@ -37,6 +39,11 @@ public class CalendarExpComp {
 
 	public void setType(int type) {
 		this.type = type;
+	}
+
+	@Override
+	public String toString() {
+		return "'" + service_id + "','" + added + "'," + type;
 	}
 
 }

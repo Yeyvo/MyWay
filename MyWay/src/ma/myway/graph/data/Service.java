@@ -1,6 +1,7 @@
 package ma.myway.graph.data;
 
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -86,8 +87,8 @@ public class Service implements Serializable {
 		return cal.get(Calendar.DAY_OF_WEEK);
 	}
 
-	public static Date datetimeload(String str) {
-		Date result = new Date(1970, 1, 1, 0, 0, 0);
+	public static Time datetimeload(String str) {
+		Time result = new Time( 0, 0, 0);
 
 		String strtmp[] = str.split(":");
 		if (str.equals("24:00:00")) {

@@ -14,6 +14,9 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,21 +31,22 @@ import ma.myway.graph.Edge;
 import ma.myway.graph.Graph;
 import ma.myway.graph.Node;
 import ma.myway.graph.data.Agency;
+import ma.myway.graph.data.CalendarExpComp;
+import ma.myway.graph.data.ServiceComp;
 import ma.myway.graph.data.Stop;
 import ma.myway.graph.data.Stop_Trip;
 import ma.myway.graph.data.Transfert;
+import ma.myway.graph.data.TripsComp;
 import ma.myway.users.User;
 
 public class ClientProcessor implements Runnable {
 
 	private Socket client = null;
-	
-	
+
 	private BufferedOutputStream bos = null;
 	private BufferedWriter buffWriter = null;
 	private ObjectOutputStream objectOutputStream = null;
-	
-	
+
 	private BufferedInputStream reader = null;
 	private BufferedReader buffReader = null;
 	private ObjectInputStream objectInputStream = null;
@@ -69,7 +73,7 @@ public class ClientProcessor implements Runnable {
 //				bos = new BufferedOutputStream(client.getOutputStream());
 //				buffWriter = new BufferedWriter(new OutputStreamWriter(bos, StandardCharsets.UTF_8));
 //				objectOutputStream = new ObjectOutputStream(client.getOutputStream());
-				
+
 //				reader = new BufferedInputStream(client.getInputStream());
 //				buffReader = new BufferedReader(new InputStreamReader(reader, StandardCharsets.UTF_8));
 //				objectInputStream = new ObjectInputStream(client.getInputStream());
@@ -95,8 +99,7 @@ public class ClientProcessor implements Runnable {
 					long a = System.currentTimeMillis();
 					String src = str.nextToken();
 					String dest = str.nextToken();
-					LinkedList<Edge> path = Graph.getGraph().getShortestPath(
-							Graph.getGraph().getNodebyID(src),
+					LinkedList<Edge> path = Graph.getGraph().getShortestPath(Graph.getGraph().getNodebyID(src),
 							Graph.getGraph().getNodebyID(dest));
 					long b = System.currentTimeMillis();
 					Logger.getLogger("BASE").info("path found  time : " + -(a - b) / 1000);
@@ -119,16 +122,29 @@ public class ClientProcessor implements Runnable {
 
 					String username = str.nextToken();
 					String password = str.nextToken();
-					boolean result = DAOFactory.getUserDAO().find(new User(username,password));
-					
-					if(result) {
-						Logger.getLogger("SERVER").info("User {"+username+","+password+"} connected as "+ remote.getAddress().getHostAddress());
-					}else {
-						Logger.getLogger("SERVER").info("User {"+username+","+password+"} failed ip : "+ remote.getAddress().getHostAddress());
-
+					boolean resultadmin = DAOFactory.getUserDAO().find(new User(username, password, "admin"));
+					boolean resultuser = DAOFactory.getUserDAO().find(new User(username, password, "user"));
+					if (resultadmin) {
+						WRITE(resultadmin);
+						WRITE("admin");
+					} else if (resultuser) {
+						WRITE(resultuser);
+						WRITE("user");
+					} else {
+						WRITE(false);
 					}
+					if (resultadmin) {
+						Logger.getLogger("SERVER").info("User {" + username + "," + password + "} (admin) connected as "
+								+ remote.getAddress().getHostAddress());
+					} else if (resultuser) {
 					
-					WRITE(String.valueOf(result));
+						Logger.getLogger("SERVER").info("User {" + username + "," + password + "} (user) connected as "
+								+ remote.getAddress().getHostAddress());
+					} else {
+						Logger.getLogger("SERVER").info("User {" + username + "," + password + "} failed ip : "
+								+ remote.getAddress().getHostAddress());
+					}
+
 				} else if (response.toUpperCase().startsWith("GETSTOPS")) {
 
 					String stop_names = "";
@@ -140,15 +156,13 @@ public class ClientProcessor implements Runnable {
 						Strop_id += n.getStop().getStop_id() + "#";
 					}
 
-
 					WRITE(stop_names);
 					Logger.getLogger("BASE").info(stop_names);
 					WRITE(Strop_id);
 					Logger.getLogger("BASE").info(Strop_id);
 
-
 				}
-				
+
 				/* AGENCY */
 				else if (response.toUpperCase().startsWith("ADDAGENCY")) {
 					boolean res = false;
@@ -161,9 +175,8 @@ public class ClientProcessor implements Runnable {
 					}
 					System.out.println(res);
 					WRITE(res);
-					
-				}
-				else if (response.toUpperCase().startsWith("EDITAGENCY")) {
+
+				} else if (response.toUpperCase().startsWith("EDITAGENCY")) {
 					boolean res = false;
 					try {
 						Agency data = (Agency) objectInputStream.readObject();
@@ -172,9 +185,8 @@ public class ClientProcessor implements Runnable {
 						e.printStackTrace();
 					}
 					WRITE(res);
-					
-				}
-				else if (response.toUpperCase().startsWith("REMOVEAGENCY")) {
+
+				} else if (response.toUpperCase().startsWith("REMOVEAGENCY")) {
 					boolean res = false;
 					try {
 						Agency data = (Agency) objectInputStream.readObject();
@@ -184,11 +196,11 @@ public class ClientProcessor implements Runnable {
 					}
 					WRITE(res);
 
-				}else if (response.toUpperCase().startsWith("SHOWAGENCY")) {
+				} else if (response.toUpperCase().startsWith("SHOWAGENCY")) {
 					Set<Agency> data = DAOFactory.getAgencyDAO().all();
 					WRITE(data);
 				}
-				
+
 				/* STOPS */
 				else if (response.toUpperCase().startsWith("ADDSTOPS")) {
 					boolean res = false;
@@ -199,9 +211,8 @@ public class ClientProcessor implements Runnable {
 						e.printStackTrace();
 					}
 					WRITE(res);
-					
-				}
-				else if (response.toUpperCase().startsWith("EDITSTOPS")) {
+
+				} else if (response.toUpperCase().startsWith("EDITSTOPS")) {
 					boolean res = false;
 					try {
 						Stop data = (Stop) objectInputStream.readObject();
@@ -210,9 +221,8 @@ public class ClientProcessor implements Runnable {
 						e.printStackTrace();
 					}
 					WRITE(res);
-					
-				}
-				else if (response.toUpperCase().startsWith("REMOVESTOPS")) {
+
+				} else if (response.toUpperCase().startsWith("REMOVESTOPS")) {
 					boolean res = false;
 					try {
 						Stop data = (Stop) objectInputStream.readObject();
@@ -221,7 +231,7 @@ public class ClientProcessor implements Runnable {
 						e.printStackTrace();
 					}
 					WRITE(res);
-				}else if (response.toUpperCase().startsWith("SHOWSTOPS")) {
+				} else if (response.toUpperCase().startsWith("SHOWSTOPS")) {
 					Set<Stop> data = DAOFactory.getStopDAO().all();
 					WRITE(data);
 				}
@@ -235,9 +245,8 @@ public class ClientProcessor implements Runnable {
 						e.printStackTrace();
 					}
 					WRITE(res);
-					
-				}
-				else if (response.toUpperCase().startsWith("EDITTRANSFERS")) {
+
+				} else if (response.toUpperCase().startsWith("EDITTRANSFERT")) {
 					boolean res = false;
 					try {
 						Transfert data = (Transfert) objectInputStream.readObject();
@@ -246,9 +255,8 @@ public class ClientProcessor implements Runnable {
 						e.printStackTrace();
 					}
 					WRITE(res);
-					
-				}
-				else if (response.toUpperCase().startsWith("REMOVETRANSFERS")) {
+
+				} else if (response.toUpperCase().startsWith("REMOVETRANSFERT")) {
 					boolean res = false;
 					try {
 						Transfert data = (Transfert) objectInputStream.readObject();
@@ -257,12 +265,11 @@ public class ClientProcessor implements Runnable {
 						e.printStackTrace();
 					}
 					WRITE(res);
-				}else if (response.toUpperCase().startsWith("SHOWTRANSFERS")) {
+				} else if (response.toUpperCase().startsWith("SHOWTRANSFERT")) {
 					Set<Transfert> data = DAOFactory.getTransfertDAO().all();
 					WRITE(data);
 				}
-				
-				
+
 				/* StopTrip / StopTimes */
 				else if (response.toUpperCase().startsWith("ADDSTOPTIMES")) {
 					boolean res = false;
@@ -273,9 +280,8 @@ public class ClientProcessor implements Runnable {
 						e.printStackTrace();
 					}
 					WRITE(res);
-					
-				}
-				else if (response.toUpperCase().startsWith("EDITSTOPTIMES")) {
+
+				} else if (response.toUpperCase().startsWith("EDITSTOPTIMES")) {
 					boolean res = false;
 					try {
 						Stop_Trip data = (Stop_Trip) objectInputStream.readObject();
@@ -284,9 +290,8 @@ public class ClientProcessor implements Runnable {
 						e.printStackTrace();
 					}
 					WRITE(res);
-					
-				}
-				else if (response.toUpperCase().startsWith("REMOVESTOPTIMES")) {
+
+				} else if (response.toUpperCase().startsWith("REMOVESTOPTIMES")) {
 					boolean res = false;
 					try {
 						Stop_Trip data = (Stop_Trip) objectInputStream.readObject();
@@ -295,58 +300,148 @@ public class ClientProcessor implements Runnable {
 						e.printStackTrace();
 					}
 					WRITE(res);
-				}else if (response.toUpperCase().startsWith("SHOWSTOPTIMES")) {
+				} else if (response.toUpperCase().startsWith("SHOWSTOPTIMES")) {
 					Set<Stop_Trip> data = DAOFactory.getStopTripDAO().all();
 					WRITE(data);
 				}
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
+
+				/* Calendar / Services */
+				else if (response.toUpperCase().startsWith("ADDACALENDAR")) {
+					boolean res = false;
+					try {
+						ServiceComp data = (ServiceComp) objectInputStream.readObject();
+						res = DAOFactory.getServiceDAO().createComp(data);
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+					WRITE(res);
+
+				} else if (response.toUpperCase().startsWith("EDITACALENDAR")) {
+					boolean res = false;
+					try {
+						ServiceComp data = (ServiceComp) objectInputStream.readObject();
+						res = DAOFactory.getServiceDAO().updateComp(data, data);
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+					WRITE(res);
+
+				} else if (response.toUpperCase().startsWith("REMOVEACALENDAR")) {
+					boolean res = false;
+					StringTokenizer str = new StringTokenizer(response, " ");
+					str.nextToken();
+					ServiceComp data = new ServiceComp(str.nextToken(), 0, 0, 0, 0, 0, 0, 0, null, null);
+					res = DAOFactory.getServiceDAO().deleteComp(data);
+					WRITE(res);
+				} else if (response.toUpperCase().startsWith("SHOWACALENDAR")) {
+					Set<ServiceComp> data = DAOFactory.getServiceDAO().allSet();
+					WRITE(data);
+				}
+
+				/* TRIPS */
+				else if (response.toUpperCase().startsWith("ADDTRIPS")) {
+					boolean res = false;
+					try {
+						TripsComp data = (TripsComp) objectInputStream.readObject();
+						res = DAOFactory.getRoutesDAO().createComp(data);
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+					WRITE(res);
+
+				} else if (response.toUpperCase().startsWith("EDITTRIPS")) {
+					boolean res = false;
+					try {
+						TripsComp data = (TripsComp) objectInputStream.readObject();
+						res = DAOFactory.getRoutesDAO().updateComp(data, data);
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+					WRITE(res);
+
+				} else if (response.toUpperCase().startsWith("REMOVETRIPS")) {
+					boolean res = false;
+					try {
+						TripsComp data = (TripsComp) objectInputStream.readObject();
+						res = DAOFactory.getRoutesDAO().deleteComp(data);
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+					WRITE(res);
+				} else if (response.toUpperCase().startsWith("SHOWTRIPS")) {
+					Set<TripsComp> data = DAOFactory.getRoutesDAO().allSet();
+					WRITE(data);
+				}
+
+				/* CALENDARDATES / CalendarExpComp */
+				else if (response.toUpperCase().startsWith("ADDCALENDARDATES")) {
+					boolean res = false;
+					try {
+						CalendarExpComp data = (CalendarExpComp) objectInputStream.readObject();
+						res = DAOFactory.getCalendarExpDAO().createComp(data);
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+					WRITE(res);
+
+				} else if (response.toUpperCase().startsWith("EDITCALENDARDATES")) {
+					boolean res = false;
+					try {
+						CalendarExpComp data = (CalendarExpComp) objectInputStream.readObject();
+						res = DAOFactory.getCalendarExpDAO().updateComp(data, data);
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+					WRITE(res);
+
+				} else if (response.toUpperCase().startsWith("REMOVECALENDARDATES")) {
+					boolean res = false;
+					StringTokenizer str = new StringTokenizer(response, " ");
+					str.nextToken();
+
+					res = DAOFactory.getCalendarExpDAO()
+							.deleteComp(new CalendarExpComp(str.nextToken(), LocalDate.parse(str.nextToken()), 0));
+					WRITE(res);
+				} else if (response.toUpperCase().startsWith("SHOWCALENDARDATES")) {
+					Set<CalendarExpComp> data = DAOFactory.getCalendarExpDAO().allSet();
+					WRITE(data);
+				}
+
+				/* USERS */
+				else if (response.toUpperCase().startsWith("ADDUSER")) {
+					boolean res = false;
+					try {
+						User data = (User) objectInputStream.readObject();
+						res = DAOFactory.getUserDAO().create(data);
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+					WRITE(res);
+
+				} else if (response.toUpperCase().startsWith("EDITUSER")) {
+					boolean res = false;
+					try {
+						User data = (User) objectInputStream.readObject();
+						res = DAOFactory.getUserDAO().update(data, data);
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+					WRITE(res);
+
+				} else if (response.toUpperCase().startsWith("REMOVEUSER")) {
+					boolean res = false;
+					try {
+						User data = (User) objectInputStream.readObject();
+						res = DAOFactory.getUserDAO().delete(data);
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+					WRITE(res);
+				} else if (response.toUpperCase().startsWith("SHOWUSER")) {
+					Set<User> data = DAOFactory.getUserDAO().all();
+					WRITE(data);
+				}
+
 				else {
 					toSend = "UNKOWN Command ";
 					WRITE(toSend);
@@ -373,7 +468,7 @@ public class ClientProcessor implements Runnable {
 
 	public static String JsonParse(LinkedList<Edge> path, Node src) throws IOException {
 		List<Stop> stops = new LinkedList<>();
-		if(path != null)
+		if (path != null)
 			stops = Edge.edgesToStops(path);
 
 		StringWriter stringWriter = new StringWriter();
@@ -392,15 +487,15 @@ public class ClientProcessor implements Runnable {
 			jsonWriter.name("desc").value(stop.getName() + " " + stop.getDesc());
 			jsonWriter.endObject();
 		}
-		
-		if(path == null) {
+
+		if (path == null) {
 			jsonWriter.beginObject();
 			jsonWriter.name("lat").value(src.getStop().getLat());
 			jsonWriter.name("lon").value(src.getStop().getLon());
 			jsonWriter.name("desc").value(src.getStop().getName() + " " + src.getStop().getDesc());
 			jsonWriter.endObject();
 		}
-		
+
 		jsonWriter.endArray();
 		jsonWriter.endObject();
 		jsonWriter.close();
@@ -409,25 +504,23 @@ public class ClientProcessor implements Runnable {
 
 	}
 
-
 	private String read(int i, Boolean isconfirmation) throws IOException {
-		
+
 //		String response = buffReader.readLine();
 //		
 //		Logger.getLogger("SERVER").info("\tdata : " + response);
 //		
 		String response = Testread(i, isconfirmation);
-				
+
 		return response;
 	}
-	
+
 	private String Testread(int i, Boolean isconfirmation) throws IOException {
 
 		String response = null;
 		try {
 			response = (String) objectInputStream.readObject();
 		} catch (ClassNotFoundException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -453,6 +546,5 @@ public class ClientProcessor implements Runnable {
 //		buffWriter.flush();
 //
 //	}
-
 
 }

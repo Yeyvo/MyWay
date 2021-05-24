@@ -53,14 +53,12 @@ public class UILogging implements ViewMaker {
 			@Override
 			public void handle(Event event) {
 				if (!username.getText().isBlank() && !pswd.getText().isBlank()) {
-					//if (Client.conn(username.getText(), pswd.getText())) {
-						stage.setScene(Main.getScenes().get(SceneName.ADMINWELC));
-						stage.centerOnScreen();
-
-					//} else {
-						//Alert alert = new Alert(AlertType.ERROR, "USERNAME / PASSWORD invalid");
-						//alert.show();
-					//}
+					if (Client.conn(username.getText(), pswd.getText())) {
+						Main.returnSceneAdminWelc();
+					} else {
+						Alert alert = new Alert(AlertType.ERROR, "USERNAME / PASSWORD invalid");
+						alert.show();
+					}
 				}
 			}
 		});

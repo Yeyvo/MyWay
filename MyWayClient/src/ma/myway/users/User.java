@@ -1,8 +1,9 @@
 package ma.myway.users;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class User {
+public class User implements Serializable{
 
 	private String name;
 	private String password;
@@ -13,6 +14,13 @@ public class User {
 	public User(String name, String password) {
 		this.name = name;
 		this.password = password;
+		this.perm = "user";
+	}
+
+	public User(String name, String password, String userPermission) {
+		this.name = name;
+		this.password = password;
+		this.perm = userPermission;
 	}
 
 	public User(int id, String name, String password, Date creation, String lvl) {
@@ -67,6 +75,5 @@ public class User {
 	public void setPerm(String perm) {
 		this.perm = perm;
 	}
-	
 
 }

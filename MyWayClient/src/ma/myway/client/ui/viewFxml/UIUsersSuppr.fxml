@@ -13,12 +13,12 @@
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <Label layoutX="31.0" layoutY="89.0" text="Id">
+      <Label layoutX="193.0" layoutY="126.0" text="Id">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField fx:id="usersIdField" layoutX="128.0" layoutY="85.0" />
+      <TextField fx:id="usersIdField" layoutX="290.0" layoutY="122.0" />
       <Button layoutX="174.0" layoutY="218.0" mnemonicParsing="false" onAction="#confirmSupprUsers" prefHeight="25.0" prefWidth="104.0" styleClass="btncenter" text="Confirmer" />
       <Button layoutX="377.0" layoutY="218.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="104.0" styleClass="btncenter" text="Clear" />
    </children>

@@ -15,7 +15,6 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.logging.FileHandler;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
@@ -32,7 +31,7 @@ import ma.myway.client.network.Client;
 import ma.myway.client.ui.model.SceneName;
 import ma.myway.client.ui.view.UIBase;
 import ma.myway.client.ui.view.UILogging;
-import ma.myway.graph.data.Agency;
+import ma.myway.users.User;
 
 public class Main extends Application {
 
@@ -44,6 +43,7 @@ public class Main extends Application {
 	public static Client client = null;
 	public static String path = System.getProperty("user.home") + "\\AppData\\Roaming\\WebClient\\";
 	private ClassLoader classLoader = getClass().getClassLoader();
+	public static User user = new User("","","");
 
 	public static void main(String[] args) {
 		Logger loggerServer = Logger.getLogger("CLIENT");
@@ -104,7 +104,7 @@ public class Main extends Application {
 		scenes.put(SceneName.BASE, new UIBase().getScene());
 		scenes.put(SceneName.LOGING, new UILogging(primaryStage).getScene());
 		scenes.put(SceneName.ADMIN, returnSceneAdmin());
-		scenes.put(SceneName.ADMINWELC, returnSceneAdminWelc());
+//		scenes.put(SceneName.ADMINWELC, returnSceneAdminWelc());
 
 		primaryStage.getIcons().add(new Image("img/logo.png"));
 		primaryStage.setScene(scenes.get(SceneName.LOGING));
@@ -190,20 +190,28 @@ public class Main extends Application {
 		}
 	}
 
-	public Scene returnSceneAdminWelc() {
-		try {
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(Main.class.getResource("viewFxml/UIAdminWelcome.fxml"));
-			mainLayout2 = loader.load();
-			Scene scene = new Scene(mainLayout2);
-			return (scene);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return (null);
+	public static Scene returnSceneAdminWelc() {
+//		try {
+//			FXMLLoader loader = new FXMLLoader();
+//			loader.setLocation(Main.class.getResource("viewFxml/UIAdminWelcome.fxml"));
+//			mainLayout2 = loader.load();
+//			Scene scene = new Scene(mainLayout2);
+//			return (scene);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return (null);
+//		}
+		
+		Scene scene = null;
+		if(user.getPerm().equals("admin")) {
+			scene = returnSceneAdmin();
+		} else {
+			 openBase();
 		}
+		return scene;
 	}
 
-	public Scene returnSceneAdmin() {
+	public static Scene returnSceneAdmin() {
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(Main.class.getResource("viewFxml/UIAdmin.fxml"));
@@ -259,6 +267,8 @@ public class Main extends Application {
 				loader.setLocation(Main.class.getResource("viewFxml/UITransfersAjout.fxml"));
 				Pane transfersAjout = loader.load();
 				mainLayout1.setCenter(transfersAjout);
+//				ShowSceneController.loadTransfertCheck();
+				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -595,5 +605,24 @@ public class Main extends Application {
 		stage.setTitle("MyWay");
 		stage.show();
 	}
+
+	public static void openBase() {
+		Stage stage = new Stage();
+		stage.setScene(scenes.get(SceneName.BASE));
+		stage.getIcons().add(new Image("img/logo.png"));
+		stage.setTitle("MyWay");
+		stage.show();
+		
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public static void setUser(User user) {
+		user = user;
+	}
+	
+	
 	
 }

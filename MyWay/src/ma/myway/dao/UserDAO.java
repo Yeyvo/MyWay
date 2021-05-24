@@ -42,8 +42,8 @@ public class UserDAO extends DAO<User> {
 		Statement stmt = null;
 		try {
 			stmt = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			ResultSet result = stmt.executeQuery("select * from users where username = \"" + data.getName()
-					+ "\" and password = \"" + data.getPassword() + "\"");
+			ResultSet result = stmt.executeQuery("select * from users where username = '" + data.getName()
+					+ "' and password = '" + data.getPassword() + "' and permission= '"+ data.getPerm() +"'");
 
 			int size = 0;
 			if (result != null) {
@@ -100,7 +100,6 @@ public class UserDAO extends DAO<User> {
 	@Override
 	@Deprecated
 	public User find(String id) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

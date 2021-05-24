@@ -1,6 +1,8 @@
 package ma.myway.graph.data;
 
-public class Transfert {
+import java.io.Serializable;
+
+public class Transfert implements Serializable{
 
 	String src_stop_id;
 	String dest_stop_id;

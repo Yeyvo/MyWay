@@ -12,10 +12,10 @@ public class TripsComp implements Serializable {
 		this.route_id = route_id;
 		this.service_id = service_id;
 		this.trip_id = trip_id;
-		this.trip_headsign = trip_headsign;
+		this.trip_headsign = "null";
 		this.trip_short_name = trip_short_name;
 		this.direction_id = direction_id;
-		this.shape_id = shape_id;
+		this.shape_id = "null";
 	}
 
 	public String getRoute_id() {
@@ -73,5 +73,15 @@ public class TripsComp implements Serializable {
 	public void setShape_id(String shape_id) {
 		this.shape_id = shape_id;
 	}
+
+	@Override
+	public String toString() {
+		return "\'"+route_id + "\',\'" + service_id + "\',\'" + trip_id + "\'," + trip_headsign + "," + trip_short_name != null? ("\'" + trip_short_name + "\'") : ("null")  + ",\'"
+				+ direction_id + "\'," + shape_id + "";
+	}
+	
+	
+	
+	
 
 }

@@ -101,6 +101,25 @@ public class ServiceDAO extends DAO<Service> {
 		}
 		return false;
 	}
+	
+	public boolean createComp(ServiceComp obj) {
+		Statement stmt = null;
+		try {
+			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+			int result = stmt.executeUpdate("INSERT INTO calendar VALUES(" + obj.toString() + ")");
+			System.out.println(result + " Row affected ! ");
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
 
 	
 	public Set<ServiceComp> allSet() {
@@ -108,9 +127,9 @@ public class ServiceDAO extends DAO<Service> {
 		Statement stmt = null;
 		try {
 			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-			ResultSet result = stmt.executeQuery("SELECT * FROM calendar_dates");
+			ResultSet result = stmt.executeQuery("SELECT * FROM calendar");
 			while (result.next()) {
-				data.add(new ServiceComp(result.getString(1), result.getInt(2), result.getInt(3), result.getInt(4), result.getInt(5), result.getInt(6), result.getInt(7), result.getInt(8), result.getDate(9), result.getDate(10)));
+				data.add(new ServiceComp(result.getString(1), result.getInt(2), result.getInt(3), result.getInt(4), result.getInt(5), result.getInt(6), result.getInt(7), result.getInt(8), result.getDate(9).toLocalDate(), result.getDate(10).toLocalDate()));
 			}
 			result.close();
 		} catch (SQLException e) {
@@ -145,12 +164,40 @@ public class ServiceDAO extends DAO<Service> {
 		}
 		return (false);
 	}
+	public boolean deleteComp(ServiceComp obj) {// fait
+		Statement stmt = null;
+		try {
+			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+			int result = stmt.executeUpdate("DELETE FROM calendar WHERE service_id = " + obj.getService_id());
+			System.out.println(result + " Row affected !");
+			return (true);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return (false);
+	}
 
 	@Override
 	public boolean update(Service oldobj, Service newobj) {// works
 		try {
 			delete(oldobj);
 			create(newobj);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	public boolean updateComp(ServiceComp oldobj, ServiceComp newobj) {// works
+		try {
+			deleteComp(oldobj);
+			createComp(newobj);
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -39,6 +39,6 @@
       <TextField fx:id="minTransferTimeField" layoutX="497.0" layoutY="133.0" />
       <Button layoutX="186.0" layoutY="184.0" mnemonicParsing="false" onAction="#confirmSupprTransfers" prefHeight="25.0" prefWidth="91.0" styleClass="btncenter" text="Confirmer" />
       <Button layoutX="406.0" layoutY="184.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0" styleClass="btncenter" text="Clear" />
-      <ChoiceBox fx:id="transferTypeField" layoutX="128.0" layoutY="133.0" prefHeight="25.0" prefWidth="149.0" />
+      <TextField fx:id="transferTypeField" layoutX="128.0" layoutY="133.0" prefHeight="25.0" prefWidth="149.0" />
    </children>
 </Pane>

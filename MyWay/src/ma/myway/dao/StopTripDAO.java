@@ -37,7 +37,7 @@ public class StopTripDAO extends DAO<Stop_Trip> {
 			stmt.setFetchSize(Integer.MIN_VALUE);
 			// stmt.setFetchDirection (ResultSet.FETCH_REVERSE);
 			ResultSet result = stmt
-					.executeQuery("SELECT trip_id,arrival_time,departure_time,stop_id,stop_sequence FROM stop_times ");
+					.executeQuery("SELECT trip_id,arrival_time,departure_time,stop_id,stop_sequence FROM stop_times limit 20000");
 
 			// System.out.println("Starting to retrieve data. Memory Used: " + System.);
 			while (result.next()) {

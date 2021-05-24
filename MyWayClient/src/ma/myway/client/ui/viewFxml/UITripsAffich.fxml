@@ -19,10 +19,8 @@
             <TableColumn fx:id="tripsRouteIdColumn" prefWidth="75.0" text="Route Id" />
             <TableColumn fx:id="tripsServiceIdColumn" prefWidth="75.0" text="Service Id" />
             <TableColumn fx:id="tripsTripIdColumn" prefWidth="75.0" text="Trip Id" />
-            <TableColumn fx:id="tripsHeadSignColumn" prefWidth="75.0" text="Headsign" />
             <TableColumn fx:id="tripsShortNameColumn" prefWidth="75.0" text="Short Name" />
             <TableColumn fx:id="tripsDirectionIdColumn" prefWidth="75.0" text="Direction Id" />
-            <TableColumn fx:id="tripsShapeIdColumn" prefWidth="75.0" text="Shape Id" />
          </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

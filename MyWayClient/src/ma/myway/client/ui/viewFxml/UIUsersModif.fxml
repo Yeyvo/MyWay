@@ -13,24 +13,18 @@
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <Label layoutX="33.0" layoutY="83.0" text="Id">
+      <Label layoutX="216.0" layoutY="83.0" text="Id">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
-      <TextField fx:id="usersIdField" layoutX="130.0" layoutY="79.0" />
+      <TextField fx:id="usersIdField" layoutX="313.0" layoutY="79.0" />
       <Label layoutX="33.0" layoutY="129.0" text="Username">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>
       </Label>
       <TextField fx:id="usersUsernameField" layoutX="130.0" layoutY="125.0" />
-      <Label layoutX="335.0" layoutY="83.0" text="DateCreation">
-         <font>
-            <Font name="Arial Black" size="12.0" />
-         </font>
-      </Label>
-      <TextField fx:id="usersDateCreationField" layoutX="451.0" layoutY="79.0" />
       <Label layoutX="335.0" layoutY="129.0" text="Password">
          <font>
             <Font name="Arial Black" size="12.0" />

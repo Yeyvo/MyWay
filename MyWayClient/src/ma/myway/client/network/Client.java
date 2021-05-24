@@ -8,7 +8,7 @@ import java.io.PrintWriter;
 import java.io.StringReader;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -213,7 +213,7 @@ public class Client {
 
 		try {
 			WRITE("removeStops");
-
+			objectOutputStream.writeObject(stop);
 			return (boolean) READ();
 
 		} catch (IOException e) {
@@ -272,7 +272,7 @@ public class Client {
 
 		try {
 			WRITE("removeTransfert");
-
+			objectOutputStream.writeObject(trans);
 			return (boolean) READ();
 
 		} catch (IOException e) {
@@ -331,6 +331,7 @@ public class Client {
 
 		try {
 			WRITE("removeStopTimes");
+			objectOutputStream.writeObject(stoptrip);
 
 			return (boolean) READ();
 
@@ -359,7 +360,7 @@ public class Client {
 	public static boolean addCalendar(ServiceComp cal) {
 
 		try {
-			WRITE("addCalendar");
+			WRITE("addaCalendar");
 			objectOutputStream.writeObject(cal);
 
 			return (boolean) READ();
@@ -374,7 +375,7 @@ public class Client {
 	public static boolean editCalendar(ServiceComp cal) {
 
 		try {
-			WRITE("editCalendar");
+			WRITE("editaCalendar");
 			objectOutputStream.writeObject(cal);
 
 			return (boolean) READ();
@@ -389,8 +390,7 @@ public class Client {
 	public static boolean removeCalendar(String id) {
 
 		try {
-			WRITE("removeCalendar");
-
+			WRITE("removeaCalendar "+id);
 			return (boolean) READ();
 
 		} catch (IOException e) {
@@ -403,7 +403,7 @@ public class Client {
 	public static Set<ServiceComp> showCalendar() {
 		Set<ServiceComp> lst = null;
 		try {
-			WRITE("showCalendar");
+			WRITE("showaCalendar");
 			lst = (Set<ServiceComp>) READ();
 			return lst;
 
@@ -450,6 +450,7 @@ public class Client {
 
 		try {
 			WRITE("removeTrips");
+			objectOutputStream.writeObject(trip);
 
 			return (boolean) READ();
 
@@ -506,10 +507,10 @@ public class Client {
 		return false;
 	}
 
-	public static boolean removeCalendarDates(String id,Date date) {
+	public static boolean removeCalendarDates(String id,LocalDate date) {
 
 		try {
-			WRITE("removeCalendarDates");
+			WRITE("removeCalendarDates "+id + " "+ date);
 
 			return (boolean) READ();
 
@@ -539,6 +540,7 @@ public class Client {
 
 		try {
 			WRITE("addUser");
+			objectOutputStream.writeObject(new User(username, userPassword ,userPermission));
 
 			return (boolean) READ();
 
@@ -568,6 +570,7 @@ public class Client {
 
 		try {
 			WRITE("removeUser");
+			objectOutputStream.writeObject(new User(Integer.parseInt(id), "", "", null, ""));
 
 			return (boolean) READ();
 
@@ -593,6 +596,21 @@ public class Client {
 	}
 	
 	public static boolean conn(String username, String password) {
+
+		boolean res = dataconn(username,password);
+		if(res) {
+			String perm = "user";
+			try {
+				perm = (String) READ() ;
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			Main.setUser(new User(username,password, perm));
+		}
+		return res;
+	}
+	
+	public static boolean dataconn(String username, String password) {
 		try {
 			WRITE("CONN " + username + " " + password);
 

@@ -1,12 +1,18 @@
 package ma.myway.client.ui.viewFxml;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.Observable;
 import java.util.Set;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -32,6 +38,7 @@ public class ShowSceneController {
 	 */
 
 	private Main main = new Main();
+//	static ObservableList<Integer> datatransferTypeField = FXCollections.observableArrayList();
 
 	/*
 	 * @FXML private ChoiceBox OptionBox;
@@ -40,6 +47,11 @@ public class ShowSceneController {
 	@FXML
 	private void showAjout() throws IOException {
 		main.showAjouterScene();
+	}
+	
+	@FXML
+	private void openBase() throws IOException {
+		main.openBase();
 	}
 
 	@FXML
@@ -238,13 +250,10 @@ public class ShowSceneController {
 
 	@FXML
 	private javafx.scene.control.TextField usersPasswordField;
-	
+
 	@FXML
 	private javafx.scene.control.TextField usersPermissionField;
 
-	@FXML
-	private javafx.scene.control.DatePicker usersDateCreationField;
-	
 	@FXML
 	private javafx.scene.control.TableView usersAllTable;
 
@@ -259,7 +268,7 @@ public class ShowSceneController {
 
 	@FXML
 	private javafx.scene.control.TableColumn usersPermissionColumn;
-	
+
 	@FXML
 	private javafx.scene.control.TableColumn usersDateCreationColumn;
 
@@ -268,8 +277,8 @@ public class ShowSceneController {
 		String usersUsername = usersUsernameField.getText();
 		String usersPassword = usersPasswordField.getText();
 		String usersPermission = usersPermissionField.getText();
-		
-		if (!Client.addUser(usersUsername,usersPassword,usersPermission)) {
+
+		if (!Client.addUser(usersUsername, usersPassword, usersPermission)) {
 			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
 			alert.show();
 		}
@@ -280,13 +289,11 @@ public class ShowSceneController {
 		String usersIdString = usersIdField.getText();
 		String usersUsername = usersUsernameField.getText();
 		String usersPassword = usersPasswordField.getText();
-		LocalDate usersDateCreationLocal = usersDateCreationField.getValue();
 		String usersPermission = usersPermissionField.getText();
 		int usersId = Integer.parseInt(usersIdString);
-		Instant instant = Instant.from(usersDateCreationLocal.atStartOfDay(ZoneId.systemDefault()));
-		Date usersDateCreation = Date.from(instant);
-		User user = new User(usersId,usersUsername, usersPassword, usersDateCreation, usersPermission);
-		
+
+		User user = new User(usersId, usersUsername, usersPassword, new Date(), usersPermission);
+
 		if (!Client.editUser(user)) {
 			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
 			alert.show();
@@ -296,13 +303,13 @@ public class ShowSceneController {
 	@FXML
 	private void confirmSupprUsers() {
 		String usersId = usersIdField.getText();
-		
+
 		if (!Client.removeUser(usersId)) {
 			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
 			alert.show();
 		}
 	}
-	
+
 	@FXML
 	private void confirmShowUser() {
 		Set<User> data = Client.showUser();
@@ -381,7 +388,7 @@ public class ShowSceneController {
 
 	@FXML
 	private javafx.scene.control.TextField parentStationField;
-	
+
 	@FXML
 	private javafx.scene.control.TableView stopsAllTable;
 
@@ -396,16 +403,16 @@ public class ShowSceneController {
 
 	@FXML
 	private javafx.scene.control.TableColumn stopsDescriptionColumn;
-	
+
 	@FXML
 	private javafx.scene.control.TableColumn stopsLatitudeColumn;
-	
+
 	@FXML
 	private javafx.scene.control.TableColumn stopsLongitudeColumn;
-	
+
 	@FXML
 	private javafx.scene.control.TableColumn stopsLocationTypeColumn;
-	
+
 	@FXML
 	private javafx.scene.control.TableColumn stopsParentStationColumn;
 
@@ -474,7 +481,7 @@ public class ShowSceneController {
 			alert.show();
 		}
 	}
-	
+
 	@FXML
 	private void confirmShowStops() {
 		Set<Stop> data = Client.showStops();
@@ -495,10 +502,10 @@ public class ShowSceneController {
 	private javafx.scene.control.TextField tripIdField;
 
 	@FXML
-	private javafx.scene.control.DatePicker arrivalTimeField;
+	private javafx.scene.control.TextField arrivalTimeField;
 
 	@FXML
-	private javafx.scene.control.DatePicker departureTimeField;
+	private javafx.scene.control.TextField departureTimeField;
 
 	@FXML
 	private javafx.scene.control.TextField stopSequenceField;
@@ -508,7 +515,7 @@ public class ShowSceneController {
 
 	@FXML
 	private javafx.scene.control.TextField shapeDistanceTravelledField;
-	
+
 	@FXML
 	private javafx.scene.control.TableView stopTimesAllTable;
 
@@ -531,17 +538,19 @@ public class ShowSceneController {
 	private void confirmAjoutStopTimes() {
 		String stopId = stopIdField.getText();
 		String tripId = tripIdField.getText();
-		LocalDate arrivalTimeLocal = arrivalTimeField.getValue();
-		LocalDate departureTimeLocal = departureTimeField.getValue();
+		String arrivalTimeLocal = arrivalTimeField.getText();
+		String departureTimeLocal = departureTimeField.getText();
 		String stopSequenceString = stopSequenceField.getText();
 		String stopHeadsign = stopHeadsignField.getText();
 		String shapeDistanceTravelled = shapeDistanceTravelledField.getText();
-		Instant instant = Instant.from(arrivalTimeLocal.atStartOfDay(ZoneId.systemDefault()));
-		Date arrivalTime = Date.from(instant);
-		instant = Instant.from(departureTimeLocal.atStartOfDay(ZoneId.systemDefault()));
-		Date departureTime = Date.from(instant);
+		DateFormat formatter = new SimpleDateFormat("HH:mm:ss");
 		int stopSequence = Integer.parseInt(stopSequenceString);
-		Stop_Trip stpt = new Stop_Trip(tripId, stopId, arrivalTime, departureTime, stopSequence);
+		Stop_Trip stpt = null;
+		try {
+			stpt = new Stop_Trip(tripId, stopId, formatter.parse(arrivalTimeLocal), formatter.parse(departureTimeLocal), stopSequence);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		if (!Client.addStopTimes(stpt)) {
 			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
 			alert.show();
@@ -552,19 +561,20 @@ public class ShowSceneController {
 	private void confirmModifStopTimes() {
 		String stopId = stopIdField.getText();
 		String tripId = tripIdField.getText();
-		LocalDate arrivalTimeLocal = arrivalTimeField.getValue();
-		LocalDate departureTimeLocal = departureTimeField.getValue();
+		String arrivalTimeLocal = arrivalTimeField.getText();
+		String departureTimeLocal = departureTimeField.getText();
 		String stopSequenceString = stopSequenceField.getText();
 		String stopHeadsign = stopHeadsignField.getText();
 		String shapeDistanceTravelled = shapeDistanceTravelledField.getText();
-		Instant instant = Instant.from(arrivalTimeLocal.atStartOfDay(ZoneId.systemDefault()));
-		Date date = Date.from(instant);
-		Date arrivalTime = date;
-		instant = Instant.from(departureTimeLocal.atStartOfDay(ZoneId.systemDefault()));
-		date = Date.from(instant);
-		Date departureTime = date;
+
+		DateFormat formatter = new SimpleDateFormat("HH:mm:ss");
 		int stopSequence = Integer.parseInt(stopSequenceString);
-		Stop_Trip stpt = new Stop_Trip(tripId, stopId, arrivalTime, departureTime, stopSequence);
+		Stop_Trip stpt = null;
+		try {
+			stpt = new Stop_Trip(tripId, stopId, formatter.parse(arrivalTimeLocal), formatter.parse(departureTimeLocal), stopSequence);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		if (!Client.editStopTimes(stpt)) {
 			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
 			alert.show();
@@ -575,19 +585,20 @@ public class ShowSceneController {
 	private void confirmSupprStopTimes() {
 		String stopId = stopIdField.getText();
 		String tripId = tripIdField.getText();
-		LocalDate arrivalTimeLocal = arrivalTimeField.getValue();
-		LocalDate departureTimeLocal = departureTimeField.getValue();
+		String arrivalTimeLocal = arrivalTimeField.getText();
+		String departureTimeLocal = departureTimeField.getText();
 		String stopSequenceString = stopSequenceField.getText();
 		String stopHeadsign = stopHeadsignField.getText();
 		String shapeDistanceTravelled = shapeDistanceTravelledField.getText();
-		Instant instant = Instant.from(arrivalTimeLocal.atStartOfDay(ZoneId.systemDefault()));
-		Date date = Date.from(instant);
-		Date arrivalTime = date;
-		instant = Instant.from(departureTimeLocal.atStartOfDay(ZoneId.systemDefault()));
-		date = Date.from(instant);
-		Date departureTime = date;
+
+		DateFormat formatter = new SimpleDateFormat("HH:mm:ss");
 		int stopSequence = Integer.parseInt(stopSequenceString);
-		Stop_Trip stpt = new Stop_Trip(tripId, stopId, arrivalTime, departureTime, stopSequence);
+		Stop_Trip stpt = null;
+		try {
+			stpt = new Stop_Trip(tripId, stopId, formatter.parse(arrivalTimeLocal), formatter.parse(departureTimeLocal), stopSequence);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		if (!Client.removeStopTimes(stpt)) {
 			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
 			alert.show();
@@ -613,11 +624,11 @@ public class ShowSceneController {
 	private javafx.scene.control.TextField toStopIdField;
 
 	@FXML
-	private javafx.scene.control.ChoiceBox transferTypeField;
+	private javafx.scene.control.TextField transferTypeField;
 
 	@FXML
 	private javafx.scene.control.TextField minTransferTimeField;
-	
+
 	@FXML
 	private javafx.scene.control.TableView transfersAllTable;
 
@@ -633,12 +644,11 @@ public class ShowSceneController {
 	@FXML
 	private javafx.scene.control.TableColumn transfersTimeColumn;
 
-
 	@FXML
 	private void confirmAjoutTransfers() {
 		String fromStopId = fromStopIdField.getText();
 		String toStopId = toStopIdField.getText();
-		int transferType = (int) transferTypeField.getValue();
+		int transferType = Integer.parseInt( transferTypeField.getText());
 		String minTransferTimeString = minTransferTimeField.getText();
 		int minTransferTime = Integer.parseInt(minTransferTimeString);
 		Transfert trans = new Transfert(fromStopId, toStopId, transferType, minTransferTime);
@@ -652,7 +662,7 @@ public class ShowSceneController {
 	private void confirmModifTransfers() {
 		String fromStopId = fromStopIdField.getText();
 		String toStopId = toStopIdField.getText();
-		int transferType = (int) transferTypeField.getValue();
+		int transferType = Integer.parseInt( transferTypeField.getText());
 		String minTransferTimeString = minTransferTimeField.getText();
 		int minTransferTime = Integer.parseInt(minTransferTimeString);
 		Transfert trans = new Transfert(fromStopId, toStopId, transferType, minTransferTime);
@@ -666,7 +676,7 @@ public class ShowSceneController {
 	private void confirmSupprTransfers() {
 		String fromStopId = fromStopIdField.getText();
 		String toStopId = toStopIdField.getText();
-		int transferType = (int) transferTypeField.getValue();
+		int transferType = Integer.parseInt( transferTypeField.getText());
 		String minTransferTimeString = minTransferTimeField.getText();
 		int minTransferTime = Integer.parseInt(minTransferTimeString);
 		Transfert trans = new Transfert(fromStopId, toStopId, transferType, minTransferTime);
@@ -675,7 +685,7 @@ public class ShowSceneController {
 			alert.show();
 		}
 	}
-	
+
 	@FXML
 	private void confirmShowTransfers() {
 		Set<Transfert> data = Client.showTransfers();
@@ -693,15 +703,11 @@ public class ShowSceneController {
 	@FXML
 	private javafx.scene.control.TextField directionIdField;
 
-	@FXML
-	private javafx.scene.control.TextField shapeIdField;
 
 	@FXML
 	private javafx.scene.control.TextField tripShortNameField;
 
-	@FXML
-	private javafx.scene.control.TextField tripHeadSignField;
-	
+
 	@FXML
 	private javafx.scene.control.TableView tripsAllTable;
 
@@ -716,16 +722,15 @@ public class ShowSceneController {
 
 	@FXML
 	private javafx.scene.control.TableColumn tripsHeadSignColumn;
-	
+
 	@FXML
 	private javafx.scene.control.TableColumn tripsShortNameColumn;
-	
+
 	@FXML
 	private javafx.scene.control.TableColumn tripsDirectionIdColumn;
-	
+
 	@FXML
 	private javafx.scene.control.TableColumn tripsShapeIdColumn;
-	
 
 	@FXML
 	private void confirmAjoutTrips() {
@@ -733,11 +738,10 @@ public class ShowSceneController {
 		String serviceId = serviceIdField.getText();
 		String routesId = routesIdField.getText();
 		String directionId = directionIdField.getText();
-		String shapeId = shapeIdField.getText();
-		String tripHeadSign = tripHeadSignField.getText();
+
 		String tripShortName = tripShortNameField.getText();
-		
-		TripsComp trip = new TripsComp(routesId,serviceId,tripId,tripHeadSign,tripShortName,directionId,shapeId);
+
+		TripsComp trip = new TripsComp(routesId, serviceId, tripId, "", tripShortName, directionId, "");
 		if (!Client.addTrips(trip)) {
 			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
 			alert.show();
@@ -750,11 +754,9 @@ public class ShowSceneController {
 		String serviceId = serviceIdField.getText();
 		String routesId = routesIdField.getText();
 		String directionId = directionIdField.getText();
-		String shapeId = shapeIdField.getText();
-		String tripHeadSign = tripHeadSignField.getText();
 		String tripShortName = tripShortNameField.getText();
-		
-		TripsComp trip = new TripsComp(routesId,serviceId,tripId,tripHeadSign,tripShortName,directionId,shapeId);
+
+		TripsComp trip = new TripsComp(routesId, serviceId, tripId, "", tripShortName, directionId, "");
 		if (!Client.editTrips(trip)) {
 			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
 			alert.show();
@@ -767,27 +769,23 @@ public class ShowSceneController {
 		String serviceId = serviceIdField.getText();
 		String routesId = routesIdField.getText();
 		String directionId = directionIdField.getText();
-		String shapeId = shapeIdField.getText();
-		String tripHeadSign = tripHeadSignField.getText();
 		String tripShortName = tripShortNameField.getText();
-		
-		TripsComp trip = new TripsComp(routesId,serviceId,tripId,tripHeadSign,tripShortName,directionId,shapeId);
+
+		TripsComp trip = new TripsComp(routesId, serviceId, tripId, "", tripShortName, directionId, "");
 		if (!Client.removeTrips(trip)) {
 			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
 			alert.show();
 		}
 	}
-	
+
 	@FXML
 	private void confirmShowTrips() {
 		Set<TripsComp> data = Client.showTrips();
 		tripsRouteIdColumn.setCellValueFactory(new PropertyValueFactory("route_id"));
 		tripsServiceIdColumn.setCellValueFactory(new PropertyValueFactory("service_id"));
 		tripsTripIdColumn.setCellValueFactory(new PropertyValueFactory("trip_id"));
-		tripsHeadSignColumn.setCellValueFactory(new PropertyValueFactory("trip_headsign"));
 		tripsShortNameColumn.setCellValueFactory(new PropertyValueFactory("trip_short_name"));
 		tripsDirectionIdColumn.setCellValueFactory(new PropertyValueFactory("direction_id"));
-		tripsShapeIdColumn.setCellValueFactory(new PropertyValueFactory("shape_id"));
 		tripsAllTable.getItems().addAll(data);
 	}
 
@@ -819,7 +817,7 @@ public class ShowSceneController {
 
 	@FXML
 	private javafx.scene.control.CheckBox sundayBox;
-	
+
 	@FXML
 	private javafx.scene.control.TableColumn calendarServiceIdColumn;
 
@@ -834,35 +832,31 @@ public class ShowSceneController {
 
 	@FXML
 	private javafx.scene.control.TableColumn calendarThursdayColumn;
-	
+
 	@FXML
 	private javafx.scene.control.TableColumn calendarFridayColumn;
-	
+
 	@FXML
 	private javafx.scene.control.TableColumn calendarSaturdayColumn;
-	
+
 	@FXML
 	private javafx.scene.control.TableColumn calendarSundayColumn;
-	
+
 	@FXML
 	private javafx.scene.control.TableColumn calendarStartDateColumn;
-	
+
 	@FXML
 	private javafx.scene.control.TableColumn calendarEndDateColumn;
-	
+
 	@FXML
 	private javafx.scene.control.TableView calendarAllTable;
-
 
 	@FXML
 	private void confirmAjoutCalendar() {
 		String serviceId = serviceIdField.getText();
 		LocalDate startDateLocal = startDateField.getValue();
 		LocalDate endDateLocal = endDateField.getValue();
-		Instant instant = Instant.from(startDateLocal.atStartOfDay(ZoneId.systemDefault()));
-		Date startDate = Date.from(instant);
-		instant = Instant.from(startDateLocal.atStartOfDay(ZoneId.systemDefault()));
-		Date endDate = Date.from(instant);
+
 		int monday, tuesday, wednesday, thursday, friday, saturday, sunday;
 		if (mondayBox.isSelected())
 			monday = 1;
@@ -898,8 +892,9 @@ public class ShowSceneController {
 			sunday = 1;
 		else
 			sunday = 0;
-		
-		ServiceComp cald = new ServiceComp(serviceId,monday,tuesday,wednesday,thursday,friday,saturday,sunday,startDate,endDate);
+
+		ServiceComp cald = new ServiceComp(serviceId, monday, tuesday, wednesday, thursday, friday, saturday, sunday,
+				startDateLocal, endDateLocal);
 		if (!Client.addCalendar(cald)) {
 			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
 			alert.show();
@@ -912,10 +907,7 @@ public class ShowSceneController {
 		String serviceId = serviceIdField.getText();
 		LocalDate startDateLocal = startDateField.getValue();
 		LocalDate endDateLocal = endDateField.getValue();
-		Instant instant = Instant.from(startDateLocal.atStartOfDay(ZoneId.systemDefault()));
-		Date startDate = Date.from(instant);
-		instant = Instant.from(startDateLocal.atStartOfDay(ZoneId.systemDefault()));
-		Date endDate = Date.from(instant);
+
 		int monday, tuesday, wednesday, thursday, friday, saturday, sunday;
 		if (mondayBox.isSelected())
 			monday = 1;
@@ -951,8 +943,9 @@ public class ShowSceneController {
 			sunday = 1;
 		else
 			sunday = 0;
-		
-		ServiceComp cald = new ServiceComp(serviceId,monday,tuesday,wednesday,thursday,friday,saturday,sunday,startDate,endDate);
+
+		ServiceComp cald = new ServiceComp(serviceId, monday, tuesday, wednesday, thursday, friday, saturday, sunday,
+				startDateLocal, endDateLocal);
 		if (!Client.editCalendar(cald)) {
 			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
 			alert.show();
@@ -967,7 +960,7 @@ public class ShowSceneController {
 			alert.show();
 		}
 	}
-	
+
 	@FXML
 	private void confirmShowCalendar() {
 		Set<ServiceComp> data = Client.showCalendar();
@@ -991,32 +984,27 @@ public class ShowSceneController {
 
 	@FXML
 	private javafx.scene.control.TextField exceptionTypeField;
-	
+
 	@FXML
 	private javafx.scene.control.TableColumn calendarDatesDateColumn;
-	
+
 	@FXML
 	private javafx.scene.control.TableColumn calendarDatesServiceIdColumn;
-	
+
 	@FXML
 	private javafx.scene.control.TableColumn calendarDatesExceptionTypeColumn;
-	
+
 	@FXML
 	private javafx.scene.control.TableView calendarDatesAllTable;
 
-	
-	
-	
 	@FXML
 	private void confirmAjoutCalendarDates() {
 		String serviceId = serviceIdField.getText();
 		LocalDate dateLocal = dateField.getValue();
 		String exceptionTypeString = exceptionTypeField.getText();
 		int exceptionType = Integer.parseInt(exceptionTypeString);
-		Instant instant = Instant.from(dateLocal.atStartOfDay(ZoneId.systemDefault()));
-		Date date = Date.from(instant);
-		
-		CalendarExpComp caldates = new CalendarExpComp(serviceId,date,exceptionType);
+
+		CalendarExpComp caldates = new CalendarExpComp(serviceId, dateLocal, exceptionType);
 		if (!Client.addCalendarDates(caldates)) {
 			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
 			alert.show();
@@ -1029,10 +1017,8 @@ public class ShowSceneController {
 		LocalDate dateLocal = dateField.getValue();
 		String exceptionTypeString = exceptionTypeField.getText();
 		int exceptionType = Integer.parseInt(exceptionTypeString);
-		Instant instant = Instant.from(dateLocal.atStartOfDay(ZoneId.systemDefault()));
-		Date date = Date.from(instant);
-		
-		CalendarExpComp caldates = new CalendarExpComp(serviceId,date,exceptionType);
+
+		CalendarExpComp caldates = new CalendarExpComp(serviceId, dateLocal, exceptionType);
 		if (!Client.editCalendarDates(caldates)) {
 			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
 			alert.show();
@@ -1043,27 +1029,38 @@ public class ShowSceneController {
 	private void confirmSupprCalendarDates() {
 		String serviceId = serviceIdField.getText();
 		LocalDate dateLocal = dateField.getValue();
-		Instant instant = Instant.from(dateLocal.atStartOfDay(ZoneId.systemDefault()));
-		Date date = Date.from(instant);
-		
-		if (!Client.removeCalendarDates(serviceId, date)) {
+
+
+		if (!Client.removeCalendarDates(serviceId, dateLocal)) {
 			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
 			alert.show();
 		}
 	}
-	
+
 	@FXML
 	private void confirmShowCalendarDates() {
 		Set<CalendarExpComp> data = Client.showCalendarDates();
-		calendarDatesDateColumn.setCellValueFactory(new PropertyValueFactory("service_id"));
-		calendarDatesServiceIdColumn.setCellValueFactory(new PropertyValueFactory("added"));
+		calendarDatesDateColumn.setCellValueFactory(new PropertyValueFactory("added"));
+		calendarDatesServiceIdColumn.setCellValueFactory(new PropertyValueFactory("service_id"));
 		calendarDatesExceptionTypeColumn.setCellValueFactory(new PropertyValueFactory("type"));
 		calendarDatesAllTable.getItems().addAll(data);
 	}
+
+	@FXML
+	private void initialize() {
+//		OptionBox.setValue("Choisissez une option");
+//		OptionBox.setItems(OptionList);
+		
+
+	}
 	
-	/*
-	 * @FXML private void initialize() {
-	 * OptionBox.setValue("Choisissez une option"); OptionBox.setItems(OptionList);
-	 * }
-	 */
+//	public static void loadTransfertCheck() {
+//		datatransferTypeField.add(0);
+//		datatransferTypeField.add(1);
+//		datatransferTypeField.add(2);
+//		datatransferTypeField.add(3);
+//		datatransferTypeField.add(4);
+//		transferTypeField.getItems().addAll(datatransferTypeField);
+//	}
+
 }

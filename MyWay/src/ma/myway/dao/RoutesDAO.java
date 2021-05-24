@@ -59,7 +59,7 @@ public class RoutesDAO extends DAO<Route_Service> {
 		Statement stmt = null;
 		try {
 			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-			ResultSet result = stmt.executeQuery("SELECT route_id,service_id,trip_id,direction_id FROM trips");
+			ResultSet result = stmt.executeQuery("SELECT * FROM trips");
 			while (result.next()) {
 				
 				data.add(new TripsComp(result.getString(1),result.getString(2),result.getString(3),result.getString(4),result.getString(5),result.getString(6),result.getString(7)));
@@ -152,9 +152,47 @@ public class RoutesDAO extends DAO<Route_Service> {
 		}
 		return false;
 	}
+	
+	public boolean createComp(TripsComp obj) {
+		Statement stmt = null;
+		try {
+			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+			System.out.println("INSERT INTO trips VALUES(" + obj.toString() + ")");
+			int result = stmt.executeUpdate("INSERT INTO trips VALUES(" + obj.toString() + ")");
+			System.out.println(result + " Row affected ! ");
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
 
 	@Override
 	public boolean delete(Route_Service obj) {// fait
+		Statement stmt = null;
+		try {
+			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+			int result = stmt.executeUpdate("DELETE FROM trips WHERE route_id = " + obj.getRoute_id());
+			System.out.println(result + " Row affected !");
+			return (true);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return (false);
+	}
+	public boolean deleteComp(TripsComp obj) {// fait
 		Statement stmt = null;
 		try {
 			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
@@ -184,5 +222,16 @@ public class RoutesDAO extends DAO<Route_Service> {
 			e.printStackTrace();
 		}
 		return (false);
+	}
+	
+	public boolean updateComp(TripsComp oldobj, TripsComp newobj) {
+		try {
+			deleteComp(oldobj);
+			createComp(newobj);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 }
