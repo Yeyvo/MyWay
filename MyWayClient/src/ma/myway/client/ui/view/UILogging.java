@@ -13,6 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import ma.myway.client.network.Client;
+import ma.myway.client.network.Security;
 import ma.myway.client.ui.Main;
 import ma.myway.client.ui.model.SceneName;
 
@@ -53,7 +54,7 @@ public class UILogging implements ViewMaker {
 			@Override
 			public void handle(Event event) {
 				if (!username.getText().isBlank() && !pswd.getText().isBlank()) {
-					if (Client.conn(username.getText(), pswd.getText())) {
+					if (Client.conn(username.getText(), Security.get_SHA_256_SecurePassword(pswd.getText()))) {
 						Main.returnSceneAdminWelc();
 					} else {
 						Alert alert = new Alert(AlertType.ERROR, "USERNAME / PASSWORD invalid");

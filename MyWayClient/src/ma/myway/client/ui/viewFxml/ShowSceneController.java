@@ -4,21 +4,18 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Date;
-import java.util.Observable;
 import java.util.Set;
+import java.util.regex.Pattern;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import ma.myway.client.network.Client;
+import ma.myway.client.network.Security;
 import ma.myway.client.ui.Main;
 import ma.myway.graph.data.Agency;
 import ma.myway.graph.data.CalendarExpComp;
@@ -48,7 +45,7 @@ public class ShowSceneController {
 	private void showAjout() throws IOException {
 		main.showAjouterScene();
 	}
-	
+
 	@FXML
 	private void openBase() throws IOException {
 		main.openBase();
@@ -120,7 +117,7 @@ public class ShowSceneController {
 	}
 
 	@FXML
-	private javafx.scene.control.Button btnGestionAdmin;
+	private Button btnGestionAdmin;
 
 	@FXML
 	private void showGestion() throws IOException {
@@ -130,7 +127,7 @@ public class ShowSceneController {
 	}
 
 	@FXML
-	private javafx.scene.control.Button btnUseApp;
+	private Button btnUseApp;
 
 	@FXML
 	private void showApp() throws IOException {
@@ -140,7 +137,7 @@ public class ShowSceneController {
 	}
 
 	@FXML
-	private javafx.scene.control.Button btnQuitApp;
+	private Button btnQuitApp;
 
 	@FXML
 	private void quitApp() {
@@ -149,7 +146,7 @@ public class ShowSceneController {
 	}
 
 	@FXML
-	private javafx.scene.control.Button btnReturnAdmin;
+	private Button btnReturnAdmin;
 
 	@FXML
 	private void returnMenuAdmin() {
@@ -160,37 +157,37 @@ public class ShowSceneController {
 
 	// gestion agency
 	@FXML
-	private javafx.scene.control.TextField agencyIdField;
+	private TextField agencyIdField;
 
 	@FXML
-	private javafx.scene.control.TextField agencyNameField;
+	private TextField agencyNameField;
 
 	@FXML
-	private javafx.scene.control.TextField agencyTimeZoneField;
+	private TextField agencyTimeZoneField;
 
 	@FXML
-	private javafx.scene.control.TextField agencyLangageField;
+	private TextField agencyLangageField;
 
 	@FXML
-	private javafx.scene.control.TextField agencyURLField;
+	private TextField agencyURLField;
 
 	@FXML
-	private javafx.scene.control.TextField agencyPhoneField;
+	private TextField agencyPhoneField;
 
 	@FXML
-	private javafx.scene.control.TableView agencyAllTable;
+	private TableView agencyAllTable;
 
 	@FXML
-	private javafx.scene.control.TableColumn agencyIdColumn;
+	private TableColumn agencyIdColumn;
 
 	@FXML
-	private javafx.scene.control.TableColumn agencyNameColumn;
+	private TableColumn agencyNameColumn;
 
 	@FXML
-	private javafx.scene.control.TableColumn agencyURLColumn;
+	private TableColumn agencyURLColumn;
 
 	@FXML
-	private javafx.scene.control.TableColumn agencyTimeZoneColumn;
+	private TableColumn agencyTimeZoneColumn;
 
 	@FXML
 	private void confirmAjoutAgency() {
@@ -243,43 +240,57 @@ public class ShowSceneController {
 
 	// gestion User
 	@FXML
-	private javafx.scene.control.TextField usersIdField;
+	private TextField usersIdField;
 
 	@FXML
-	private javafx.scene.control.TextField usersUsernameField;
+	private TextField usersUsernameField;
 
 	@FXML
-	private javafx.scene.control.TextField usersPasswordField;
+	private TextField usersPasswordField;
 
 	@FXML
-	private javafx.scene.control.TextField usersPermissionField;
+	private ChoiceBox<String> usersPermissionField;
 
 	@FXML
-	private javafx.scene.control.TableView usersAllTable;
+	private TableView usersAllTable;
 
 	@FXML
-	private javafx.scene.control.TableColumn usersIdColumn;
+	private TableColumn usersIdColumn;
 
 	@FXML
-	private javafx.scene.control.TableColumn usersUserNameColumn;
+	private TableColumn usersUserNameColumn;
 
 	@FXML
-	private javafx.scene.control.TableColumn usersPasswordColumn;
+	private TableColumn usersPasswordColumn;
 
 	@FXML
-	private javafx.scene.control.TableColumn usersPermissionColumn;
+	private TableColumn usersPermissionColumn;
 
 	@FXML
-	private javafx.scene.control.TableColumn usersDateCreationColumn;
+	private TableColumn usersDateCreationColumn;
+
+	@FXML
+	private void initialize() {
+
+		if (usersPermissionField != null) {
+			usersPermissionField.getItems().addAll("admin", "user");
+		}
+
+	}
 
 	@FXML
 	private void confirmAjoutUsers() {
 		String usersUsername = usersUsernameField.getText();
 		String usersPassword = usersPasswordField.getText();
-		String usersPermission = usersPermissionField.getText();
+		String usersPermission = usersPermissionField.getValue();
 
-		if (!Client.addUser(usersUsername, usersPassword, usersPermission)) {
-			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
+		if (!usersUsername.isBlank() && !usersPassword.isBlank() && !usersPermission.isBlank()) {
+			if (!Client.addUser(usersUsername, Security.get_SHA_256_SecurePassword(usersPassword), usersPermission)) {
+				Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
+				alert.show();
+			}
+		} else {
+			Alert alert = new Alert(AlertType.WARNING, "Veuillez remplir tous les champs");
 			alert.show();
 		}
 	}
@@ -289,13 +300,24 @@ public class ShowSceneController {
 		String usersIdString = usersIdField.getText();
 		String usersUsername = usersUsernameField.getText();
 		String usersPassword = usersPasswordField.getText();
-		String usersPermission = usersPermissionField.getText();
-		int usersId = Integer.parseInt(usersIdString);
+		String usersPermission = usersPermissionField.getValue();
 
-		User user = new User(usersId, usersUsername, usersPassword, new Date(), usersPermission);
+		if (!usersUsername.isBlank() && !usersPassword.isBlank() && !usersPermission.isBlank()) {
+			if (Pattern.matches("^[1-9]*$", usersIdString)) {
+				int usersId = Integer.parseInt(usersIdString);
+				User user = new User(usersId, usersUsername, Security.get_SHA_256_SecurePassword(usersPassword),
+						new Date(), usersPermission);
 
-		if (!Client.editUser(user)) {
-			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
+				if (!Client.editUser(user)) {
+					Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
+					alert.show();
+				}
+			} else {
+				Alert alert = new Alert(AlertType.WARNING, "Veuillez verifier le type de userId");
+				alert.show();
+			}
+		} else {
+			Alert alert = new Alert(AlertType.WARNING, "Veuillez remplir tous les champs");
 			alert.show();
 		}
 	}
@@ -303,9 +325,13 @@ public class ShowSceneController {
 	@FXML
 	private void confirmSupprUsers() {
 		String usersId = usersIdField.getText();
-
-		if (!Client.removeUser(usersId)) {
-			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
+		if (!usersId.isBlank() && Pattern.matches("^[1-9]*$", usersId)) {
+			if (!Client.removeUser(usersId)) {
+				Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
+				alert.show();
+			}
+		} else {
+			Alert alert = new Alert(AlertType.WARNING, "Veuillez remplir et verrifier le type de tous les champs");
 			alert.show();
 		}
 	}
@@ -323,19 +349,19 @@ public class ShowSceneController {
 
 	// gestion Routes
 	@FXML
-	private javafx.scene.control.TextField routesIdField;
+	private TextField routesIdField;
 
 	@FXML
-	private javafx.scene.control.TextField routesShortNameField;
+	private TextField routesShortNameField;
 
 	@FXML
-	private javafx.scene.control.TextField routesLongNameField;
+	private TextField routesLongNameField;
 
 	@FXML
-	private javafx.scene.control.TextField routesDescriptionField;
+	private TextField routesDescriptionField;
 
 	@FXML
-	private javafx.scene.control.TextField routesTypeField;
+	private TextField routesTypeField;
 
 	@FXML
 	private void confirmAjoutRoutes() {
@@ -366,55 +392,55 @@ public class ShowSceneController {
 	// gestion stops
 
 	@FXML
-	private javafx.scene.control.TextField stopIdField;
+	private TextField stopIdField;
 
 	@FXML
-	private javafx.scene.control.TextField stopCodeField;
+	private TextField stopCodeField;
 
 	@FXML
-	private javafx.scene.control.TextField stopNameField;
+	private TextField stopNameField;
 
 	@FXML
-	private javafx.scene.control.TextField stopDescriptionField;
+	private TextField stopDescriptionField;
 
 	@FXML
-	private javafx.scene.control.TextField stopLongitudeField;
+	private TextField stopLongitudeField;
 
 	@FXML
-	private javafx.scene.control.TextField stopLatitudeField;
+	private TextField stopLatitudeField;
 
 	@FXML
-	private javafx.scene.control.TextField locationTypeField;
+	private TextField locationTypeField;
 
 	@FXML
-	private javafx.scene.control.TextField parentStationField;
+	private TextField parentStationField;
 
 	@FXML
-	private javafx.scene.control.TableView stopsAllTable;
+	private TableView stopsAllTable;
 
 	@FXML
-	private javafx.scene.control.TableColumn stopsIdColumn;
+	private TableColumn stopsIdColumn;
 
 	@FXML
-	private javafx.scene.control.TableColumn stopsCodeColumn;
+	private TableColumn stopsCodeColumn;
 
 	@FXML
-	private javafx.scene.control.TableColumn stopsNameColumn;
+	private TableColumn stopsNameColumn;
 
 	@FXML
-	private javafx.scene.control.TableColumn stopsDescriptionColumn;
+	private TableColumn stopsDescriptionColumn;
 
 	@FXML
-	private javafx.scene.control.TableColumn stopsLatitudeColumn;
+	private TableColumn stopsLatitudeColumn;
 
 	@FXML
-	private javafx.scene.control.TableColumn stopsLongitudeColumn;
+	private TableColumn stopsLongitudeColumn;
 
 	@FXML
-	private javafx.scene.control.TableColumn stopsLocationTypeColumn;
+	private TableColumn stopsLocationTypeColumn;
 
 	@FXML
-	private javafx.scene.control.TableColumn stopsParentStationColumn;
+	private TableColumn stopsParentStationColumn;
 
 	@FXML
 	private void confirmAjoutStops() {
@@ -499,40 +525,40 @@ public class ShowSceneController {
 	// gestion StopTimes
 
 	@FXML
-	private javafx.scene.control.TextField tripIdField;
+	private TextField tripIdField;
 
 	@FXML
-	private javafx.scene.control.TextField arrivalTimeField;
+	private TextField arrivalTimeField;
 
 	@FXML
-	private javafx.scene.control.TextField departureTimeField;
+	private TextField departureTimeField;
 
 	@FXML
-	private javafx.scene.control.TextField stopSequenceField;
+	private TextField stopSequenceField;
 
 	@FXML
-	private javafx.scene.control.TextField stopHeadsignField;
+	private TextField stopHeadsignField;
 
 	@FXML
-	private javafx.scene.control.TextField shapeDistanceTravelledField;
+	private TextField shapeDistanceTravelledField;
 
 	@FXML
-	private javafx.scene.control.TableView stopTimesAllTable;
+	private TableView stopTimesAllTable;
 
 	@FXML
-	private javafx.scene.control.TableColumn stopTimesTripIdColumn;
+	private TableColumn stopTimesTripIdColumn;
 
 	@FXML
-	private javafx.scene.control.TableColumn stopTimesDepartureTimeColumn;
+	private TableColumn stopTimesDepartureTimeColumn;
 
 	@FXML
-	private javafx.scene.control.TableColumn stopTimesArrivalTimeColumn;
+	private TableColumn stopTimesArrivalTimeColumn;
 
 	@FXML
-	private javafx.scene.control.TableColumn stopTimesStopIdColumn;
+	private TableColumn stopTimesStopIdColumn;
 
 	@FXML
-	private javafx.scene.control.TableColumn stopTimesSequenceColumn;
+	private TableColumn stopTimesSequenceColumn;
 
 	@FXML
 	private void confirmAjoutStopTimes() {
@@ -547,7 +573,8 @@ public class ShowSceneController {
 		int stopSequence = Integer.parseInt(stopSequenceString);
 		Stop_Trip stpt = null;
 		try {
-			stpt = new Stop_Trip(tripId, stopId, formatter.parse(arrivalTimeLocal), formatter.parse(departureTimeLocal), stopSequence);
+			stpt = new Stop_Trip(tripId, stopId, formatter.parse(arrivalTimeLocal), formatter.parse(departureTimeLocal),
+					stopSequence);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -571,7 +598,8 @@ public class ShowSceneController {
 		int stopSequence = Integer.parseInt(stopSequenceString);
 		Stop_Trip stpt = null;
 		try {
-			stpt = new Stop_Trip(tripId, stopId, formatter.parse(arrivalTimeLocal), formatter.parse(departureTimeLocal), stopSequence);
+			stpt = new Stop_Trip(tripId, stopId, formatter.parse(arrivalTimeLocal), formatter.parse(departureTimeLocal),
+					stopSequence);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -595,7 +623,8 @@ public class ShowSceneController {
 		int stopSequence = Integer.parseInt(stopSequenceString);
 		Stop_Trip stpt = null;
 		try {
-			stpt = new Stop_Trip(tripId, stopId, formatter.parse(arrivalTimeLocal), formatter.parse(departureTimeLocal), stopSequence);
+			stpt = new Stop_Trip(tripId, stopId, formatter.parse(arrivalTimeLocal), formatter.parse(departureTimeLocal),
+					stopSequence);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -618,37 +647,37 @@ public class ShowSceneController {
 
 	// gestion Transfers
 	@FXML
-	private javafx.scene.control.TextField fromStopIdField;
+	private TextField fromStopIdField;
 
 	@FXML
-	private javafx.scene.control.TextField toStopIdField;
+	private TextField toStopIdField;
 
 	@FXML
-	private javafx.scene.control.TextField transferTypeField;
+	private TextField transferTypeField;
 
 	@FXML
-	private javafx.scene.control.TextField minTransferTimeField;
+	private TextField minTransferTimeField;
 
 	@FXML
-	private javafx.scene.control.TableView transfersAllTable;
+	private TableView transfersAllTable;
 
 	@FXML
-	private javafx.scene.control.TableColumn transfersFromStopIdColumn;
+	private TableColumn transfersFromStopIdColumn;
 
 	@FXML
-	private javafx.scene.control.TableColumn transfersToStopIdColumn;
+	private TableColumn transfersToStopIdColumn;
 
 	@FXML
-	private javafx.scene.control.TableColumn transfersTypeColumn;
+	private TableColumn transfersTypeColumn;
 
 	@FXML
-	private javafx.scene.control.TableColumn transfersTimeColumn;
+	private TableColumn transfersTimeColumn;
 
 	@FXML
 	private void confirmAjoutTransfers() {
 		String fromStopId = fromStopIdField.getText();
 		String toStopId = toStopIdField.getText();
-		int transferType = Integer.parseInt( transferTypeField.getText());
+		int transferType = Integer.parseInt(transferTypeField.getText());
 		String minTransferTimeString = minTransferTimeField.getText();
 		int minTransferTime = Integer.parseInt(minTransferTimeString);
 		Transfert trans = new Transfert(fromStopId, toStopId, transferType, minTransferTime);
@@ -662,7 +691,7 @@ public class ShowSceneController {
 	private void confirmModifTransfers() {
 		String fromStopId = fromStopIdField.getText();
 		String toStopId = toStopIdField.getText();
-		int transferType = Integer.parseInt( transferTypeField.getText());
+		int transferType = Integer.parseInt(transferTypeField.getText());
 		String minTransferTimeString = minTransferTimeField.getText();
 		int minTransferTime = Integer.parseInt(minTransferTimeString);
 		Transfert trans = new Transfert(fromStopId, toStopId, transferType, minTransferTime);
@@ -676,7 +705,7 @@ public class ShowSceneController {
 	private void confirmSupprTransfers() {
 		String fromStopId = fromStopIdField.getText();
 		String toStopId = toStopIdField.getText();
-		int transferType = Integer.parseInt( transferTypeField.getText());
+		int transferType = Integer.parseInt(transferTypeField.getText());
 		String minTransferTimeString = minTransferTimeField.getText();
 		int minTransferTime = Integer.parseInt(minTransferTimeString);
 		Transfert trans = new Transfert(fromStopId, toStopId, transferType, minTransferTime);
@@ -698,39 +727,37 @@ public class ShowSceneController {
 
 	// gestion Trips
 	@FXML
-	private javafx.scene.control.TextField serviceIdField;
+	private TextField serviceIdField;
 
 	@FXML
-	private javafx.scene.control.TextField directionIdField;
-
-
-	@FXML
-	private javafx.scene.control.TextField tripShortNameField;
-
+	private TextField directionIdField;
 
 	@FXML
-	private javafx.scene.control.TableView tripsAllTable;
+	private TextField tripShortNameField;
 
 	@FXML
-	private javafx.scene.control.TableColumn tripsRouteIdColumn;
+	private TableView tripsAllTable;
 
 	@FXML
-	private javafx.scene.control.TableColumn tripsServiceIdColumn;
+	private TableColumn tripsRouteIdColumn;
 
 	@FXML
-	private javafx.scene.control.TableColumn tripsTripIdColumn;
+	private TableColumn tripsServiceIdColumn;
 
 	@FXML
-	private javafx.scene.control.TableColumn tripsHeadSignColumn;
+	private TableColumn tripsTripIdColumn;
 
 	@FXML
-	private javafx.scene.control.TableColumn tripsShortNameColumn;
+	private TableColumn tripsHeadSignColumn;
 
 	@FXML
-	private javafx.scene.control.TableColumn tripsDirectionIdColumn;
+	private TableColumn tripsShortNameColumn;
 
 	@FXML
-	private javafx.scene.control.TableColumn tripsShapeIdColumn;
+	private TableColumn tripsDirectionIdColumn;
+
+	@FXML
+	private TableColumn tripsShapeIdColumn;
 
 	@FXML
 	private void confirmAjoutTrips() {
@@ -792,64 +819,64 @@ public class ShowSceneController {
 	// gestion Calendar
 
 	@FXML
-	private javafx.scene.control.DatePicker startDateField;
+	private DatePicker startDateField;
 
 	@FXML
-	private javafx.scene.control.DatePicker endDateField;
+	private DatePicker endDateField;
 
 	@FXML
-	private javafx.scene.control.CheckBox mondayBox;
+	private CheckBox mondayBox;
 
 	@FXML
-	private javafx.scene.control.CheckBox tuesdayBox;
+	private CheckBox tuesdayBox;
 
 	@FXML
-	private javafx.scene.control.CheckBox wednesdayBox;
+	private CheckBox wednesdayBox;
 
 	@FXML
-	private javafx.scene.control.CheckBox thursdayBox;
+	private CheckBox thursdayBox;
 
 	@FXML
-	private javafx.scene.control.CheckBox fridayBox;
+	private CheckBox fridayBox;
 
 	@FXML
-	private javafx.scene.control.CheckBox saturdayBox;
+	private CheckBox saturdayBox;
 
 	@FXML
-	private javafx.scene.control.CheckBox sundayBox;
+	private CheckBox sundayBox;
 
 	@FXML
-	private javafx.scene.control.TableColumn calendarServiceIdColumn;
+	private TableColumn calendarServiceIdColumn;
 
 	@FXML
-	private javafx.scene.control.TableColumn calendarMondayColumn;
+	private TableColumn calendarMondayColumn;
 
 	@FXML
-	private javafx.scene.control.TableColumn calendarTuesdayColumn;
+	private TableColumn calendarTuesdayColumn;
 
 	@FXML
-	private javafx.scene.control.TableColumn calendarWednesdayColumn;
+	private TableColumn calendarWednesdayColumn;
 
 	@FXML
-	private javafx.scene.control.TableColumn calendarThursdayColumn;
+	private TableColumn calendarThursdayColumn;
 
 	@FXML
-	private javafx.scene.control.TableColumn calendarFridayColumn;
+	private TableColumn calendarFridayColumn;
 
 	@FXML
-	private javafx.scene.control.TableColumn calendarSaturdayColumn;
+	private TableColumn calendarSaturdayColumn;
 
 	@FXML
-	private javafx.scene.control.TableColumn calendarSundayColumn;
+	private TableColumn calendarSundayColumn;
 
 	@FXML
-	private javafx.scene.control.TableColumn calendarStartDateColumn;
+	private TableColumn calendarStartDateColumn;
 
 	@FXML
-	private javafx.scene.control.TableColumn calendarEndDateColumn;
+	private TableColumn calendarEndDateColumn;
 
 	@FXML
-	private javafx.scene.control.TableView calendarAllTable;
+	private TableView calendarAllTable;
 
 	@FXML
 	private void confirmAjoutCalendar() {
@@ -980,22 +1007,22 @@ public class ShowSceneController {
 	// gestion CalendarDates
 
 	@FXML
-	private javafx.scene.control.DatePicker dateField;
+	private DatePicker dateField;
 
 	@FXML
-	private javafx.scene.control.TextField exceptionTypeField;
+	private TextField exceptionTypeField;
 
 	@FXML
-	private javafx.scene.control.TableColumn calendarDatesDateColumn;
+	private TableColumn calendarDatesDateColumn;
 
 	@FXML
-	private javafx.scene.control.TableColumn calendarDatesServiceIdColumn;
+	private TableColumn calendarDatesServiceIdColumn;
 
 	@FXML
-	private javafx.scene.control.TableColumn calendarDatesExceptionTypeColumn;
+	private TableColumn calendarDatesExceptionTypeColumn;
 
 	@FXML
-	private javafx.scene.control.TableView calendarDatesAllTable;
+	private TableView calendarDatesAllTable;
 
 	@FXML
 	private void confirmAjoutCalendarDates() {
@@ -1030,7 +1057,6 @@ public class ShowSceneController {
 		String serviceId = serviceIdField.getText();
 		LocalDate dateLocal = dateField.getValue();
 
-
 		if (!Client.removeCalendarDates(serviceId, dateLocal)) {
 			Alert alert = new Alert(AlertType.WARNING, "Modification impossible");
 			alert.show();
@@ -1046,14 +1072,6 @@ public class ShowSceneController {
 		calendarDatesAllTable.getItems().addAll(data);
 	}
 
-	@FXML
-	private void initialize() {
-//		OptionBox.setValue("Choisissez une option");
-//		OptionBox.setItems(OptionList);
-		
-
-	}
-	
 //	public static void loadTransfertCheck() {
 //		datatransferTypeField.add(0);
 //		datatransferTypeField.add(1);
