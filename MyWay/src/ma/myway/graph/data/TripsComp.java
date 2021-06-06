@@ -76,8 +76,8 @@ public class TripsComp implements Serializable {
 
 	@Override
 	public String toString() {
-		return "\'"+route_id + "\',\'" + service_id + "\',\'" + trip_id + "\'," + trip_headsign + "," + trip_short_name != null? ("\'" + trip_short_name + "\'") : ("null")  + ",\'"
-				+ direction_id + "\'," + shape_id + "";
+		return "'"+route_id + "','" + service_id + "','" + trip_id + "'," + "null" + "," + trip_short_name != null? ("'" + trip_short_name + "'") : ("null")  + ",'"
+				+ direction_id + "',null";
 	}
 	
 	

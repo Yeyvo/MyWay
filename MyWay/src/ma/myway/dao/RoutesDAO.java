@@ -157,8 +157,10 @@ public class RoutesDAO extends DAO<Route_Service> {
 		Statement stmt = null;
 		try {
 			stmt = this.connect.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-			System.out.println("INSERT INTO trips VALUES(" + obj.toString() + ")");
-			int result = stmt.executeUpdate("INSERT INTO trips VALUES(" + obj.toString() + ")");
+			System.out.println("INSERT INTO trips VALUES(" + "'"+obj.getRoute_id() + "','" + obj.getService_id() + "','" + obj.getTrip_id() + "'," + "null" + "," + obj.getTrip_short_name() != null? ("'" + obj.getTrip_short_name() + "'") : ("null")  + ",'"
+					+ obj.getDirection_id() + "',null" + ")");
+			int result = stmt.executeUpdate("INSERT INTO trips VALUES(" + "'"+obj.getRoute_id() + "','" + obj.getService_id() + "','" + obj.getTrip_id() + "'," + "null" + "," + obj.getTrip_short_name() != null? ("'" + obj.getTrip_short_name() + "'") : ("null")  + ",'"
+					+ obj.getDirection_id() + "',null" + ")");
 			System.out.println(result + " Row affected ! ");
 			return true;
 		} catch (SQLException e) {

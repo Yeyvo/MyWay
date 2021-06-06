@@ -1,6 +1,8 @@
 package ma.myway.client.ui.viewFxml;
 
+import java.awt.Desktop;
 import java.io.IOException;
+import java.net.URI;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -10,8 +12,15 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import ma.myway.client.network.Client;
@@ -249,7 +258,7 @@ public class ShowSceneController {
 	private TextField usersPasswordField;
 
 	@FXML
-	private ChoiceBox<String> usersPermissionField;
+	private ComboBox<String> usersPermissionField;
 
 	@FXML
 	private TableView usersAllTable;
@@ -1070,6 +1079,11 @@ public class ShowSceneController {
 		calendarDatesServiceIdColumn.setCellValueFactory(new PropertyValueFactory("service_id"));
 		calendarDatesExceptionTypeColumn.setCellValueFactory(new PropertyValueFactory("type"));
 		calendarDatesAllTable.getItems().addAll(data);
+	}
+	
+	@FXML
+	private void documentation() throws Exception {
+		Desktop.getDesktop().browse(new URI("https://developers.google.com/transit/gtfs?hl=fr"));
 	}
 
 //	public static void loadTransfertCheck() {
