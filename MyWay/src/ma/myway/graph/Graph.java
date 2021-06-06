@@ -331,7 +331,7 @@ public class Graph implements Serializable {
 //			}
 //		} while (min != null);
 		
-		pq = new FibonacciHeap<Node>();
+	/*	pq = new FibonacciHeap<Node>();
 
 		HashMap<Node, FibonacciHeap.Entry<Node>> entries = new HashMap<Node, FibonacciHeap.Entry<Node>>();
 
@@ -363,7 +363,40 @@ public class Graph implements Serializable {
 			} catch (Exception e) {
 				min = null;
 			}
+		} while (min != null);*/
+		
+		pq = new FibonacciHeap<Node>();
+
+		HashMap<Node, FibonacciHeap.Entry<Node>> entries = new HashMap<Node, FibonacciHeap.Entry<Node>>();
+
+		source.setDistance(0.0);
+
+		for (Node node : nodes.values()) {
+			entries.put(node, pq.enqueue(node, node.getDistance()));
+		}
+
+		Node min = (Node) pq.dequeueMin().mElem;
+
+		do {
+			List<Edge> neighboors = edges.get(min.getStop().getStop_id());
+			if (neighboors != null) {
+				for (Edge edge : neighboors) {
+					double weight = edge.getWeight();
+					double newLen = edge.getSrc().getDistance() + weight;
+					if (newLen < edge.getDest().getDistance()) {
+						pq.decreaseKey(entries.get(edge.getDest()), newLen);
+						edge.getDest().setDistance(newLen);
+						edge.getDest().setPredecessor(edge);
+					}
+				}
+			}
+			try {
+				min = (Node) pq.dequeueMin().mElem;
+			} catch (Exception e) {
+				min = null;
+			}
 		} while (min != null);
+	
 	}
 
 	public static void saveGraph(Graph graph) {
